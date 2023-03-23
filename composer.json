@@ -2,7 +2,8 @@
     "name": "jaron/php-framework",
     "autoload": {
         "psr-4": {
-            "Jaron\\PhpFramework\\": "app/"
+            "Isoros\\": "app/",
+            "ORM\\": "orm/src/"
         }
     },
     "authors": [
@@ -11,5 +12,7 @@
             "email": "58861137+jaronoun@users.noreply.github.com"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-pdo": "*"
+    }
 }

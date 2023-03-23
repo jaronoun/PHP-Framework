@@ -1,7 +1,11 @@
 <?php
 
-$host = "localhost";
-$database = "isoros";
-$username = "root";
-$password = "";
-$charset = "utf8mb4";
+return [
+    'mysql' => [
+        'host' => 'localhost',
+        'database' => 'isoros',
+        'username' => 'root',
+        'password' => 'Steenwijk1Cambodja3!',
+        'charset' => 'utf8mb4',
+    ],
+];;
