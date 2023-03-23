@@ -1,0 +1,15 @@
+{
+    "name": "jaron/php-framework",
+    "autoload": {
+        "psr-4": {
+            "Jaron\\PhpFramework\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "jaronoun",
+            "email": "58861137+jaronoun@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
