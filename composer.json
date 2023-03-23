@@ -2,7 +2,7 @@
     "name": "jaron/php-framework",
     "autoload": {
         "psr-4": {
-            "Jaron\\PhpFramework\\": "src/"
+            "Jaron\\PhpFramework\\": "app/"
         }
     },
     "authors": [
