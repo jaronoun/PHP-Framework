@@ -7,11 +7,9 @@ $config = require '../config/database.php';
 
 try {
     $pdo = Connection::make($config['mysql']);
-    $user = new User($pdo, 'John Doe', 'john@example.com', 'password123');
-    $user->save();
 
 
-    $user = new User($pdo);
+    $user = new User($pdo,"Dorien3","","","","");
 
 // roep de read() functie op het object aan en krijg een PDOStatement object terug
     $stmt = $user->read();

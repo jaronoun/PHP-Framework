@@ -17,15 +17,14 @@ class User {
     public $created_at;
     public $updated_at;
 
-    public function __construct($db, $name, $email, $password, $role, $remember_token, $created_at, $updated_at) {
+    public function __construct($db, $name, $email, $password, $role, $remember_token) {
         $this->conn = $db;
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
         $this->role = $role;
         $this->remember_token = $remember_token;
-        $this->created_at = $created_at;
-        $this->updated_at = $updated_at;
+
     }
 
     public function create() {
