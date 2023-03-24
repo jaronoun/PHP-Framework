@@ -1,18 +1,23 @@
 <?php
-// Include the necessary files for the view
-require_once 'header.php';
-// require_once 'nav.php';
 
-// Start the page content
-?>
+// laad de autoloader
+require_once __DIR__ . '/../vendor/autoload.php';
+// Load the Router class
+require_once __DIR__ . '/../app/Routers/router.php';
+$router = new Router();
 
-<div class="container">
-    <h1>Welcome to my website</h1>
-    <p>This is the home page of my website.</p>
-</div>
+// Define routes
+$router->addRoute('GET', '/', function () {
+    echo 'Home page';
+});
 
-<?php
-// End the page content
-require_once 'footer.php';
-?>
+$router->addRoute('GET', '/users', function () {
+    // Handle user index page
+});
 
+$router->addRoute('GET', '/users/{id}', function ($params) {
+    // Handle user show page
+});
+
+// Dispatch the current request
+$router->dispatch();

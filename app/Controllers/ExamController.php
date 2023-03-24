@@ -1,6 +1,6 @@
 <?php
 
-require_once 'path/to/Exam.php';
+require_once '/Exam.php';
 
 class ExamController
 {
