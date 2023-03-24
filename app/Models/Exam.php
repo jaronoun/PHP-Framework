@@ -1,4 +1,5 @@
 <?php
+// TODO: Alle waarden op NN zetten, doe ik nu ff niet want anders teveel werk met testen
 class Exam {
     private $db;
 

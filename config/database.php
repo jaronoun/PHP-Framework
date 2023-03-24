@@ -5,7 +5,7 @@ return [
         'host' => 'localhost',
         'database' => 'isoros',
         'username' => 'root',
-        'password' => 'Steenwijk1Cambodja3!',
+        'password' => 'Shalom12',
         'charset' => 'utf8mb4',
     ],
 ];;
