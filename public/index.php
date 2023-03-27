@@ -7,17 +7,11 @@ require_once __DIR__ . '/../app/Routers/router.php';
 $router = new Router();
 
 // Define routes
-$router->addRoute('GET', '/', function () {
-    echo 'Home page';
-});
+$router->addRoute('GET', '/', 'UserController@index');
 
-$router->addRoute('GET', '/users', function () {
-    // Handle user index page
-});
+$router->addRoute('GET', '/users', 'UserController@index');
 
-$router->addRoute('GET', '/users/{id}', function ($params) {
-    // Handle user show page
-});
+$router->addRoute('GET', '/users/{id}','UserController@index');
 
 // Dispatch the current request
 $router->dispatch();

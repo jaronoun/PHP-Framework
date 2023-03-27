@@ -1,13 +1,19 @@
 <?php
 
-class GradeController {
+namespace Isoros\Controllers\api;
+use Grade;
+
+class GradeController
+{
     private $db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
-    public function createGrade($exam_id, $user_id, $grade) {
+    public function createGrade($exam_id, $user_id, $grade)
+    {
         $grade = new Grade($this->db);
 
         $grade->exam_id = $exam_id;
@@ -23,13 +29,15 @@ class GradeController {
         return false;
     }
 
-    public function getGrades() {
+    public function getGrades()
+    {
         $grades = new Grade($this->db);
 
         return $grades->read();
     }
 
-    public function getGradeById($id) {
+    public function getGradeById($id)
+    {
         $grade = new Grade($this->db);
 
         $grade->id = $id;
@@ -39,7 +47,8 @@ class GradeController {
         return $grade;
     }
 
-    public function updateGrade($id, $exam_id, $user_id, $grade) {
+    public function updateGrade($id, $exam_id, $user_id, $grade)
+    {
         $grade = new Grade($this->db);
 
         $grade->id = $id;
@@ -55,7 +64,8 @@ class GradeController {
         return false;
     }
 
-    public function deleteGrade($id) {
+    public function deleteGrade($id)
+    {
         $grade = new Grade($this->db);
 
         $grade->id = $id;

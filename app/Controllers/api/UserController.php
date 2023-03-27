@@ -1,10 +1,13 @@
 <?php
 
-namespace Isoros\Controllers;
+namespace Isoros\Controllers\api;
 
-use Isoros\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Isoros\Controllers\Controller;
+use Isoros\Models\User;
+use function Isoros\Controllers\bcrypt;
+use function Isoros\Controllers\response;
 
 class UserController extends Controller
 {

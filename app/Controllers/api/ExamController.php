@@ -1,5 +1,8 @@
 <?php
 
+namespace Isoros\Controllers\api;
+use Exam;
+
 require_once '/Exam.php';
 
 class ExamController
