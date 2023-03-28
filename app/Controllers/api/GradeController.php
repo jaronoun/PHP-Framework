@@ -1,6 +1,7 @@
 <?php
 
 namespace Isoros\Controllers\api;
+
 use Grade;
 
 class GradeController

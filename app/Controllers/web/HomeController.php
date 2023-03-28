@@ -1,4 +1,6 @@
 <?php
+namespace Isoros\Controllers\web;
+
 class HomeController
 {
     public function index()

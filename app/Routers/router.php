@@ -34,8 +34,9 @@ class Router
         $parts = explode('@', $handler);
         $controllerName = $parts[0];
         $methodName = $parts[1];
+        $controllerPath = realpath(__DIR__ . '/../../app/Controllers/web/' . $controllerName . '.php');
 
-        $controllerPath = __DIR__ . '/../../app/Controllers/web/' . $controllerName . '.php';
+
 
         if (!file_exists($controllerPath)) {
             http_response_code(500);
@@ -43,16 +44,13 @@ class Router
             return;
         }
 
-        require_once $controllerPath;
-
+        // Met de juiste namespace
+        $controllerName = "Isoros\\Controllers\\web\\" . $parts[0];
+        // create the controller instance
         $controller = new $controllerName();
 
-        if (!method_exists($controller, $methodName)) {
-            http_response_code(500);
-            echo "Method not found";
-            return;
-        }
-
+        // call the method on the controller instance
         $controller->$methodName();
+
     }
 }
