@@ -1,5 +1,7 @@
 <?php
 
+namespace Isoros\Routers;
+
 class Router
 {
     protected $routes = [];
