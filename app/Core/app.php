@@ -1,9 +1,10 @@
 <?php
 namespace Isoros\Core;
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once 'Models/User.php';
+require_once __DIR__ . '/../..//vendor/autoload.php';
+use Isoros\Models\User;
 
 use Isoros\Routers\router;
+use ORM\Connection;
 
 class App
 {
@@ -21,14 +22,24 @@ class App
         $this->router->dispatch();
     }
 
-    public function getDbConnection(): Database
+    public function getDbConnection(): \PDO
     {
-        return $this->dbConnection;
+        return $this->dbConnection->getConnection();
     }
 
     public function getRouter(): Router
     {
         return $this->Router;
+    }
+    private static $instance;
+
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new App();
+        }
+
+        return self::$instance;
     }
 
 
