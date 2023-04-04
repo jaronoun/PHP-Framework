@@ -5,7 +5,8 @@
             "Isoros\\": "app/"
         },
         "psr-0": {
-            "": "app/"
+            "": "app/",
+            "Framework\\": "config/"
         }
     },
     "authors": [

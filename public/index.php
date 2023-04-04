@@ -1,6 +1,6 @@
 <?php
 
-require_once 'vendor/autoload.php'; // Autoload classes
+require_once __DIR__ . '/..//vendor/autoload.php';// Autoload classes
 
 use Isoros\Routers\Router; // Import Router class from Project\App namespace
 use Isoros\Routers\Middleware;
