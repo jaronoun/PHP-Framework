@@ -1,48 +1,27 @@
 <?php
 
-require_once '../vendor/autoload.php';
-require_once '../Isoros/Routers/Router.php';
-require_once '../Isoros/Routers/Route.php';
-require_once '../Isoros/Routers/RouteCollection.php';
-require_once '../Isoros/Middleware/MiddlewareInterface.php';
-require_once '../Isoros/Middleware/BaseMiddleware.php';
-require_once '../Isoros/Middleware/MiddlewareCollection.php';
-require_once '../app/Http/Request.php';
-require_once '../app/Http/Response.php';
-require_once '../app/Http/StatusCode.php';
+use Isoros\Core\Container;
+use Isoros\Core\EventHandler;
+use Isoros\Core\Router;
+use Isoros\Middleware\AuthMiddleware;
+use Isoros\Middleware\ThrottleMiddleware;
 
-use Isoros\Routers\Router;
-use Isoros\Routers\Route;
-use Isoros\Routers\RouteCollection;
-use Isoros\Routers\MiddlewareCollection;
-use Isoros\Routers\Request;
-use Isoros\Routers\Response;
-use Isoros\Routers\StatusCode;
+// Maak een instantie van de container
+$container = new Container();
 
-$request = Request::createFromGlobals();
-$response = new Response();
+// Registreer de router en middleware in de container
+$container->set('router', new Router());
+$container->set('middleware', new MiddlewareStack([
+new \Isoros\Controllers\Web\UserController(),
+new \Isoros\Controllers\web\HomeController(),
+]));
 
-$routeCollection = new RouteCollection();
-$routeCollection->add(new Route('/', 'IndexController@index', 'GET'));
+// Maak een instantie van de EventHandler en geef de router en middleware door
+$eventHandler = new EventHandler($container->get('router'), $container->get('middleware'));
 
-$middlewareCollection = new MiddlewareCollection();
-$middlewareCollection->add(function(Request $request, Response $response, $next) {
-    $response->setContent('Middleware 1 executed!');
-    $response->setStatusCode(StatusCode::OK);
-    return $next($request, $response);
-});
-$middlewareCollection->add(function(Request $request, Response $response, $next) {
-    $response->setContent('Middleware 2 executed!');
-    $response->setStatusCode(StatusCode::OK);
-    return $next($request, $response);
-});
+// Verwerk de request via de EventHandler en geef de response terug
+$request = // haal de request op
+$response = $eventHandler->handle($request);
 
-$router = new Router($routeCollection, $middlewareCollection);
-$route = $router->match($request);
-if ($route) {
-    $response = call_user_func_array($route->getCallable(), [$request, $response]);
-} else {
-    $response->setStatusCode(StatusCode::NOT_FOUND);
-}
-
+// Stuur de response terug naar de client
 $response->send();

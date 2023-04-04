@@ -3,8 +3,12 @@
 namespace Isoros\Core;
 
 use Exception;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class EventHandler
+class EventHandler implements RequestHandlerInterface
 {
     protected $router;
     protected $middleware;
@@ -15,17 +19,24 @@ class EventHandler
         $this->middleware = $middleware;
     }
 
-    public function handle($request)
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $route = $this->router->findRoute($request->getMethod(), $request->getPath());
+            $route = $this->router->findRoute($request->getMethod(), $request->getUri()->getPath());
             if (!$route) {
                 throw new Exception("Route not found.");
             }
 
             // Check if middleware needs to be executed before controller
             if ($route->hasMiddleware()) {
-                $this->middleware->execute($route->getMiddleware());
+                $middlewareClasses = $route->getMiddleware();
+                foreach ($middlewareClasses as $middlewareClass) {
+                    $middleware = new $middlewareClass();
+                    if (!$middleware instanceof MiddlewareInterface) {
+                        throw new Exception("Middleware must be an instance of MiddlewareInterface.");
+                    }
+                    $request = $middleware->process($request, $this);
+                }
             }
 
             $controllerName = $route->getController();
