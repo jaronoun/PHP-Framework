@@ -3,50 +3,28 @@
 
 namespace Isoros\Models;
 
-class ExamUser
+use Isoros\Core\Database;
+use Isoros\Core\Model;
+
+class ExamUser extends Model
 {
-    private $pdo;
+    protected $table = 'users';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
+    protected $fillable = ['name', 'email', 'password'];
 
-    public function __construct(PDO $pdo)
+    public static function addExamGrade(Database $db, $examId, $studentId, $grade)
     {
-        $this->pdo = $pdo;
+        $examGrade = new ExamUser($db, [
+            'exam_id' => $examId,
+            'student_id' => $studentId,
+            'grade' => $grade
+        ]);
+        $examGrade->save();
     }
 
-    public function create(int $examId, int $userId)
+    public static function getExamGrades(Database $db, $examId)
     {
-        $stmt = $this->pdo->prepare('INSERT INTO exam_user (exam_id, user_id, created_at, updated_at) VALUES (:exam_id, :user_id, NOW(), NOW())');
-        $stmt->bindValue(':exam_id', $examId, PDO::PARAM_INT);
-        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-    }
-
-    public function deleteByExamId(int $examId)
-    {
-        $stmt = $this->pdo->prepare('DELETE FROM exam_user WHERE exam_id = :exam_id');
-        $stmt->bindValue(':exam_id', $examId, PDO::PARAM_INT);
-        $stmt->execute();
-    }
-
-    public function deleteByUserId(int $userId)
-    {
-        $stmt = $this->pdo->prepare('DELETE FROM exam_user WHERE user_id = :user_id');
-        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-    }
-
-    public function findExamIdsByUserId(int $userId): array
-    {
-        $stmt = $this->pdo->prepare('SELECT exam_id FROM exam_user WHERE user_id = :user_id');
-        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
-    }
-
-    public function findUserIdsByExamId(int $examId): array
-    {
-        $stmt = $this->pdo->prepare('SELECT user_id FROM exam_user WHERE exam_id = :exam_id');
-        $stmt->bindValue(':exam_id', $examId, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return ExamUser::where($db, 'exam_id', '=', $examId);
     }
 }

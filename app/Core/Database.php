@@ -2,50 +2,59 @@
 
 namespace Isoros\Core;
 
-use ORM\Connection;
+use PDO;
+use PDOException;
+use Psr\Container\ContainerInterface;
 
 class Database
 {
-    protected $connection;
+    protected $db;
+    protected static $instance;
+    protected $container;
 
-    public function __construct(array $config)
+    private function __construct(ContainerInterface $container)
     {
-        $this->connection = Connection::make($config['mysql']);
+        $this->container = $container;
+        $this->db = $container->get(PDO::class);
     }
 
-    public function getConnection()
+    public static function getInstance(ContainerInterface $container)
     {
-        return $this->connection;
+        if (self::$instance === null) {
+            self::$instance = new self($container);
+        }
+
+        return self::$instance;
     }
 
-    public function query($query)
+    public function getRepository($entityClass)
     {
-        return $this->connection->query($query);
+        $tableName = $this->getTableName($entityClass);
+
+        $repositoryClass = str_replace('Models', 'Database\Repositories', $entityClass) . 'Repository';
+
+        return $this->container->get($repositoryClass);
     }
 
-    public function fetch($query, $params = [])
+    protected function getTableName($entityClass)
     {
-        return $this->connection->fetch($query, $params);
+        $reflect = new \ReflectionClass($entityClass);
+
+        return strtolower($reflect->getShortName()) . 's';
     }
 
-    public function fetchAll($query, $params = [])
+    public function execute($query, $bindings = [])
     {
-        return $this->connection->fetchAll($query, $params);
+        $stmt = $this->db->prepare($query);
+        $stmt->execute($bindings);
+
+        $this->lastInsertId = $this->db->lastInsertId();
+
+        return $stmt;
     }
 
-    public function insert($table, $data)
+    public function getLastInsertId()
     {
-        return $this->connection->table($table)->insert($data);
-    }
-
-    public function update($table, $data, $conditions)
-    {
-        return $this->connection->table($table)->update($data, $conditions);
-    }
-
-    public function delete($table, $conditions)
-    {
-        return $this->connection->table($table)->delete($conditions);
+        return $this->lastInsertId;
     }
 }
-

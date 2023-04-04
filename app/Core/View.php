@@ -21,6 +21,8 @@ class View
         //var_dump($data1);
 
         require "../app/Views/{$this->view}.php";
+
+
     }
 }
 

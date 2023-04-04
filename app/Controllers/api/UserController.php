@@ -4,12 +4,9 @@ namespace Isoros\Controllers\api;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Isoros\Controllers\Controller;
 use Isoros\Models\User;
-use function Isoros\Controllers\bcrypt;
-use function Isoros\Controllers\response;
 
-class UserController extends Controller
+class UserController
 {
     /**
      * Get a user by their ID.

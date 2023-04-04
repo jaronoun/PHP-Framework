@@ -2,8 +2,6 @@
 
 namespace Isoros\Core;
 
-use Isoros\Core\App;
-
 class Controller
 {
     protected $view;
@@ -12,6 +10,6 @@ class Controller
     public function __construct()
     {
 
-        $this->db = App::getInstance()->getDbConnection();
+        $this->db = Database::getInstance();
     }
 }

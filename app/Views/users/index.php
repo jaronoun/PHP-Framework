@@ -28,10 +28,10 @@ require_once __DIR__.'/../../../vendor/autoload.php';
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Users</a>
+                <a class="nav-link" href="/users">Users</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Exams</a>

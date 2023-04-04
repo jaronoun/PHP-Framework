@@ -1,41 +1,70 @@
 <?php
-// TODO: Alle waarden op NN zetten, doe ik nu ff niet want anders teveel werk met testen
 
 namespace Isoros\Models;
 
-class Exam {
-    private $db;
+use Isoros\Database;
+use Isoros\DbModel;
 
-    public function __construct($db) {
-        $this->db = $db;
+class Exam extends DbModel
+{
+    protected $table = 'exam';
+
+    public static function add(Database $db, $name, $desc, $start_time, $end_time)
+    {
+        $attributes = [
+            'name' => $name,
+            'desc' => $desc,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        $exam = new Exam($db, $attributes);
+        $exam->save();
+
+        return $exam;
     }
 
-    public function getAll() {
-        $stmt = $this->db->query('SELECT * FROM exam');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function update(Database $db, $name, $desc, $start_time, $end_time)
+    {
+        $this->name = $name;
+        $this->desc = $desc;
+        $this->start_time = $start_time;
+        $this->end_time = $end_time;
+        $this->updated_at = date('Y-m-d H:i:s');
+        $this->save();
+
+        return $this;
     }
 
-    public function getById($id) {
-        $stmt = $this->db->prepare('SELECT * FROM exam WHERE id = :id');
-        $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public static function getAll(Database $db)
+    {
+        return Exam::all($db);
     }
 
-    public function create($name, $desc, $start_time, $end_time) {
-        $stmt = $this->db->prepare('INSERT INTO exam (name, desc, start_time, end_time, created_at) VALUES (:name, :desc, :start_time, :end_time, NOW())');
-        $stmt->execute(['name' => $name, 'desc' => $desc, 'start_time' => $start_time, 'end_time' => $end_time]);
-        return $this->getById($this->db->lastInsertId());
+    public static function getById(Database $db, $id)
+    {
+        return Exam::find($db, $id);
     }
 
-    public function update($id, $name, $desc, $start_time, $end_time) {
-        $stmt = $this->db->prepare('UPDATE exam SET name = :name, desc = :desc, start_time = :start_time, end_time = :end_time, updated_at = NOW() WHERE id = :id');
-        $stmt->execute(['id' => $id, 'name' => $name, 'desc' => $desc, 'start_time' => $start_time, 'end_time' => $end_time]);
-        return $this->getById($id);
+    public static function getByName(Database $db, $name)
+    {
+        return Exam::whereFirst($db, 'name', '=', $name);
     }
 
-    public function delete($id) {
-        $stmt = $this->db->prepare('DELETE FROM exam WHERE id = :id');
-        $stmt->execute(['id' => $id]);
+    public static function getByStartTime(Database $db, $start_time)
+    {
+        return Exam::whereFirst($db, 'start_time', '=', $start_time);
+    }
+
+    public static function getByEndTime(Database $db, $end_time)
+    {
+        return Exam::whereFirst($db, 'end_time', '=', $end_time);
+    }
+
+    public function delete(Database $db)
+    {
+        return parent::delete($db);
     }
 }
-
