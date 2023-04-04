@@ -1,72 +1,48 @@
 <?php
-namespace Isoros\Core;
 
+require_once '../vendor/autoload.php';
+require_once '../Isoros/Routers/Router.php';
+require_once '../Isoros/Routers/Route.php';
+require_once '../Isoros/Routers/RouteCollection.php';
+require_once '../Isoros/Middleware/MiddlewareInterface.php';
+require_once '../Isoros/Middleware/BaseMiddleware.php';
+require_once '../Isoros/Middleware/MiddlewareCollection.php';
+require_once '../app/Http/Request.php';
+require_once '../app/Http/Response.php';
+require_once '../app/Http/StatusCode.php';
+
+use Isoros\Routers\Router;
 use Isoros\Routers\Route;
-use Isoros\Routers\ServerRequestFactory;
-use Isoros\Routers\RequestInterface;
-use Isoros\Routers\ResponseInterface;
+use Isoros\Routers\RouteCollection;
+use Isoros\Routers\MiddlewareCollection;
+use Isoros\Routers\Request;
 use Isoros\Routers\Response;
-use Isoros\Routers\MiddlewareInterface;
+use Isoros\Routers\StatusCode;
 
-class App {
-    private $routes = [];
-    private $middlewares = [];
+$request = Request::createFromGlobals();
+$response = new Response();
 
-    public function addRoute(Route $route) {
-        $this->routes[] = $route;
-    }
+$routeCollection = new RouteCollection();
+$routeCollection->add(new Route('/', 'IndexController@index', 'GET'));
 
-    public function addMiddleware(MiddlewareInterface $middleware) {
-        $this->middlewares[] = $middleware;
-    }
+$middlewareCollection = new MiddlewareCollection();
+$middlewareCollection->add(function(Request $request, Response $response, $next) {
+    $response->setContent('Middleware 1 executed!');
+    $response->setStatusCode(StatusCode::OK);
+    return $next($request, $response);
+});
+$middlewareCollection->add(function(Request $request, Response $response, $next) {
+    $response->setContent('Middleware 2 executed!');
+    $response->setStatusCode(StatusCode::OK);
+    return $next($request, $response);
+});
 
-    public function get(string $pattern, $handler) {
-        $this->addRoute(new Route($pattern, $handler, ['GET']));
-    }
-
-    public function post(string $pattern, $handler) {
-        $this->addRoute(new Route($pattern, $handler, ['POST']));
-    }
-
-    public function put(string $pattern, $handler) {
-        $this->addRoute(new Route($pattern, $handler, ['PUT']));
-    }
-
-    public function delete(string $pattern, $handler) {
-        $this->addRoute(new Route($pattern, $handler, ['DELETE']));
-    }
-
-    public function run(): Response
-    {
-        $request = ServerRequestFactory::createFromGlobals();
-
-        // apply middlewares to the request
-        foreach ($this->middlewares as $middleware) {
-            $request = $middleware->handle($request, function(RequestInterface $request) {});
-        }
-
-        foreach ($this->routes as $route) {
-            if ($route->match($request->getMethod(), $request->getUri()->getPath())) {
-                $params = [];
-
-                foreach ($route->getParams() as $name) {
-                    $params[$name] = $route->getParamValue($name, $request->getUri()->getPath());
-                }
-
-                $handler = $route->getHandler();
-
-                if (is_string($handler)) {
-                    [$controllerName, $methodName] = explode('@', $handler);
-                    $controller = new $controllerName();
-
-                    return $controller->$methodName($request, $params);
-                } else if (is_callable($handler)) {
-                    return call_user_func_array($handler, [$request, $params]);
-                }
-            }
-        }
-
-        return new Response('Not Found', 404);
-    }
+$router = new Router($routeCollection, $middlewareCollection);
+$route = $router->match($request);
+if ($route) {
+    $response = call_user_func_array($route->getCallable(), [$request, $response]);
+} else {
+    $response->setStatusCode(StatusCode::NOT_FOUND);
 }
 
+$response->send();
