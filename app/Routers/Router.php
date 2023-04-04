@@ -21,7 +21,8 @@ class Router
     public function handle(Request $request): Response
     {
         foreach ($this->routes as $route) {
-            if ($route['method'] == $request->getMethod() && preg_match('#^' . $route['path'] . '$#', $request->getUri()->getPath(), $matches)) {
+            if ($route['method'] == $request->getMethod()
+                && preg_match('#^' . $route['path'] . '$#', $request->getUri()->getPath(), $matches)) {
                 array_shift($matches);
                 $params = array_values($matches);
                 return $route['handler']($request, ...$params);
