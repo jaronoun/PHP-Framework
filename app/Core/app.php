@@ -1,27 +1,61 @@
 <?php
 
-use Isoros\Core\Container;
-use Isoros\Core\EventHandler;
-use Isoros\Core\Router;
-use Isoros\Middleware\AuthMiddleware;
-use Isoros\Middleware\ThrottleMiddleware;
+namespace Isoros\Core;
 
-// Maak een instantie van de container
-$container = new Container();
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Isoros\Routers\Router;
 
-// Registreer de router en middleware in de container
-$container->set('router', new Router());
-$container->set('middleware', new MiddlewareStack([
-new \Isoros\Controllers\Web\UserController(),
-new \Isoros\Controllers\web\HomeController(),
-]));
+class app
+{
+    private $container;
+    private $router;
 
-// Maak een instantie van de EventHandler en geef de router en middleware door
-$eventHandler = new EventHandler($container->get('router'), $container->get('middleware'));
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+        $this->router = new Router();
+    }
 
-// Verwerk de request via de EventHandler en geef de response terug
-$request = // haal de request op
-$response = $eventHandler->handle($request);
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
+    }
 
-// Stuur de response terug naar de client
-$response->send();
+    public function getRouter(): Router
+    {
+        return $this->router;
+    }
+
+    public function run()
+    {
+        try {
+            $request = $this->container->get(Request::class);
+            $response = $this->router->handle($request);
+            $this->respond($response);
+        } catch (\Exception $e) {
+            $this->handleException($e);
+        }
+    }
+
+    private function respond(Response $response)
+    {
+        // Set response headers
+        foreach ($response->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                header(sprintf('%s: %s', $name, $value), false);
+            }
+        }
+
+        // Set response body
+        echo $response->getBody();
+    }
+
+    private function handleException(\Exception $e)
+    {
+        // Handle exceptions and generate error response
+        http_response_code($e->getCode());
+        echo 'Error: ' . $e->getMessage();
+    }
+}

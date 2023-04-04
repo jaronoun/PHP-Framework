@@ -1,34 +1,32 @@
 <?php
 
-use Isoros\Core\Container;
-use Isoros\Core\EventHandler;
-use Isoros\Controllers\web\HomeController;
-use Isoros\Controllers\web\UserController;
+namespace Isoros\Routers;
 
-class Router {
-    private $container;
-    private $eventHandler;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
-    public function __construct(Container $container, EventHandler $eventHandler) {
-        $this->container = $container;
-        $this->eventHandler = $eventHandler;
+class Router
+{
+    private $routes = [];
+
+    public function addRoute($method, $path, $handler)
+    {
+        $this->routes[] = [
+            'method' => $method,
+            'path' => $path,
+            'handler' => $handler
+        ];
     }
 
-    public function defineRoutes() {
-        $this->eventHandler->addMiddleware(function ($request, $next) {
-            // voeg hier eventueel middleware toe voor alle routes
-            return $next($request);
-        });
-
-        $this->eventHandler->get('/', [HomeController::class, 'index']);
-
-        $this->eventHandler->get('/users', [UserController::class, 'index']);
-        $this->eventHandler->post('/users', [UserController::class, 'create']);
-
-        $this->eventHandler->get('/users/{id:\d+}', [UserController::class, 'show']);
-        $this->eventHandler->put('/users/{id:\d+}', [UserController::class, 'update']);
-        $this->eventHandler->delete('/users/{id:\d+}', [UserController::class, 'delete']);
-
-        // voeg hier meer routes toe
+    public function handle(Request $request): Response
+    {
+        foreach ($this->routes as $route) {
+            if ($route['method'] == $request->getMethod() && preg_match('#^' . $route['path'] . '$#', $request->getUri()->getPath(), $matches)) {
+                array_shift($matches);
+                $params = array_values($matches);
+                return $route['handler']($request, ...$params);
+            }
+        }
+        throw new \Exception("No matching route found for " . $request->getMethod() . " " . $request->getUri()->getPath(), 404);
     }
 }
