@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class Router
 {
     private $routes = [];
+    private $middleware = [];
 
     public function addRoute($method, $path, $handler)
     {
@@ -16,6 +17,11 @@ class Router
             'path' => $path,
             'handler' => $handler
         ];
+    }
+
+    public function registerMiddleware(MiddlewareInterface $middleware): void
+    {
+        $this->middleware[] = $middleware;
     }
 
     public function handle(Request $request): Response
