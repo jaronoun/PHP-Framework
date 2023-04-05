@@ -3,46 +3,41 @@
 
 namespace Isoros\Routing;
 
-use Request;
-use Response;
+use Isoros\Routing\Request;
+use http\Client\Response;
 
 class Router
 {
-    protected $routes = [];
+    protected $routes;
 
-    public function addRoute($method, $path, $handler)
+    public function __construct()
     {
-        $this->routes[] = [
-            'method' => $method,
-            'path' => $path,
-            'handler' => $handler
-        ];
+        $this->routes = [];
     }
 
-    public function dispatch(Request $request): Response
+    public function addRoute($method, $uri, $handler)
     {
-        $method = $request->getMethod();
-        $path = $request->getUri()->getPath();
+        $route = new Route($method, $uri, $handler);
+        $this->routes[] = $route;
+    }
 
+    public function match(Request $request)
+    {
         foreach ($this->routes as $route) {
-            if ($route['method'] !== $method) {
+            if ($route->getMethod() !== $request->getMethod()) {
                 continue;
             }
 
-            $pattern = '~^' . preg_replace('/{([^}]*)}/', '(?P<$1>[^/]+)', $route['path']) . '$~';
+            $uri = preg_replace('#/+#', '/', $route->getUri());
+            $uri = str_replace(['{id}', '{name}'], ['\d+', '[a-zA-Z0-9\-_]+'], $uri);
+            $uriPattern = '#^' . $uri . '$#';
 
-            if (preg_match($pattern, $path, $matches)) {
-                $params = [];
-                foreach ($matches as $key => $value) {
-                    if (!is_int($key)) {
-                        $params[$key] = $value;
-                    }
-                }
-                array_unshift($params, $request);
-                return call_user_func_array($route['handler'], $params);
+            if (preg_match($uriPattern, $request->getUri()->getPath(), $matches)) {
+                array_shift($matches);
+                return [$route->getHandler(), $matches];
             }
         }
 
-        return new Response(404);
+        throw new RouteNotFoundException("Route not found for {$request->getMethod()}: {$request->getUri()->getPath()}");
     }
 }
