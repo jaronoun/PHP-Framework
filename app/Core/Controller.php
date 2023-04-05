@@ -11,7 +11,7 @@ class Controller
 
     public function __construct()
     {
-
         $this->db = App::getInstance()->getDbConnection();
     }
+
 }
