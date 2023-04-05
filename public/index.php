@@ -2,20 +2,27 @@
 
 require_once __DIR__ . '/..//vendor/autoload.php';// Autoload classes
 
-use Isoros\Routing\Router; // Import Router class from Project\App namespace
-use Isoros\Routing\Middleware;
+$router = new Routing\Router();
 
-// Create Router instance
-$router = new Router();
-$router->registerMiddleware(new Middleware());
+// Definieer routes
+$router->addRoute('GET', '/', function () {
+    echo 'Welkom bij mijn website!';
+});
 
-// Define routes
-$router->get('/', 'HomeController@index');
-$router->get('/about', 'HomeController@about');
-$router->get('/contact', 'HomeController@contact');
+$router->addRoute('GET', '/about', function () {
+    echo 'Dit is de "over ons" pagina.';
+});
 
-// Handle request
-$response = $router->handle($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+$router->addRoute('GET', '/contact', function () {
+    echo 'Dit is de "contact" pagina.';
+});
 
-// Output response
-echo $response->getBody();
+// Match de huidige request
+$match = $router->matchCurrentRequest();
+
+// Voer de callback-functie uit als er een match is
+if ($match) {
+    call_user_func_array($match['target'], $match['params']);
+} else {
+    echo '404 Pagina niet gevonden';
+}
