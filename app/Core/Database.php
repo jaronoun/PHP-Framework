@@ -12,7 +12,6 @@ class Database
     {
         $this->connection = Connection::make($config['mysql']);
         $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
     }
 
     public function getConnection()
