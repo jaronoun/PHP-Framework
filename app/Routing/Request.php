@@ -1,6 +1,6 @@
 <?php
 
-namespace Isoros\Http;
+namespace Isoros\Routing;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -149,5 +149,10 @@ class Request implements RequestInterface
             }
             $this->headers['Host'] = [$host];
         }
+    }
+
+    public function getHeaderLine($name)
+    {
+        // TODO: Implement getHeaderLine() method.
     }
 }

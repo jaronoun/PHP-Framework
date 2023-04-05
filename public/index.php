@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/..//vendor/autoload.php';// Autoload classes
 
-use Isoros\Routers\Router; // Import Router class from Project\App namespace
-use Isoros\Routers\Middleware;
+use Isoros\Routing\Router; // Import Router class from Project\App namespace
+use Isoros\Routing\Middleware;
 
 // Create Router instance
 $router = new Router();

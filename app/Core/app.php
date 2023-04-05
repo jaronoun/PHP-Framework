@@ -5,7 +5,7 @@ namespace Isoros\Core;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Isoros\Routers\Router;
+use Isoros\Routing\Router;
 
 class app
 {
