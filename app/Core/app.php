@@ -14,7 +14,7 @@ class App
     public function __construct()
     {
         $this->router = new Router();
-        $this->dbConnection = new Database(require '../config/database.php');
+        $this->db = new Database(require '../config/database.php');
     }
 
     public function run()
@@ -24,7 +24,7 @@ class App
 
     public function getDbConnection(): \PDO
     {
-        return $this->dbConnection->getConnection();
+        return $this->db->getConnection();
     }
 
     public function getRouter(): Router
