@@ -1,9 +1,13 @@
 <?php
 
-class m0002_something {
+namespace Isoros\Core\Database\Migrations;
+use Database;
+
+class m0002_something
+{
     public function up()
     {
-        $db =(new Database(require '../config/database.php'))->getConnection();;
+        $db = (new Database(require '../config/database.php'))->getConnection();;
 
         $SQL = "CREATE TABLE exam (
           id int NOT NULL,
@@ -48,7 +52,7 @@ class m0002_something {
           created_at datetime DEFAULT NULL,
           updated_at datetime DEFAULT NULL,
           PRIMARY KEY (id)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" ;
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;";
         $db->exec($SQL);
     }
 

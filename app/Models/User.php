@@ -7,8 +7,6 @@
 
 namespace Isoros\Models;
 
-use ORM\Connection;
-
 class User {
     private $conn;
 

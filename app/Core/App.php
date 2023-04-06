@@ -1,10 +1,9 @@
 <?php
 namespace Isoros\Core;
 require_once __DIR__ . '/../..//vendor/autoload.php';
-use Isoros\Models\User;
 
+use Isoros\Core\Database\Database;
 use Isoros\Routers\router;
-use ORM\Connection;
 
 class App
 {
@@ -14,7 +13,7 @@ class App
     public function __construct()
     {
         $this->router = new Router();
-        $this->dbConnection = new Database(require '../config/database.php');
+        $this->db = new Database(require '../config/database.php');
     }
 
     public function run()
@@ -29,7 +28,7 @@ class App
 
     public function getRouter(): Router
     {
-        return $this->Router;
+        return $this->router;
     }
     private static $instance;
 
@@ -41,8 +40,6 @@ class App
 
         return self::$instance;
     }
-
-
 
 }
 

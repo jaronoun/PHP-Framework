@@ -1,12 +1,13 @@
 <?php
 
-namespace ORM;
+namespace Isoros\Core\Database;
 
-use PDO;
+use Isoros\Core\PDO;
 
 class Connection
 {
-    protected static $pdo;
+
+    public static $pdo;
 
     public static function make($config)
     {
