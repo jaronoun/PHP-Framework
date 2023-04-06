@@ -1,25 +1,17 @@
 <?php
-namespace Isoros\Controllers\web;
-
-use Isoros\core\Controller;
+namespace Isoros\controllers\web;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
+use Isoros\core\Controller;
+use Isoros\core\View;
 
 class LoginController extends Controller
 {
-public function index()
+
+    public function index()
     {
-        // Start the output buffer
-        ob_start();
-
-        // Set the page title
-        $title = "Login";
-
-        // Include the view template
-        include __DIR__ . '/../../views/auth/login.php';
-
-        // Get the contents of the output buffer and flush it to the browser
-        echo ob_get_clean();
+        $view = new View('auth/login');
+        $view->render();
     }
 }

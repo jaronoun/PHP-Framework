@@ -8,7 +8,7 @@
                     <h3>Login</h3>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form action="" method="post">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>
                             <input type="email" class="form-control" id="email" placeholder="Enter email">
@@ -26,6 +26,3 @@
         </div>
     </div>
 </div>
-
-<!-- Include Bootstrap JS -->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.min.js"></script>-->

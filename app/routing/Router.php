@@ -12,7 +12,6 @@ class Router implements RequestHandlerInterface
 
     public function addRoute($method, $uri, $handler)
     {
-
         $this->routes[$method][$uri] = $handler;
     }
 
@@ -57,8 +56,6 @@ class Router implements RequestHandlerInterface
 
         // call the method on the controller instance
         $controller->$methodName();
-
         return new Response();
-
     }
 }

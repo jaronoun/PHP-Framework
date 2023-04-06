@@ -1,7 +1,6 @@
 <?php
 
 use Isoros\core\Container;
-use Isoros\core\Controller;
 use Isoros\routing\Request;
 use Isoros\routing\Router;
 use Isoros\routing\MiddlewareDispatcher;
@@ -31,8 +30,9 @@ $container->set(Router::class, function () {
     $router = new Router();
 
     // Define routes
-    $router->addRoute('GET', '/', 'HomeController@index');
-    $router->addRoute('POST', '/', 'HomeController@index');
+    $router->addRoute('GET', '/', 'LoginController@index');
+    $router->addRoute('POST', '/', 'LoginController@index');
+
     $router->addRoute('GET', '/users', 'UserController@index');
     $router->addRoute('GET', '/users/{id}', 'UserController@show');
     $router->addRoute('POST', '/users', 'UserController@store');
@@ -62,5 +62,5 @@ $response = $container->get(Response::class);
 $router = $container->get(Router::class);
 
 // Dispatch de request en krijg de response terug
-$response = $middlewareDispatcher->process($request, $router);
+$middlewareDispatcher->process($request, $router);
 
