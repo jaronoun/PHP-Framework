@@ -18,7 +18,7 @@ class Middleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Code voor het verwerken van de request
-        // ...
+        // Authentication
 
         // Keten de volgende middleware aan de huidige middleware
         if ($this->next instanceof MiddlewareInterface) {

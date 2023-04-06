@@ -2,6 +2,7 @@
 
 namespace Isoros\routing;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -9,6 +10,12 @@ use Psr\Http\Server\RequestHandlerInterface;
 class Router implements RequestHandlerInterface
 {
     protected $routes = [];
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
     public function addRoute($method, $uri, $handler)
     {
@@ -53,7 +60,7 @@ class Router implements RequestHandlerInterface
         // Met de juiste namespace
         $controllerName = "Isoros\\controllers\\web\\" . $parts[0];
         // create the controller instance
-        $controller = new $controllerName();
+        $controller = new $controllerName($this->container);
 
         // call the method on the controller instance
         $controller->$methodName();

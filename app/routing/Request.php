@@ -11,7 +11,7 @@ use Psr\Http\Message\UriInterface;
 class Request implements ServerRequestInterface
 {
     protected $method;
-    protected $uri;
+    protected UriInterface $uri;
     protected $headers = [];
     protected $body;
     protected $query;

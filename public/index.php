@@ -27,12 +27,12 @@ $container->set(Response::class, function () {
 
 
 // Voeg de Router object toe aan de container
-$container->set(Router::class, function () {
-    $router = new Router();
+$container->set(Router::class, function () use ($container){
+    $router = new Router($container);
 
     // Define routes
-    $router->addRoute('GET', '/', 'HomeController@index');
-    $router->addRoute('POST', '/', 'HomeController@index');
+    $router->addRoute('GET', '/', 'LoginController@index');
+    $router->addRoute('POST', '/login', 'LoginController@show');
     $router->addRoute('GET', '/users', 'UserController@index');
     $router->addRoute('GET', '/users/{id}', 'UserController@show');
     $router->addRoute('POST', '/users', 'UserController@store');
@@ -58,9 +58,9 @@ $middlewareDispatcher = MiddlewareDispatcher::fromContainer($container);
 
 // Haal de Request, Response en Router objecten uit de container
 $request = $container->get(Request::class);
-$response = $container->get(Response::class);
+// $response = $container->get(Response::class);
 $router = $container->get(Router::class);
 
 // Dispatch de request en krijg de response terug
-$response = $middlewareDispatcher->process($request, $router);
+$middlewareDispatcher->process($request, $router);
 

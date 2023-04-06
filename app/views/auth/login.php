@@ -1,4 +1,3 @@
-<?php?>
 
 <div class="container">
     <div class="row justify-content-center mt-5">
@@ -8,7 +7,7 @@
                     <h3>Login</h3>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form action="/login" method="POST">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>
                             <input type="email" class="form-control" id="email" placeholder="Enter email">
