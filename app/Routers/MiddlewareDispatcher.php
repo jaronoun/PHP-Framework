@@ -2,7 +2,8 @@
 
 namespace Isoros\Routers;
 
-use Isoros\Core\Container;
+use Isoros\core\Container;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -20,7 +21,7 @@ class MiddlewareDispatcher implements MiddlewareInterface
         $this->middlewares = $middlewares;
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(RequestInterface|ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Bouw de middlewareketen op
         $current = new Middleware();
@@ -36,13 +37,13 @@ class MiddlewareDispatcher implements MiddlewareInterface
 
     public static function fromContainer(Container $container): MiddlewareDispatcher
     {
-        $container = new Container();
 
         // Voeg de benodigde bindings toe aan de Container
-        $container->set('config', require __DIR__ . '/config.php');
+        // $container->set('','');
 
         // Geef de middleware array door als een parameter
-        $middlewares = $container->get('array')['item'];
+        //$middlewares = $container->get('')[''];
+        $middlewares = [];
 
         // Maak een nieuwe MiddlewareDispatcher en geef deze terug
         return new self($container, $middlewares);

@@ -2,7 +2,11 @@
 
 namespace Isoros\Routers;
 
-class Router
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class Router implements RequestHandlerInterface
 {
     protected $routes = [];
 
@@ -12,7 +16,7 @@ class Router
         $this->routes[$method][$uri] = $handler;
     }
 
-    public function dispatch()
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $method = $_SERVER['REQUEST_METHOD'];
 
@@ -23,10 +27,10 @@ class Router
         if (!$handler) {
             http_response_code(404);
             echo "Page not found";
-            return;
+            return new Response();
         }
         // Instead of calling the handler directly, we call the loadView method
-        $this->loadView($handler);
+        return $this->loadView($handler);
     }
 
     // Method to load the appropriate view based on the handler
@@ -36,7 +40,7 @@ class Router
         $parts = explode('@', $handler);
         $controllerName = $parts[0];
         $methodName = $parts[1];
-        $controllerPath = realpath(__DIR__ . '/../../app/Controllers/web/' . $controllerName . '.php');
+        $controllerPath = realpath(__DIR__ . '/../../app/controllers/web/' . $controllerName . '.php');
 
 
 
@@ -47,12 +51,14 @@ class Router
         }
 
         // Met de juiste namespace
-        $controllerName = "Isoros\\Controllers\\web\\" . $parts[0];
+        $controllerName = "Isoros\\controllers\\web\\" . $parts[0];
         // create the controller instance
         $controller = new $controllerName();
 
         // call the method on the controller instance
         $controller->$methodName();
+
+        return new Response();
 
     }
 }

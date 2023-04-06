@@ -1,17 +1,17 @@
 <?php
 
-namespace Isoros\Core;
+namespace Isoros\core;
 
-use Isoros\Core\App;
+use Isoros\core\App;
+use Psr\Container\ContainerInterface;
 
 class Controller
 {
-    protected $view;
-    protected $db;
+    protected ContainerInterface $container;
 
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
-        $this->db = App::getInstance()->getDbConnection();
+        $this->container = $container;
     }
 
 }
