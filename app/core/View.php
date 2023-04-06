@@ -7,16 +7,15 @@ class View
     protected $view;
     protected $data = [];
 
-    public function __construct($view, $data = [])
+    public function __construct()
     {
-        $this->view = $view;
-        $this->data = $data;
+
     }
 
-    public function render()
+    public function render($view)
     {
-        extract($this->data);
-        require "../app/views/{$this->view}.php";
+        //extract($this->data);
+        require "../app/views/{$view}.php";
     }
 }
 

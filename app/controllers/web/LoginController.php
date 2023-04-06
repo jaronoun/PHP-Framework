@@ -1,23 +1,22 @@
 <?php
-namespace Isoros\Controllers\web;
+namespace Isoros\controllers\web;
 
-use Isoros\core\Controller;
+use Isoros\core\controller;
+use Isoros\core\View;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-use Isoros\core\Controller;
-use Isoros\core\View;
-
 class LoginController extends Controller
 {
-public function index()
-    {
-        $title = "Login";
-        echo '<pre>';
-        var_dump($request);
-        echo '</pre>';
+    public function index()
+        {
+            $title = "Login";
 
-        $view = new View('auth/login');
-        $view->render();
-    }
+            $view = $this->container->get(View::class);
+            $view->render('auth/login');
+
+//            echo '<pre>';
+//            var_dump($request);
+//            echo '</pre>';
+        }
 }

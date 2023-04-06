@@ -2,16 +2,23 @@
 
 use Isoros\core\Container;
 use Isoros\core\Controller;
+use Isoros\core\View;
 use Isoros\routing\Request;
 use Isoros\routing\Router;
 use Isoros\routing\MiddlewareDispatcher;
 use Isoros\routing\Response;
+
 
 // Laad de autoload file in
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Initialiseer de container
 $container = new Container();
+
+// Voeg de Request en Response objects toe aan de container
+$container->set(View::class, function () {
+    return new View();
+});
 
 // Voeg de Request en Response objects toe aan de container
 $container->set(Request::class, function () {
@@ -32,7 +39,7 @@ $container->set(Router::class, function () use ($container){
 
     // Define routes
     $router->addRoute('GET', '/', 'LoginController@index');
-    $router->addRoute('POST', '/login', 'LoginController@show');
+    $router->addRoute('POST', '/login', 'LoginController@index');
     $router->addRoute('GET', '/users', 'UserController@index');
     $router->addRoute('GET', '/users/{id}', 'UserController@show');
     $router->addRoute('POST', '/users', 'UserController@store');
