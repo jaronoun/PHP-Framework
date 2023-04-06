@@ -29,7 +29,7 @@ class App
 
     public function getRouter(): Router
     {
-        return $this->Router;
+        return $this->router;
     }
     private static $instance;
 

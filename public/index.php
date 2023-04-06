@@ -3,17 +3,14 @@
 // laad de autoloader
 require_once __DIR__ . '/../vendor/autoload.php';
 // Load the Router class
-use Isoros\Routers\Router;
-
+use Isoros\Core\App;
 
 // Create App Instance
-$app = new Isoros\Core\App();
-$router = new Router();
+$app = new App();
 
-
-// Define routes
-$router->addRoute('GET', '/login', 'LoginController@index');
-$router->addRoute('POST', '/login', 'LoginController@login');
+$app->getRouter()->addRoute('GET', '/login', 'LoginController@index');
+$app->getRouter()->addRoute('GET', '/login', 'LoginController@index');
+$app->getRouter()->dispatch();
 
 //$router->addRoute('GET', '/', 'HomeController@index');
 //$router->addRoute('GET', '/users', 'UserController@index');
@@ -23,4 +20,3 @@ $router->addRoute('POST', '/login', 'LoginController@login');
 //$router->addRoute('DELETE', '/users/{id}', 'UserController@delete');
 
 // Dispatch the request
-$router->dispatch();
