@@ -13,6 +13,7 @@ class LoginController extends Controller
             $title = "Login";
 
             $view = $this->container->get(View::class);
+
             $view->render('auth/login');
 
 //            echo '<pre>';

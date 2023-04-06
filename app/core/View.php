@@ -15,7 +15,23 @@ class View
     public function render($view)
     {
         //extract($this->data);
-        require "../app/views/{$view}.php";
+        ob_start();
+
+        // Set the page title
+        $title = "Home";
+
+        // Include the header template
+        include __DIR__ . '/../views/layout/header.php';
+
+        // Include the view template
+        include __DIR__ . "/../views/{$view}.php";
+
+        // Include the footer template
+        include __DIR__ . '/../views/layout/footer.php';
+
+        // Get the contents of the output buffer and flush it to the browser
+        echo ob_get_clean();
+
     }
 }
 
