@@ -42,6 +42,23 @@ class App
         return self::$instance;
     }
 
+    public function registerRoutes() {
+        // Registreer routes hier...
+    }
+
+    public function registerMiddleware() {
+        // Maak een instantie van de MiddlewareDispatcher-klasse
+        $middlewareDispatcher = new MiddlewareDispatcher($this->container, [
+            'MyMiddlewareClass1',
+            'MyMiddlewareClass2'
+        ]);
+
+        // Registreer de MiddlewareDispatcher als de request handler
+        $this->app->get('/', function ($request, $response) use ($middlewareDispatcher) {
+            return $middlewareDispatcher->handle($request);
+        });
+    }
+
 
 
 }
