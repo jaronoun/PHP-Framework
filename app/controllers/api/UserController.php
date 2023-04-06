@@ -5,7 +5,7 @@ namespace Isoros\Controllers\api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Isoros\Controllers\Controller;
-use Isoros\Models\User;
+use Isoros\models\User;
 use function Isoros\Controllers\bcrypt;
 use function Isoros\Controllers\response;
 

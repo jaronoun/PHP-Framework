@@ -1,7 +1,7 @@
 <?php
 // TODO: Alle waarden op NN zetten, doe ik nu ff niet want anders teveel werk met testen
 
-namespace Isoros\Models;
+namespace Isoros\models;
 
 
 class Grade {

@@ -1,8 +1,6 @@
 <?php
 
-namespace Isoros\Core;
-
-use ORM\Connection;
+namespace Isoros\core;
 
 class Database
 {
@@ -75,14 +73,14 @@ class Database
         $appliedMigrations = $this->getAppliedMigrations();
 
         $newMigrations = [];
-        $files = scandir(__DIR__ . '/../Migrations');
+        $files = scandir(__DIR__ . '/../migrations');
         $toApplyMigrations = array_diff($files, $appliedMigrations);
         foreach ($toApplyMigrations as $migration) {
             if ($migration === '.' || $migration === '..') {
                 continue;
             }
 
-            require_once __DIR__ . '/../Migrations/' . $migration;
+            require_once __DIR__ . '/../migrations/' . $migration;
             $className = pathinfo($migration, PATHINFO_FILENAME);
             $instance = new $className();
             $this->log("Applying migration $migration");
@@ -94,14 +92,14 @@ class Database
         if (!empty($newMigrations)) {
             $this->saveMigrations($newMigrations);
         } else {
-            $this->log("There are no Migrations to apply");
+            $this->log("There are no migrations to apply");
         }
     }
 
 
     protected function createMigrationsTable()
     {
-        $this->connection->exec("CREATE TABLE IF NOT EXISTS Migrations (
+        $this->connection->exec("CREATE TABLE IF NOT EXISTS migrations (
             id INT AUTO_INCREMENT PRIMARY KEY,
             migration VARCHAR(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -110,7 +108,7 @@ class Database
 
     protected function getAppliedMigrations()
     {
-        $statement = $this->connection->prepare("SELECT migration FROM Migrations");
+        $statement = $this->connection->prepare("SELECT migration FROM migrations");
         $statement->execute();
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
@@ -122,7 +120,7 @@ class Database
             return "('$m')";
         }, $newMigrations));
 
-        $statement = $this->connection->prepare("INSERT INTO Migrations (migration) VALUES $str");
+        $statement = $this->connection->prepare("INSERT INTO migrations (migration) VALUES $str");
         $statement->execute();
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Isoros\Routers;
+namespace Isoros\routing;
 
 use Isoros\core\Container;
 use Psr\Http\Message\RequestInterface;

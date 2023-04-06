@@ -1,6 +1,6 @@
 <?php
 
-namespace Isoros\Core;
+namespace Isoros\core;
 
 class View
 {
@@ -20,7 +20,7 @@ class View
         //$data1 = $this->data->fetchAll(\PDO::FETCH_ASSOC);
         //var_dump($data1);
 
-        require "../app/Views/{$this->view}.php";
+        require "../app/views/{$this->view}.php";
     }
 }
 

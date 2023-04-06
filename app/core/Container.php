@@ -1,6 +1,6 @@
 <?php
 
-namespace Isoros\Core;
+namespace Isoros\core;
 
 require_once __DIR__ . '/../..//vendor/autoload.php';
 

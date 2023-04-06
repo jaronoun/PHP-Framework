@@ -1,10 +1,9 @@
 <?php
 namespace Isoros\Controllers\Web;
 
-use Isoros\Core\Controller;
-use Isoros\Models\User;
-use Isoros\Core\View;
-use ORM\Connection;
+use Isoros\core\Controller;
+use Isoros\core\View;
+use Isoros\models\User;
 
 class UserController extends Controller
 {
@@ -26,6 +25,6 @@ class UserController extends Controller
     {
         $userId = $params['id'];
 
-        require_once 'app/Views/users/show.php';
+        require_once 'app/views/users/show.php';
     }
 }

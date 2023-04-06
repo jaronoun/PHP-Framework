@@ -5,9 +5,7 @@
 // TODO: De User-klasse zou kunnen worden uitgebreid met meer functionaliteit, zoals bijvoorbeeld een methode om een gebruiker op te zoeken op basis van de naam of emailadres.
 // TODO: Het is een goed idee om de timestamps van created_at en updated_at automatisch te genereren, in plaats van ze mee te geven als parameters in de constructor. Dit voorkomt fouten en vereenvoudigt het gebruik van de klasse.
 
-namespace Isoros\Models;
-
-use ORM\Connection;
+namespace Isoros\models;
 
 class User {
     private $conn;

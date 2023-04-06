@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/app/Core/Database.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/app/Migrations/m0001_initial.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/core/Database.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/migrations/m0001_initial.php" dialect="GenericSQL" />
   </component>
 </project>

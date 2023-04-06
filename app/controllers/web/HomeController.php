@@ -1,7 +1,7 @@
 <?php
 namespace Isoros\Controllers\web;
 
-use Isoros\Core\Controller;
+use Isoros\core\Controller;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -17,10 +17,10 @@ class HomeController extends Controller
         $title = "Home";
 
         // Include the header template
-        include __DIR__ . '/../../Views/layout/header.php';
+        include __DIR__ . '/../../views/layout/header.php';
 
         // Include the view template
-        include __DIR__ . '/../../Views/homepage/index.php';
+        include __DIR__ . '/../../views/homepage/index.php';
 
         // Include the footer template
         include __DIR__ . '/../../views/layout/footer.php';

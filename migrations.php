@@ -2,8 +2,8 @@
 
 require 'vendor/autoload.php';
 
-use Isoros\Core\App;
-use Isoros\Core\Database;
+use Isoros\core\App;
+use Isoros\core\Database;
 
 $pdo = new Database(require '../config/database.php');
 

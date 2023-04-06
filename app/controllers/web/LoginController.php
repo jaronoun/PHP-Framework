@@ -1,7 +1,7 @@
 <?php
 namespace Isoros\Controllers\web;
 
-use Isoros\Core\Controller;
+use Isoros\core\Controller;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -16,12 +16,8 @@ public function index()
         // Set the page title
         $title = "Login";
 
-        // Include the header template
-        include __DIR__ . '/../../Views/layout/header.php';
-
         // Include the view template
-        include __DIR__ . '/../../Views/auth/login.php';
-
+        include __DIR__ . '/../../views/auth/login.php';
 
         // Get the contents of the output buffer and flush it to the browser
         echo ob_get_clean();

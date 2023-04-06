@@ -2,10 +2,10 @@
 
 use Isoros\core\Container;
 use Isoros\core\Controller;
-use Isoros\Routers\Request;
-use Isoros\Routers\Router;
-use Isoros\Routers\MiddlewareDispatcher;
-use Isoros\Routers\Response;
+use Isoros\routing\Request;
+use Isoros\routing\Router;
+use Isoros\routing\MiddlewareDispatcher;
+use Isoros\routing\Response;
 
 // Laad de autoload file in
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -23,7 +23,7 @@ $container->set(Response::class, function () {
 });
 
 // Maak de HomeController en geef de container door
-$controller = new Controller($container);
+// $controller = new Controller($container);
 
 
 // Voeg de Router object toe aan de container

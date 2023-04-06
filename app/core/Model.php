@@ -1,6 +1,6 @@
 <?php
 
-namespace Isoros\Core;
+namespace Isoros\core;
 
 use ORM\Model as ORMModel;
 
