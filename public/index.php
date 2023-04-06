@@ -48,6 +48,8 @@ $router->addRoute('DELETE', '/users/{id}', 'UserController@delete');
 // Dispatch the request
 $router->dispatch();
 
+$container = new Container();
+
 // Maak een MiddlewareDispatcher object en voeg de middlewares toe
 $middlewareDispatcher = MiddlewareDispatcher::fromContainer($container);
 
