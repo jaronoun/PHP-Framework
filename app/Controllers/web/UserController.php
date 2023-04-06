@@ -2,8 +2,9 @@
 namespace Isoros\Controllers\Web;
 
 use Isoros\Core\Controller;
-use Isoros\Core\View;
 use Isoros\Models\User;
+use Isoros\Core\View;
+use ORM\Connection;
 
 class UserController extends Controller
 {

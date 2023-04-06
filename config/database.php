@@ -8,4 +8,4 @@ return [
         'password' => 'Steenwijk1Cambodja3!',
         'charset' => 'utf8mb4',
     ],
-];
+];;

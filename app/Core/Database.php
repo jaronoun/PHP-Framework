@@ -1,16 +1,16 @@
 <?php
 
-namespace Isoros\Core\Database;
+namespace Isoros\Core;
+
+use ORM\Connection;
 
 class Database
 {
     protected \PDO $connection;
-    protected static $pdo;
-
-
 
     public function __construct(array $config)
     {
+        $this->connection = Connection::make($config['mysql']);
         $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         $SQL = "CREATE TABLE IF NOT EXISTS exam (
@@ -165,6 +165,5 @@ class Database
     {
         return $this->connection->table($table)->delete($conditions);
     }
-
 }
 
