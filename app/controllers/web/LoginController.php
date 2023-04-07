@@ -15,15 +15,10 @@ class LoginController extends Controller
 
             $container = $this->getContainer();
 
-
-
             $view = $container->get(View::class);
 
             $view->render('auth/login');
 
-//            echo '<pre>';
-//            var_dump($request);
-//            echo '</pre>';
         }
 
     public function handleLogin()

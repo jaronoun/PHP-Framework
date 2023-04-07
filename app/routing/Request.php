@@ -16,7 +16,7 @@ class Request implements ServerRequestInterface
     protected $body;
     protected $query;
     protected $params;
-    protected $post;
+
 
     public function __construct(string $method, $uri, $headers, $body, $query, $params)
     {
@@ -31,7 +31,6 @@ class Request implements ServerRequestInterface
 
     public static function fromGlobals($post)
     {
-
 
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];

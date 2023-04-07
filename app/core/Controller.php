@@ -6,11 +6,16 @@ use Psr\Container\ContainerInterface;
 
 class Controller
 {
-    protected $container;
+    private $container;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+    }
+
+    public function getContainer()
+    {
+        return $this->container;
     }
 
 }
