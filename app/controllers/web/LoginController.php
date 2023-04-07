@@ -30,6 +30,8 @@ class LoginController extends Controller
 
         $password = $request->getParams()["password"];
 
+
+
         echo "Je bent nu ingelogd met username: '$username' en wachtwoord: '$password'";
 
         // Hier kun je de login logica uitvoeren

@@ -29,7 +29,7 @@ class Request implements ServerRequestInterface
         $this->params = $params;
     }
 
-    public static function fromGlobals($post)
+    public static function fromGlobals()
     {
 
         $method = $_SERVER['REQUEST_METHOD'];
@@ -37,7 +37,7 @@ class Request implements ServerRequestInterface
         $headers = getallheaders();
         $body = file_get_contents('php://input');
         $query = $_GET;
-        $params = $post;
+        $params = $_POST;
         //var_dump($params);
 
         return new Request($method, $uri, $headers, $body, $query, $params);

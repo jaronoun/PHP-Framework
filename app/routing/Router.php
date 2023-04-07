@@ -2,6 +2,7 @@
 
 namespace Isoros\routing;
 
+use Isoros\core\Container;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -12,9 +13,9 @@ class Router implements RequestHandlerInterface
     protected $routes = [];
     protected $container;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct()
     {
-        $this->container = $container;
+        $this->container = Container::getInstance();
     }
 
     public function addRoute($method, $uri, $handler)

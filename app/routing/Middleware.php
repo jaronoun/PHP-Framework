@@ -19,6 +19,12 @@ class Middleware implements MiddlewareInterface
     {
         // Code voor het verwerken van de request
         // Authentication
+//        if (!isset($_SESSION['user'])) {
+//            // zo niet, dan redirect naar de login pagina
+//            return $response->withRedirect('/login');
+//        }
+
+
 
         // Keten de volgende middleware aan de huidige middleware
         if ($this->next instanceof MiddlewareInterface) {

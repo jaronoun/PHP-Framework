@@ -3,12 +3,10 @@
 
 namespace Isoros\models;
 
-class Exam {
-    private $db;
+use Isoros\core\Model;
+use PDO;
 
-    public function __construct($db) {
-        $this->db = $db;
-    }
+class Exam extends Model{
 
     public function getAll() {
         $stmt = $this->db->query('SELECT * FROM exam');

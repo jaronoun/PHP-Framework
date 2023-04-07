@@ -3,15 +3,11 @@
 namespace Isoros\Controllers\api;
 
 use Grade;
+use Isoros\core\Model;
 
-class GradeController
+class GradeController extends Model
 {
-    private $db;
 
-    public function __construct($db)
-    {
-        $this->db = $db;
-    }
 
     public function createGrade($exam_id, $user_id, $grade)
     {

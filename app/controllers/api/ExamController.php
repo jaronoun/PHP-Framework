@@ -1,11 +1,12 @@
 <?php
 
-namespace Isoros\Controllers\api;
-use Exam;
+namespace Isoros\controllers\api;
 
-require_once '/Exam.php';
+use Isoros\core\Model;
+use Isoros\models\Exam;
 
-class ExamController
+
+class ExamController extends Model
 {
     private $exam;
 

@@ -1,82 +1,36 @@
 <?php
 
-namespace Isoros\Controllers\api;
+namespace Isoros\controllers\api;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Isoros\Controllers\Controller;
+use Isoros\core\Controller;
 use Isoros\models\User;
-use function Isoros\Controllers\bcrypt;
-use function Isoros\Controllers\response;
 
 class UserController extends Controller
 {
-    /**
-     * Get a user by their ID.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function getUserById($id)
-    {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['error' => 'User not found.'], 404);
+    public function getById(int $id): ?User {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch();
+
+        if ($row === false) {
+            return null;
         }
-        return response()->json($user, 200);
+
+        return $this->mapRowToUser($row);
     }
 
-    /**
-     * Create a new user.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function createUser(Request $request)
-    {
-        $user = new User;
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password = bcrypt($request->input('password'));
-        $user->save();
-        return response()->json($user, 201);
+    private function mapRowToUser(array $row): User {
+        $user = new User();
+        $user->id = $row['id'];
+        $user->name = $row['name'];
+        $user->email = $row['email'];
+        $user->password = $row['password'];
+        $user->role = $row['role'];
+        $user->remember_token = $row['remember_token'];
+        $user->created_at = new DateTime($row['created_at']);
+        $user->updated_at = new DateTime($row['updated_at']);
+        return $user;
     }
 
-    /**
-     * Update a user's information.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function updateUser(Request $request, $id)
-    {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['error' => 'User not found.'], 404);
-        }
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        if ($request->input('password')) {
-            $user->password = bcrypt($request->input('password'));
-        }
-        $user->save();
-        return response()->json($user, 200);
-    }
 
-    /**
-     * Delete a user by their ID.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function deleteUser($id)
-    {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['error' => 'User not found.'], 404);
-        }
-        $user->delete();
-        return response()->json(['message' => 'User deleted.'], 200);
-    }
 }

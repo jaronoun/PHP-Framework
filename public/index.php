@@ -1,13 +1,13 @@
 <?php
 
 use Isoros\core\Container;
-use Isoros\core\Controller;
+use Isoros\core\Database;
+use Isoros\core\Model;
 use Isoros\core\View;
 use Isoros\routing\Request;
 use Isoros\routing\Router;
 use Isoros\routing\MiddlewareDispatcher;
 use Isoros\routing\Response;
-
 
 // Laad de autoload file in
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -16,13 +16,23 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $container = new Container();
 
 // Voeg de Request en Response objects toe aan de container
+$container->set(Database::class, function () {
+    return new Database();
+});
+
+$container->set(Model::class, function () {
+    return new Model();
+});
+
+
+// Voeg de Request en Response objects toe aan de container
 $container->set(View::class, function () {
     return new View();
 });
 
 // Voeg de Request en Response objects toe aan de container
 $container->set(Request::class, function () {
-    return Request::fromGlobals($_POST);
+    return Request::fromGlobals();
 });
 
 $container->set(Response::class, function () {
@@ -34,8 +44,8 @@ $container->set(Response::class, function () {
 
 
 // Voeg de Router object toe aan de container
-$container->set(Router::class, function () use ($container){
-    $router = new Router($container);
+$container->set(Router::class, function () {
+    $router = new Router();
 
     // Define routes
     $router->addRoute('GET', '/', 'LoginController@index');
