@@ -12,6 +12,12 @@ use PDO;
 
 class User extends Model {
 
+    protected $id;
+    protected $name;
+    protected $email;
+    protected $password;
+    protected $role;
+
     public function getAll() {
         $stmt = $this->db->query('SELECT * FROM user');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -33,11 +39,6 @@ class User extends Model {
         $stmt = $this->db->prepare('UPDATE user SET name = :name, desc = :desc, start_time = :start_time, end_time = :end_time, updated_at = NOW() WHERE id = :id');
         $stmt->execute(['id' => $id, 'name' => $name, 'desc' => $desc, 'start_time' => $start_time, 'end_time' => $end_time]);
         return $this->getById($id);
-    }
-
-    public function delete($id) {
-        $stmt = $this->db->prepare('DELETE FROM user WHERE id = :id');
-        $stmt->execute(['id' => $id]);
     }
 
     public static function all()

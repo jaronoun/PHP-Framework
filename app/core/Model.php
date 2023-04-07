@@ -9,9 +9,9 @@ class Model
 {
     protected $db;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct()
     {
-        $this->db = $container->get(Database::class);
+        $this->db = (Container::getInstance())->get(Database::class);
     }
     protected static function connect()
     {
@@ -38,6 +38,28 @@ class Model
         $stmt->execute($params);
 
         return $stmt;
+    }
+
+    public function hasOne($relatedModel, $foreignKey = null) {
+        $relatedTable = (new $relatedModel)->table;
+        $foreign_key = $foreignKey ?? $this->table . '_id';
+        return $this->query("SELECT * FROM $relatedTable WHERE id = $this->$foreign_key")->fetch();
+    }
+
+    // één-op-veel relatie
+    public function hasMany($relatedModel, $foreignKey = null) {
+        $relatedTable = (new $relatedModel)->table;
+        $foreign_key = $foreignKey ?? $this->table . '_id';
+        return $this->query("SELECT * FROM $relatedTable WHERE $foreign_key = $this->id")->fetchAll();
+    }
+
+    // veel-op-veel relatie
+    public function belongsToMany($relatedModel, $joinTable, $foreignKey = null, $relatedKey = null) {
+        $relatedTable = (new $relatedModel)->table;
+        $foreign_key = $foreignKey ?? $this->table . '_id';
+        $related_key = $relatedKey ?? $relatedTable . '_id';
+        $join_table = $joinTable ?? $this->table . '_' . $relatedTable;
+        return $this->query("SELECT $relatedTable.* FROM $relatedTable JOIN $join_table ON $relatedTable.id = $join_table.$related_key WHERE $join_table.$foreign_key = $this->id")->fetchAll();
     }
 
     public function setUp()
