@@ -22,7 +22,7 @@ $container->set(View::class, function () {
 
 // Voeg de Request en Response objects toe aan de container
 $container->set(Request::class, function () {
-    return Request::fromGlobals();
+    return Request::fromGlobals($_POST);
 });
 
 $container->set(Response::class, function () {
@@ -39,7 +39,7 @@ $container->set(Router::class, function () use ($container){
 
     // Define routes
     $router->addRoute('GET', '/', 'LoginController@index');
-    $router->addRoute('POST', '/login', 'LoginController@index');
+    $router->addRoute('POST', '/login', 'LoginController@handleLogin');
     $router->addRoute('GET', '/users', 'UserController@index');
     $router->addRoute('GET', '/users/{id}', 'UserController@show');
     $router->addRoute('POST', '/users', 'UserController@store');

@@ -16,9 +16,11 @@ class Request implements ServerRequestInterface
     protected $body;
     protected $query;
     protected $params;
+    protected $post;
 
     public function __construct(string $method, $uri, $headers, $body, $query, $params)
     {
+
         $this->method = $method;
         $this->uri = $uri;
         $this->headers = $headers;
@@ -27,16 +29,29 @@ class Request implements ServerRequestInterface
         $this->params = $params;
     }
 
-    public static function fromGlobals()
+    public static function fromGlobals($post)
     {
+
+
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];
         $headers = getallheaders();
         $body = file_get_contents('php://input');
         $query = $_GET;
-        $params = $_POST;
+        $params = $post;
+        //var_dump($params);
 
         return new Request($method, $uri, $headers, $body, $query, $params);
+    }
+
+    public function getParam($name, $default = null)
+    {
+        return $this->params[$name] ?? $default;
+    }
+
+    public function getParams()
+    {
+        return $this->params;
     }
 
     public function getMethod(): string

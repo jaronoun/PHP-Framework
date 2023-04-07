@@ -7,14 +7,14 @@
                     <h3>Login</h3>
                 </div>
                 <div class="card-body">
-                    <form action="/login" method="POST">
+                    <form action="/login" method="POST" enctype="application/x-www-form-urlencoded">
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter email">
+                            <label for="username" class="form-label">Email address</label>
+                            <input name="username" type="email" class="form-control" id="email" placeholder="Enter email">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <input name="password" type="password" class="form-control" id="password" placeholder="Password">
                         </div>
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Login</button>
