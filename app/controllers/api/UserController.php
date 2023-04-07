@@ -7,29 +7,48 @@ use Isoros\models\User;
 
 class UserController extends Controller
 {
-    public function getById(int $id): ?User {
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = ?");
-        $stmt->execute([$id]);
-        $row = $stmt->fetch();
-
-        if ($row === false) {
-            return null;
-        }
-
-        return $this->mapRowToUser($row);
+    public function getUsers()
+    {
+        $users = User::all();
+        return json_encode($users);
     }
 
-    private function mapRowToUser(array $row): User {
+    public function getUser($id)
+    {
+        $user = User::find($id);
+        return json_encode($user);
+    }
+
+    public function createUser($name, $email, $password, $role)
+    {
         $user = new User();
-        $user->id = $row['id'];
-        $user->name = $row['name'];
-        $user->email = $row['email'];
-        $user->password = $row['password'];
-        $user->role = $row['role'];
-        $user->remember_token = $row['remember_token'];
-        $user->created_at = new DateTime($row['created_at']);
-        $user->updated_at = new DateTime($row['updated_at']);
-        return $user;
+        $user->name = $name;
+        $user->email = $email;
+        $user->password = $password;
+        $user->role = $role;
+        $user->save();
+
+        return json_encode($user);
+    }
+
+    public function updateUser($id, $name, $email, $password, $role)
+    {
+        $user = User::find($id);
+        $user->name = $name;
+        $user->email = $email;
+        $user->password = $password;
+        $user->role = $role;
+        $user->save();
+
+        return json_encode($user);
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+
+        return json_encode(['success' => true]);
     }
 
 

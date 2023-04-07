@@ -7,28 +7,85 @@
 
 namespace Isoros\models;
 
-use DateTime;
+use Isoros\core\Model;
+use PDO;
 
-class User {
-    private $conn;
+class User extends Model {
 
-    public int $id;
-    public string $name;
-    public string $email;
-    public string $password;
-    public string $role;
-    public ?string $remember_token;
-    public ?DateTime $created_at;
-    public ?DateTime $updated_at;
+    public function getAll() {
+        $stmt = $this->db->query('SELECT * FROM user');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-    public function __construct($db, $name, $email, $password, $role, $remember_token) {
-        $this->conn = $db;
-        $this->name = $name;
-        $this->email = $email;
-        $this->password = $password;
-        $this->role = $role;
-        $this->remember_token = $remember_token;
+    public function getById($id) {
+        $stmt = $this->db->prepare('SELECT * FROM user WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
+    public function create($name, $desc, $start_time, $end_time) {
+        $stmt = $this->db->prepare('INSERT INTO user (name, desc, start_time, end_time, created_at) VALUES (:name, :desc, :start_time, :end_time, NOW())');
+        $stmt->execute(['name' => $name, 'desc' => $desc, 'start_time' => $start_time, 'end_time' => $end_time]);
+        return $this->getById($this->db->lastInsertId());
+    }
+
+    public function update($id, $name, $desc, $start_time, $end_time) {
+        $stmt = $this->db->prepare('UPDATE user SET name = :name, desc = :desc, start_time = :start_time, end_time = :end_time, updated_at = NOW() WHERE id = :id');
+        $stmt->execute(['id' => $id, 'name' => $name, 'desc' => $desc, 'start_time' => $start_time, 'end_time' => $end_time]);
+        return $this->getById($id);
+    }
+
+    public function delete($id) {
+        $stmt = $this->db->prepare('DELETE FROM user WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+    }
+
+    public static function all()
+    {
+        return self::query("SELECT * FROM `users`")->fetchAll();
+    }
+
+    public static function find($id)
+    {
+        return self::query("SELECT * FROM `users` WHERE `id` = :id", [':id' => $id])->fetch();
+    }
+
+    public function save()
+    {
+        $now = date('Y-m-d H:i:s');
+
+        if (isset($this->id)) {
+            $sql = "UPDATE `users` SET `name` = :name, `email` = :email, `password` = :password, `role` = :role, `updated_at` = :updated_at WHERE `id` = :id";
+            $params = [
+                ':id' => $this->id,
+                ':name' => $this->name,
+                ':email' => $this->email,
+                ':password' => $this->password,
+                ':role' => $this->role,
+                ':updated_at' => $now
+            ];
+        } else {
+            $sql = "INSERT INTO `users` (`name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES (:name, :email, :password, :role, :created_at, :updated_at)";
+            $params = [
+                ':name' => $this->name,
+                ':email' => $this->email,
+                ':password' => $this->password,
+                ':role' => $this->role,
+                ':created_at' => $now,
+                ':updated_at' => $now
+            ];
+        }
+
+        return self::query($sql, $params);
+    }
+
+    public function delete()
+    {
+        if (isset($this->id)) {
+            return self::query("DELETE FROM `users` WHERE `id` = :id", [':id' => $this->id]);
+        }
+
+        return false;
     }
 
 

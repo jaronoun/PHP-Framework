@@ -10,7 +10,13 @@ use Psr\Container\ContainerInterface;
 
 class Container implements ContainerInterface
 {
+    private static Container $instance;
     private $bindings = [];
+
+    public function __construct()
+    {
+        self::$instance = $this;
+    }
 
     public function set($id, $concrete)
     {
@@ -30,6 +36,11 @@ class Container implements ContainerInterface
         }
 
         return new $concrete;
+    }
+
+    public static function getInstance()
+    {
+        return self::$instance;
     }
 
 
