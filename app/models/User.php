@@ -10,85 +10,136 @@ namespace Isoros\models;
 use Isoros\core\Model;
 use PDO;
 
-class User extends Model {
+class User extends Model
+{
+    protected string $table = 'users';
 
-    protected $id;
-    protected $name;
-    protected $email;
-    protected $password;
-    protected $role;
+    public int $id;
+    public string $name;
+    public string $email;
+    public string $password;
+    public string $role;
+    public ?string $remember_token;
+    public string $created_at;
+    public string $updated_at;
 
-    public function getAll() {
-        $stmt = $this->db->query('SELECT * FROM user');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function __construct(
+        int $id,
+        string $name,
+        string $email,
+        string $password,
+        string $role,
+        ?string $remember_token,
+        string $created_at,
+        string $updated_at
+    ) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+        $this->remember_token = $remember_token;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        parent::__construct();
     }
 
-    public function getById($id) {
-        $stmt = $this->db->prepare('SELECT * FROM user WHERE id = :id');
-        $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function create($name, $desc, $start_time, $end_time) {
-        $stmt = $this->db->prepare('INSERT INTO user (name, desc, start_time, end_time, created_at) VALUES (:name, :desc, :start_time, :end_time, NOW())');
-        $stmt->execute(['name' => $name, 'desc' => $desc, 'start_time' => $start_time, 'end_time' => $end_time]);
-        return $this->getById($this->db->lastInsertId());
-    }
-
-    public function update($id, $name, $desc, $start_time, $end_time) {
-        $stmt = $this->db->prepare('UPDATE user SET name = :name, desc = :desc, start_time = :start_time, end_time = :end_time, updated_at = NOW() WHERE id = :id');
-        $stmt->execute(['id' => $id, 'name' => $name, 'desc' => $desc, 'start_time' => $start_time, 'end_time' => $end_time]);
-        return $this->getById($id);
-    }
-
-    public static function all()
+    public static function all(): array
     {
-        return self::query("SELECT * FROM `users`")->fetchAll();
-    }
+        $stmt = self::query("SELECT * FROM users");
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    public static function find($id)
-    {
-        return self::query("SELECT * FROM `users` WHERE `id` = :id", [':id' => $id])->fetch();
-    }
-
-    public function save()
-    {
-        $now = date('Y-m-d H:i:s');
-
-        if (isset($this->id)) {
-            $sql = "UPDATE `users` SET `name` = :name, `email` = :email, `password` = :password, `role` = :role, `updated_at` = :updated_at WHERE `id` = :id";
-            $params = [
-                ':id' => $this->id,
-                ':name' => $this->name,
-                ':email' => $this->email,
-                ':password' => $this->password,
-                ':role' => $this->role,
-                ':updated_at' => $now
-            ];
-        } else {
-            $sql = "INSERT INTO `users` (`name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES (:name, :email, :password, :role, :created_at, :updated_at)";
-            $params = [
-                ':name' => $this->name,
-                ':email' => $this->email,
-                ':password' => $this->password,
-                ':role' => $this->role,
-                ':created_at' => $now,
-                ':updated_at' => $now
-            ];
+        $users = [];
+        foreach ($results as $result) {
+            $users[] = new User(
+                $result['id'],
+                $result['name'],
+                $result['email'],
+                $result['password'],
+                $result['role'],
+                $result['remember_token'],
+                $result['created_at'],
+                $result['updated_at']
+            );
         }
 
-        return self::query($sql, $params);
+        return $users;
     }
 
-    public function delete()
+    public static function findById(int $id): ?User
     {
-        if (isset($this->id)) {
-            return self::query("DELETE FROM `users` WHERE `id` = :id", [':id' => $this->id]);
-        }
-
-        return false;
+        $stmt = self::query("SELECT * FROM users WHERE id = ?", [$id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? new User(
+            $result['id'],
+            $result['name'],
+            $result['email'],
+            $result['password'],
+            $result['role'],
+            $result['remember_token'],
+            $result['created_at'],
+            $result['updated_at']
+        ) : null;
     }
 
+    public static function findByEmail(string $email): ?User
+    {
+        $stmt = self::query("SELECT * FROM users WHERE email = ?", [$email]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? new User(
+            $result['id'],
+            $result['name'],
+            $result['email'],
+            $result['password'],
+            $result['role'],
+            $result['remember_token'],
+            $result['created_at'],
+            $result['updated_at']
+        ) : null;
+    }
 
+    public function save(): bool
+    {
+        if (!$this->id) {
+            return $this->create();
+        }
+        return $this->update();
+    }
+
+    private function create(): bool
+    {
+        $stmt = self::query("INSERT INTO users (name, email, password, role, remember_token, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)", [
+            $this->name,
+            $this->email,
+            $this->password,
+            $this->role,
+            $this->remember_token,
+            $this->created_at,
+            $this->updated_at
+        ]);
+        $this->id = self::lastInsertId();
+        return true;
+    }
+
+    private function update(): bool
+    {
+        $stmt = self::query("UPDATE users SET name = ?, email = ?, password = ?, role = ?, remember_token = ?, created_at = ?, updated_at = ? WHERE id = ?", [
+            $this->name,
+            $this->email,
+            $this->password,
+            $this->role,
+            $this->remember_token,
+            $this->created_at,
+            $this->updated_at,
+            $this->id
+        ]);
+        return true;
+    }
+
+    public function delete(): bool
+    {
+        $stmt = self::query("DELETE FROM users WHERE id = ?", [$this->id]);
+        return true;
+    }
 }
 

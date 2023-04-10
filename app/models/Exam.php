@@ -4,9 +4,17 @@
 namespace Isoros\models;
 
 use Isoros\core\Model;
+use DateTime;
 use PDO;
 
 class Exam extends Model{
+    protected int $id;
+    protected string $name;
+    protected ?string $desc;
+    protected ?DateTime $start_time;
+    protected ?DateTime $end_time;
+    protected ?DateTime $created_at;
+    protected ?DateTime $updated_at;
 
     public function getAll() {
         $stmt = $this->db->query('SELECT * FROM exam');
@@ -34,6 +42,16 @@ class Exam extends Model{
     public function delete($id) {
         $stmt = $this->db->prepare('DELETE FROM exam WHERE id = :id');
         $stmt->execute(['id' => $id]);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'exam_user');
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grade::class, 'exam_id');
     }
 }
 

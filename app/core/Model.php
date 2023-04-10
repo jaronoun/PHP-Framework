@@ -3,66 +3,62 @@
 namespace Isoros\core;
 
 use PDO;
-use Psr\Container\ContainerInterface;
+use PDOStatement;
 
 class Model
 {
-    protected $db;
+    private PDO $connection;
 
     public function __construct()
     {
-        $this->db = (Container::getInstance())->get(Database::class);
-    }
-    protected static function connect()
-    {
-        // Database credentials
-        $config = require_once '../config/database.php';
-        $config = $config['mysql'];
+        $this->connection = Database::connect();
 
-        // Create connection
-        $dsn = "mysql:host={$config['host']};dbname={$config['database']};charset={$config['charset']}";
-        $pdo = new PDO($dsn, $config['username'], $config['password']);
-
-        // Set PDO attributes
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-
-        return $pdo;
     }
 
-    protected static function query($sql, $params = [])
+    protected static function query(string $sql, array $params = []): PDOStatement
     {
-        $pdo = self::connect();
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
+        $stmt = Database::connect()->prepare($sql);
+        foreach ($params as $param => $value) {
+            $stmt->bindValue($param, $value);
+        }
+        $stmt->execute();
 
         return $stmt;
     }
 
-    public function hasOne($relatedModel, $foreignKey = null) {
+    public function hasOne(string $relatedModel, ?string $foreignKey = null): ?array
+    {
         $relatedTable = (new $relatedModel)->table;
-        $foreign_key = $foreignKey ?? $this->table . '_id';
-        return $this->query("SELECT * FROM $relatedTable WHERE id = $this->$foreign_key")->fetch();
+        $foreignKey = $foreignKey ?? $this->table . '_id';
+        $stmt = $this->query("SELECT * FROM $relatedTable WHERE id = ?", [$this->$foreignKey]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? array_map('htmlspecialchars', $result) : null;
     }
 
-    // één-op-veel relatie
-    public function hasMany($relatedModel, $foreignKey = null) {
+    public function hasMany(string $relatedModel, ?string $foreignKey = null): ?array
+    {
         $relatedTable = (new $relatedModel)->table;
-        $foreign_key = $foreignKey ?? $this->table . '_id';
-        return $this->query("SELECT * FROM $relatedTable WHERE $foreign_key = $this->id")->fetchAll();
+        $foreignKey = $foreignKey ?? $this->table . '_id';
+        return $this->query("SELECT * FROM $relatedTable WHERE $foreignKey = ?", [$this->id])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // veel-op-veel relatie
-    public function belongsToMany($relatedModel, $joinTable, $foreignKey = null, $relatedKey = null) {
+    public function belongsTo(string $relatedModel, ?string $foreignKey = null): ?array
+    {
         $relatedTable = (new $relatedModel)->table;
-        $foreign_key = $foreignKey ?? $this->table . '_id';
-        $related_key = $relatedKey ?? $relatedTable . '_id';
-        $join_table = $joinTable ?? $this->table . '_' . $relatedTable;
-        return $this->query("SELECT $relatedTable.* FROM $relatedTable JOIN $join_table ON $relatedTable.id = $join_table.$related_key WHERE $join_table.$foreign_key = $this->id")->fetchAll();
+        $foreignKey = $foreignKey ?? $relatedTable . '_id';
+        return $this->query("SELECT * FROM $relatedTable WHERE id = ?", [$this->$foreignKey])->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function setUp()
+    public function belongsToMany(string $relatedModel, string $joinTable, ?string $foreignKey = null, ?string $relatedKey = null): ?array
+    {
+        $relatedTable = (new $relatedModel)->table;
+        $foreignKey = $foreignKey ?? $this->table . '_id';
+        $relatedKey = $relatedKey ?? $relatedTable . '_id';
+        $joinTable = $joinTable ?? $this->table . '_' . $relatedTable;
+        return $this->query("SELECT $relatedTable.* FROM $relatedTable JOIN $joinTable ON $relatedTable.id = $joinTable.$relatedKey WHERE $joinTable.$foreignKey = ?", [$this->id])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function setUp(): void
     {
         $SQL = "CREATE TABLE IF NOT EXISTS exam (
           id int NOT NULL,
@@ -112,7 +108,7 @@ class Model
           CONSTRAINT users_id_2 FOREIGN KEY (user_id) REFERENCES users (id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" ;
 
-        $this->db->exec($SQL);
+        $this->connection->exec($SQL);
     }
 
 }

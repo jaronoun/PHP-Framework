@@ -42,5 +42,15 @@ class Grade extends Model{
         $stmt = $this->db->prepare('DELETE FROM grade WHERE id = :id');
         $stmt->execute(['id' => $id]);
     }
+
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'exam_user', 'exam_id', 'user_id');
+    }
+
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class);
+    }
 }
 

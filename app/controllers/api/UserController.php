@@ -2,54 +2,77 @@
 
 namespace Isoros\controllers\api;
 
-use Isoros\core\Controller;
 use Isoros\models\User;
+use PDOException;
 
-class UserController extends Controller
+class UserController
 {
     public function getUsers()
     {
-        $users = User::all();
-        return json_encode($users);
+        try {
+            $users = User::all();
+            return json_encode($users);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
     }
 
     public function getUser($id)
     {
-        $user = User::find($id);
-        return json_encode($user);
+        try {
+            $user = User::findById($id);
+            return json_encode($user);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
     }
 
     public function createUser($name, $email, $password, $role)
     {
-        $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->password = $password;
-        $user->role = $role;
-        $user->save();
+        try {
+            $user = new User(null, $name, $email, $password, $role, null, null, null);
+            $user->save();
 
-        return json_encode($user);
+            return json_encode($user);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
     }
 
     public function updateUser($id, $name, $email, $password, $role)
     {
-        $user = User::find($id);
-        $user->name = $name;
-        $user->email = $email;
-        $user->password = $password;
-        $user->role = $role;
-        $user->save();
+        try {
+            $user = User::findById($id);
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = $password;
+            $user->role = $role;
+            $user->save();
 
-        return json_encode($user);
+            return json_encode($user);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
     }
 
     public function deleteUser($id)
     {
-        $user = User::find($id);
-        $user->delete();
+        try {
+            $user = User::findById($id);
+            $user->delete();
 
-        return json_encode(['success' => true]);
+            return json_encode(['success' => true]);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
     }
 
-
+    public function findUserByEmail($email){
+        try {
+            $user = User::findByEmail($email);
+            return json_encode($user);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
+    }
 }

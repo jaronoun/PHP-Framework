@@ -1,5 +1,8 @@
 <?php
 
+use Isoros\controllers\api\ExamController;
+use Isoros\Controllers\api\GradeController;
+use Isoros\controllers\api\UserController;
 use Isoros\core\Container;
 use Isoros\core\Database;
 use Isoros\core\Model;
@@ -16,25 +19,30 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $container = new Container();
 
 // Voeg de Request en Response objects toe aan de container
-$container->set(Database::class, function () {
-    return new Database();
-});
 
+$container->set(UserController::class, function () {
+    return new UserController();
+});
+$container->set(ExamController::class, function () {
+    return new ExamController();
+});
+$container->set(GradeController::class, function () {
+    return new GradeController();
+});
+$container->set(ExamUserController::class, function () {
+    return new ExamUserController();
+});
 $container->set(Model::class, function () {
     return new Model();
 });
-
-
 // Voeg de Request en Response objects toe aan de container
 $container->set(View::class, function () {
     return new View();
 });
-
 // Voeg de Request en Response objects toe aan de container
 $container->set(Request::class, function () {
     return Request::fromGlobals();
 });
-
 $container->set(Response::class, function () {
     return new Response();
 });

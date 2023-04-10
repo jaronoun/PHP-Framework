@@ -8,12 +8,7 @@ use Isoros\models\Exam;
 
 class ExamController extends Model
 {
-    private $exam;
-
-    public function __construct($db)
-    {
-        $this->exam = new Exam($db);
-    }
+    private string $exam;
 
     public function getAllExams()
     {

@@ -7,124 +7,68 @@
 
 namespace Isoros\core;
 
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use PDO;
+use PDOException;
 
 class Database
 {
-    protected \PDO $connection;
-    public ContainerInterface $container;
+    private static ?PDO $connection = null;
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * Verbinding maken met de database.
+     *
+     * @return PDO|null
      */
-    public function __construct()
+    public static function connect(): ?PDO
     {
-        $this->container = Container::getInstance();
-        $model = $this->container->get(Model::class);
+        if (self::$connection !== null) {
+            return self::$connection;
+        }
+        // Database credentials
+        $config = require_once '../../config/database.php';
+        $config = $config['mysql'];
 
-        $this->connection = $model::connect();
-        $model->setUp();
+        // Create connection
+        $dsn = "mysql:host={$config['host']};dbname={$config['database']};charset={$config['charset']}";
 
-    }
-
-    public function applyMigrations()
-    {
-        $this->createMigrationsTable();
-        $appliedMigrations = $this->getAppliedMigrations();
-
-        $newMigrations = [];
-        $files = scandir(__DIR__ . '/../migrations');
-        $toApplyMigrations = array_diff($files, $appliedMigrations);
-        foreach ($toApplyMigrations as $migration) {
-            if ($migration === '.' || $migration === '..') {
-                continue;
-            }
-
-            require_once __DIR__ . '/../migrations/' . $migration;
-            $className = pathinfo($migration, PATHINFO_FILENAME);
-            $instance = new $className();
-            $this->log("Applying migration $migration");
-            $instance->up();
-            $this->log("Applied migration $migration");
-            $newMigrations[] = $migration;
+        try {
+            self::$connection =new PDO($dsn, $config['username'], $config['password']);
+            self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Connection failed: " . $e->getMessage());
         }
 
-        if (!empty($newMigrations)) {
-            $this->saveMigrations($newMigrations);
-        } else {
-            $this->log("There are no migrations to apply");
-        }
+        return self::$connection;
     }
 
-
-    protected function createMigrationsTable()
+    /**
+     * Begin een database transactie.
+     *
+     * @return void
+     */
+    public static function beginTransaction(): void
     {
-        $this->connection->exec("CREATE TABLE IF NOT EXISTS migrations (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            migration VARCHAR(255),
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )");
+        self::connect()->beginTransaction();
     }
 
-    protected function getAppliedMigrations()
+    /**
+     * Maak de veranderingen die gemaakt zijn binnen een transactie permanent.
+     *
+     * @return void
+     */
+    public static function commit(): void
     {
-        $statement = $this->connection->prepare("SELECT migration FROM migrations");
-        $statement->execute();
-
-        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+        self::connect()->commit();
     }
 
-    protected function saveMigrations(array $newMigrations)
+    /**
+     * Maak de veranderingen die gemaakt zijn binnen een transactie ongedaan.
+     *
+     * @return void
+     */
+    public static function rollBack(): void
     {
-        $str = implode(',', array_map(function ($m) {
-            return "('$m')";
-        }, $newMigrations));
-
-        $statement = $this->connection->prepare("INSERT INTO migrations (migration) VALUES $str");
-        $statement->execute();
-    }
-
-    public function prepare($sql): \PDOStatement
-    {
-        return $this->connection->prepare($sql);
-    }
-
-    private function log($message)
-    {
-        echo "[" . date("Y-m-d H:i:s") . "] - " . $message . PHP_EOL;
-    }
-
-    public function query($query)
-    {
-        return $this->connection->query($query);
-    }
-
-    public function fetch($query, $params = [])
-    {
-        return $this->connection->fetch($query, $params);
-    }
-
-    public function fetchAll($query, $params = [])
-    {
-        return $this->connection->fetchAll($query, $params);
-    }
-
-    public function insert($table, $data)
-    {
-        return $this->connection->table($table)->insert($data);
-    }
-
-    public function update($table, $data, $conditions)
-    {
-        return $this->connection->table($table)->update($data, $conditions);
-    }
-
-    public function delete($table, $conditions)
-    {
-        return $this->connection->table($table)->delete($conditions);
+        self::connect()->rollBack();
     }
 }
 
