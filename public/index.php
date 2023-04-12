@@ -63,6 +63,10 @@ $container->set(Router::class, function () {
     $router->addRoute('POST', '/users', 'UserController@store');
     $router->addRoute('PUT', '/users/{id}', 'UserController@update');
     $router->addRoute('DELETE', '/users/{id}', 'UserController@delete');
+    $router->addRoute('GET', '/home', 'HomeController@index');
+    $router->addRoute('GET', '/cijfers', 'HomeController@index');
+    $router->addRoute('GET', '/tentamens', 'HomeController@index');
+    $router->addRoute('GET', '/profiel', 'UserController@index');
 
     return $router;
 });
