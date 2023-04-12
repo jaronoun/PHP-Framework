@@ -4,7 +4,7 @@ use Isoros\core\Model;
 use Isoros\models\ExamUser;
 use Psr\Container\ContainerInterface;
 
-class ExamUserController extends Model
+class ExamUserRepository extends Model
 {
     // Deze methode haalt een examuser op basis van het id uit de database en geeft null terug als er geen rij met dat id bestaat.
     public function getById(int $id): ?ExamUser {

@@ -2,10 +2,10 @@
 
 namespace Isoros\core;
 
-use ExamUserController;
-use Isoros\controllers\api\ExamController;
-use Isoros\Controllers\api\GradeController;
-use Isoros\controllers\api\UserController;
+use ExamUserRepository;
+use Isoros\controllers\api\ExamRepository;
+use Isoros\Controllers\api\GradeRepository;
+use Isoros\controllers\api\UserRepository;
 use Psr\Container\ContainerInterface;
 
 class Controller
@@ -20,10 +20,10 @@ class Controller
     {
         $this->container = Container::getInstance();
 
-//        $this->userRepository = $this->container->get(UserController::class);
-//        $this->gradeRepository = $this->container->get(UserController::class);
-//        $this->examRepository = $this->container->get(UserController::class);
-//        $this->examUserRepository = $this->container->get(UserController::class);
+//        $this->userRepository = $this->container->get(UserRepository::class);
+//        $this->gradeRepository = $this->container->get(UserRepository::class);
+//        $this->examRepository = $this->container->get(UserRepository::class);
+//        $this->examUserRepository = $this->container->get(UserRepository::class);
 
     }
 

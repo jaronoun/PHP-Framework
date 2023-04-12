@@ -6,7 +6,7 @@ use Isoros\core\Model;
 use Isoros\models\Exam;
 
 
-class ExamController extends Model
+class ExamRepository extends Model
 {
     private string $exam;
 

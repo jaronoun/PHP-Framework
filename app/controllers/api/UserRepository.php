@@ -5,7 +5,7 @@ namespace Isoros\controllers\api;
 use Isoros\models\User;
 use PDOException;
 
-class UserController
+class UserRepository
 {
     public function getUsers()
     {

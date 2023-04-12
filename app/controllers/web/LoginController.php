@@ -4,7 +4,7 @@ namespace Isoros\controllers\web;
 use Isoros\core\controller;
 use Isoros\core\View;
 use Isoros\routing\Request;
-use Isoros\controllers\api\UserController;
+use Isoros\controllers\api\UserRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -38,7 +38,7 @@ class LoginController extends Controller
     public function handleLogin()
     {
         $request = $this->getContainer()->get(Request::class);
-        $userRepository = $this->getContainer()->get(UserController::class);
+        $userRepository = $this->getContainer()->get(UserRepository::class);
 
 
         // Hier haal je de gegevens op uit het inlogformulier

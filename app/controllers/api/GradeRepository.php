@@ -5,7 +5,7 @@ namespace Isoros\Controllers\api;
 use Grade;
 use Isoros\core\Model;
 
-class GradeController extends Model
+class GradeRepository extends Model
 {
 
 
