@@ -2,6 +2,7 @@
 
 namespace Isoros\core;
 
+use http\Exception\InvalidArgumentException;
 use PDO;
 use PDOStatement;
 
@@ -18,8 +19,12 @@ class Model
     protected static function query(string $sql, array $params = []): PDOStatement
     {
         $stmt = Database::connect()->prepare($sql);
-        foreach ($params as $param => $value) {
-            $stmt->bindValue($param, $value);
+        foreach ($params as $index => $value) {
+            $paramIndex = is_int($index) ? $index + 1 : $index;
+            if ($paramIndex < 1) {
+                throw new InvalidArgumentException("Parameter index must be greater than or equal to 1.");
+            }
+            $stmt->bindValue($paramIndex, $value);
         }
         $stmt->execute();
 

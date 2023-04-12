@@ -25,7 +25,7 @@ class Database
             return self::$connection;
         }
         // Database credentials
-        $config = require_once '../../config/database.php';
+        $config = require_once '../config/database.php';
         $config = $config['mysql'];
 
         // Create connection

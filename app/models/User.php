@@ -9,38 +9,39 @@ namespace Isoros\models;
 
 use Isoros\core\Model;
 use PDO;
+use PDOException;
 
 class User extends Model
 {
     protected string $table = 'users';
 
-    public int $id;
+    public ?int $id = null;
     public string $name;
     public string $email;
-    public string $password;
-    public string $role;
-    public ?string $remember_token;
-    public string $created_at;
-    public string $updated_at;
+    public ?string $password;
+    public ?string $role;
+    public ?string $remember_token = null;
+    public ?string $created_at = null;
+    public ?string $updated_at = null;
 
     public function __construct(
         int $id,
         string $name,
         string $email,
-        string $password,
-        string $role,
+        ?string $password,
+        ?string $role,
         ?string $remember_token,
-        string $created_at,
-        string $updated_at
+        ?string $created_at,
+        ?string $updated_at
     ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
-        $this->password = $password;
-        $this->role = $role;
-        $this->remember_token = $remember_token;
-        $this->created_at = $created_at;
-        $this->updated_at = $updated_at;
+        $this->id = $id ?? null;
+        $this->name = $name ?? null;
+        $this->email = $email ?? null;
+        $this->password = $password ?? null;
+        $this->role = $role ?? null;
+        $this->remember_token = $remember_token ?? null;
+        $this->created_at = $created_at ?? null;
+        $this->updated_at = $updated_at ?? null;
         parent::__construct();
     }
 
@@ -48,22 +49,23 @@ class User extends Model
     {
         $stmt = self::query("SELECT * FROM users");
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
 
-        $users = [];
-        foreach ($results as $result) {
-            $users[] = new User(
-                $result['id'],
-                $result['name'],
-                $result['email'],
-                $result['password'],
-                $result['role'],
-                $result['remember_token'],
-                $result['created_at'],
-                $result['updated_at']
-            );
-        }
-
-        return $users;
+//        $users = [];
+//        foreach ($results as $result) {
+//            $users[] = new User(
+//                $result['id'],
+//                $result['name'],
+//                $result['email'],
+//                $result['password'],
+//                $result['role'],
+//                $result['remember_token'] ?? null,
+//                $result['created_at']?? null,
+//                $result['updated_at']?? null
+//            );
+//        }
+//
+//        return $users;
     }
 
     public static function findById(int $id): ?User
@@ -84,18 +86,23 @@ class User extends Model
 
     public static function findByEmail(string $email): ?User
     {
-        $stmt = self::query("SELECT * FROM users WHERE email = ?", [$email]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? new User(
-            $result['id'],
-            $result['name'],
-            $result['email'],
-            $result['password'],
-            $result['role'],
-            $result['remember_token'],
-            $result['created_at'],
-            $result['updated_at']
-        ) : null;
+        try {
+            $stmt = self::query("SELECT * FROM users WHERE email = ?", [$email]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? new User(
+                $result['id'],
+                $result['name'],
+                $result['email'],
+                $result['password'],
+                $result['role'],
+                $result['remember_token'],
+                $result['created_at'],
+                $result['updated_at']
+            ) : null;
+        } catch (PDOException $e) {
+            // log the error or throw a custom exception
+            return null;
+        }
     }
 
     public function save(): bool

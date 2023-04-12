@@ -46,7 +46,8 @@ class LoginController extends Controller
 
         $password = $request->getParams()["password"];
 
-        $user = $this->userRepository;
+        echo "$username";
+        $user = $userRepository->findUserByEmail($username);
 
         echo "$user";
 
@@ -56,11 +57,6 @@ class LoginController extends Controller
             return;
         }
 
-
-
-
-
-        echo "$user";
 
         // Hier kun je de login logica uitvoeren
         // ...
