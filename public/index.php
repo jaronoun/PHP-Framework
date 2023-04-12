@@ -56,17 +56,23 @@ $container->set(Router::class, function () {
     $router = new Router();
 
     // Define routes
+    //LOGIN
     $router->addRoute('GET', '/', 'LoginController@index');
     $router->addRoute('POST', '/login', 'LoginController@handleLogin');
+
     $router->addRoute('GET', '/users', 'UserRepository@index');
     $router->addRoute('GET', '/users/{id}', 'UserRepository@show');
     $router->addRoute('POST', '/users', 'UserRepository@store');
     $router->addRoute('PUT', '/users/{id}', 'UserRepository@update');
     $router->addRoute('DELETE', '/users/{id}', 'UserRepository@delete');
+
     $router->addRoute('GET', '/home', 'HomeController@index');
     $router->addRoute('GET', '/cijfers', 'HomeController@index');
     $router->addRoute('GET', '/tentamens', 'HomeController@index');
     $router->addRoute('GET', '/profiel', 'UserRepository@index');
+    //REGISTER
+    $router->addRoute('GET', '/register', 'RegisterController@index');
+    $router->addRoute('POST', '/register', 'RegisterController@handleRegister');
 
     return $router;
 });

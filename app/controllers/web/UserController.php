@@ -10,8 +10,8 @@ class UserController extends Controller
 
     public function index()
     {
-        $user = new User($this->db,"Dorien3","","","","");
-
+//        $user = new User($this->db,"Dorien3","","","","");
+        $user = new User("0","admin","user@admin.com","admin","admin");
         // roep de read() functie op het object aan en krijg een PDOStatement object terug
         $result = $user->read();
         // gebruik fetchAll() om de rijen uit de resultaatset op te halen als een array
