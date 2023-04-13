@@ -1,7 +1,6 @@
 <?php
 namespace Isoros\controllers\web;
 
-use Isoros\controllers\api\UserRepository;
 use Isoros\core\controller;
 use Isoros\core\View;
 use Isoros\routing\Request;
@@ -33,7 +32,7 @@ class LoginController extends Controller
     public function handleLogin()
     {
         $request = $this->getContainer()->get(Request::class);
-        $userRepository = new UserRepository();
+        $userRepository = $this->getContainer()->get(UserRepository::class);
 
         // Hier haal je de gegevens op uit het inlogformulier
         $username = $request->getParams()["username"];
@@ -41,7 +40,6 @@ class LoginController extends Controller
 
         echo "$username";
         $user = $userRepository->findUserByEmail($username);
-
 
         echo "$user";
 
@@ -51,5 +49,14 @@ class LoginController extends Controller
             return;
         }
 
+        echo "<pre>";
+        echo "$username";
+        echo "\n";
+        echo "$password";
+
+        echo "$user";
+
+        // Hier kun je de login logica uitvoeren
+        // ...
     }
 }
