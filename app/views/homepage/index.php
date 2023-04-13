@@ -5,7 +5,7 @@
             <div class="container my-5">
                 <div class="row">
                     <div class="col-md-9">
-                        <h1>Welkom terug, Jan!</h1>
+                        <h1>Welkom terug,  <?php echo $user->getName(); ?>!</h1>
                         <p>Hier zie je een overzicht van jouw laatst behaalde cijfers:</p>
                         <div class="card">
                             <div class="card-header">Cijfers</div>

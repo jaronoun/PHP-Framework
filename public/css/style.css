@@ -1,10 +1,17 @@
+html, body {
+    height: 100%;
+}
+
 body {
-    margin-bottom: 60px; /* De hoogte van de footer */
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+    margin-bottom: 25%;
 }
 
 footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
+    margin-top: auto;
 }

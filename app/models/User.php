@@ -44,6 +44,87 @@ class User extends Model
         $this->updated_at = $updated_at ?? null;
         parent::__construct();
     }
+    // Getters
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function getRememberToken(): ?string
+    {
+        return $this->remember_token;
+    }
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->updated_at;
+    }
+
+    // Setters
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setPassword(?string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function setRole(?string $role): void
+    {
+        $this->role = $role;
+    }
+
+    public function setRememberToken(?string $remember_token): void
+    {
+        $this->remember_token = $remember_token;
+    }
+
+    public function setCreatedAt(?string $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    public function setUpdatedAt(?string $updated_at): void
+    {
+        $this->updated_at = $updated_at;
+    }
 
     public static function all(): array
     {

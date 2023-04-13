@@ -69,10 +69,11 @@ class UserRepository
 
     public function findUserByEmail($email){
         try {
-            $user = User::findByEmail($email);
-            return json_encode($user);
+            return User::findByEmail($email);
+
         } catch (PDOException $e) {
             return json_encode(['error' => $e->getMessage()]);
         }
     }
+
 }

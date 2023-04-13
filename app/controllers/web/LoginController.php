@@ -4,6 +4,7 @@ namespace Isoros\controllers\web;
 use Isoros\controllers\api\UserRepository;
 use Isoros\core\controller;
 use Isoros\core\View;
+use Isoros\models\User;
 use Isoros\routing\Request;
 use Isoros\routing\Session;
 use Psr\Container\ContainerExceptionInterface;
@@ -34,25 +35,24 @@ class LoginController extends Controller
     public function handleLogin()
     {
         $request = $this->getContainer()->get(Request::class);
+        $view = $this->getContainer()->get(View::class);
         $userRepository = new UserRepository();
 
         // Hier haal je de gegevens op uit het inlogformulier
         $username = $request->getParams()["username"];
         $password = $request->getParams()["password"];
 
-        echo "$username";
         $user = $userRepository->findUserByEmail($username);
-        (new Session())->set('user', $username);
-        echo "$user";
 
         if (!$user) {
             // Gebruiker niet gevonden
             echo "Ongeldige inloggegevens.";
-            return;
-        }
+            $view->render('auth/login');
 
-        header('Location: /home?message=login_success');
-        exit();
+        }
+        (new Session())->set('user', $username);
+        $loggedIn = true;
+        $view->renderParams('homepage/index',['user' => $user, 'loggedIn' => $loggedIn]);
 
 
         // Hier kun je de login logica uitvoeren
