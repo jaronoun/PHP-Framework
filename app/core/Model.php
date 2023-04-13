@@ -2,6 +2,7 @@
 
 namespace Isoros\core;
 
+use InvalidArgumentException;
 use PDO;
 use PDOStatement;
 

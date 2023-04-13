@@ -20,7 +20,6 @@ class Request implements ServerRequestInterface
 
     public function __construct(string $method, $uri, $headers, $body, $query, $params)
     {
-
         $this->method = $method;
         $this->uri = $uri;
         $this->headers = $headers;
@@ -38,7 +37,6 @@ class Request implements ServerRequestInterface
         $body = file_get_contents('php://input');
         $query = $_GET;
         $params = $_POST;
-        //var_dump($params);
 
         return new Request($method, $uri, $headers, $body, $query, $params);
     }

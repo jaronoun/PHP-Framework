@@ -4,7 +4,7 @@ namespace Isoros\controllers\web;
 use Isoros\core\controller;
 use Isoros\core\View;
 use Isoros\routing\Request;
-use Isoros\controllers\api\UserController;
+use Isoros\controllers\api\UserRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -33,7 +33,7 @@ class RegisterController extends Controller
     public function handleRegister()
     {
         $request = $this->getContainer()->get(Request::class);
-        $userRepository = $this->getContainer()->get(UserController::class);
+        $userRepository = $this->getContainer()->get(UserRepository::class);
 //        $user = $userRepository->createUser($request->getParams()["name"], $request->getParams()["email"], $request->getParams()["password"], $request->getParams()["role"]);
 
 //        echo "$user";

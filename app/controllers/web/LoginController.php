@@ -1,10 +1,10 @@
 <?php
 namespace Isoros\controllers\web;
 
+use Isoros\controllers\api\UserRepository;
 use Isoros\core\controller;
 use Isoros\core\View;
 use Isoros\routing\Request;
-use Isoros\controllers\api\UserController;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
