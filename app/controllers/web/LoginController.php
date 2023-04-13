@@ -51,6 +51,9 @@ class LoginController extends Controller
             return;
         }
 
+        header('Location: /home?message=login_success');
+        exit();
+
 
         // Hier kun je de login logica uitvoeren
         // ...

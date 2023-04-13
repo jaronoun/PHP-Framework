@@ -1,24 +1,32 @@
 <?php
 namespace Isoros\Controllers\Web;
 
+use Isoros\controllers\api\UserRepository;
 use Isoros\core\Controller;
 use Isoros\core\View;
 use Isoros\models\User;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class UserController extends Controller
 {
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function index()
     {
-//        $user = new User($this->db,"Dorien3","","","","");
-        $user = new User("0","admin","user@admin.com","admin","admin");
-        // roep de read() functie op het object aan en krijg een PDOStatement object terug
-        $result = $user->read();
-        // gebruik fetchAll() om de rijen uit de resultaatset op te halen als een array
-        $users = $result->fetchAll(\PDO::FETCH_ASSOC);
+        $this->gradeRepository = new UserRepository();
+        $title = "Login";
 
-        $view = new View('users/index', compact('users'));
-        $view->render();
+        $container = $this->getContainer();
+
+        $view = $container->get(View::class);
+
+
+        $view->render('users/index');
+
     }
 
     public function show($params)
