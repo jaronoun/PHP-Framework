@@ -58,9 +58,7 @@ class Request implements ServerRequestInterface
 
     public function getUri(): UriInterface
     {
-        $uri = new Uri($this->server['REQUEST_SCHEME'], '', $this->server['HTTP_HOST'], $this->server['SERVER_PORT'], $this->server['REQUEST_URI'], $this->server['QUERY_STRING'], '');
-
-        return $uri;
+        return $this->uri;
     }
 
     public function getHeaders(): array
