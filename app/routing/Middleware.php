@@ -9,6 +9,12 @@ use Psr\Http\Message\ResponseInterface;
 class Middleware implements MiddlewareInterface
 {
     protected $next;
+    protected Session $session;
+
+    public function __construct(Session $session)
+    {
+        $this->session = $session;
+    }
 
     public function setNext(MiddlewareInterface $next): void
     {
@@ -19,12 +25,19 @@ class Middleware implements MiddlewareInterface
     {
         // Code voor het verwerken van de request
         // Authentication
-//        if (!isset($_SESSION['user'])) {
-//            // zo niet, dan redirect naar de login pagina
-//            return
-//        }
-
-
+        // Create a new Session object
+        $path = $request->getUri()->getPath();
+        if ($path === '/login') {
+            // Skip authentication check
+            return $handler->handle($request);
+        } else {
+            if (!$this->session->get('user')) {
+                // If 'user_id' session variable is not set,
+                // redirect to the login page
+                header('Location: /login');
+                exit;
+            }
+        }
 
         // Keten de volgende middleware aan de huidige middleware
         if ($this->next instanceof MiddlewareInterface) {

@@ -3,6 +3,8 @@
 namespace Isoros\routing;
 
 use Isoros\core\Container;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -21,12 +23,17 @@ class MiddlewareDispatcher implements MiddlewareInterface
         $this->middlewares = $middlewares;
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function process(RequestInterface|ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Bouw de middlewareketen op
-        $current = new Middleware();
+        $current = new Middleware(new Session());
         for ($i = count($this->middlewares) - 1; $i >= 0; $i--) {
             $middleware = $this->container->get($this->middlewares[$i]);
+            $middleware = new $middleware(new Session());
             $middleware->setNext($current);
             $current = $middleware;
         }

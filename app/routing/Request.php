@@ -22,7 +22,7 @@ class Request implements ServerRequestInterface
     {
 
         $this->method = $method;
-        $this->uri = $uri;
+        $this->uri = new Uri($uri);
         $this->headers = $headers;
         $this->body = $body;
         $this->query = $query;
@@ -60,7 +60,9 @@ class Request implements ServerRequestInterface
 
     public function getUri(): UriInterface
     {
-        return $this->uri;
+        $uri = new Uri($this->server['REQUEST_SCHEME'], '', $this->server['HTTP_HOST'], $this->server['SERVER_PORT'], $this->server['REQUEST_URI'], $this->server['QUERY_STRING'], '');
+
+        return $uri;
     }
 
     public function getHeaders(): array
