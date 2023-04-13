@@ -60,6 +60,9 @@ $container->set(Router::class, function () {
     $router->addRoute('GET', '/login', 'LoginController@index');
     $router->addRoute('POST', '/login', 'LoginController@handleLogin');
 
+    $router->addRoute('GET', '/register', 'RegisterController@index');
+    $router->addRoute('POST', '/register', 'RegisterController@handleRegister');
+
     $router->addRoute('GET', '/users', 'UserRepository@index');
     $router->addRoute('GET', '/users/{id}', 'UserRepository@show');
     $router->addRoute('POST', '/users', 'UserRepository@store');
@@ -71,8 +74,6 @@ $container->set(Router::class, function () {
     $router->addRoute('GET', '/tentamens', 'HomeController@index');
     $router->addRoute('GET', '/profiel', 'UserController@index');
     //REGISTER
-    $router->addRoute('GET', '/register', 'RegisterController@index');
-    $router->addRoute('POST', '/register', 'RegisterController@handleRegister');
 
     return $router;
 });
