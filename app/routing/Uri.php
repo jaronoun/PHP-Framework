@@ -6,23 +6,39 @@ use Psr\Http\Message\UriInterface;
 
 class Uri implements UriInterface
 {
-    protected $scheme;
-    protected $userInfo;
-    protected $host;
-    protected $port;
-    protected $path;
-    protected $query;
-    protected $fragment;
+    private $scheme;
+    private $authority;
+    private $userInfo;
+    private $host;
+    private $port;
+    private $path;
+    private $query;
+    private $fragment;
 
-    public function __construct($scheme, $userInfo, $host, $port, $path, $query, $fragment)
+    public function __construct(string $uri = '')
     {
-        $this->scheme = $scheme;
-        $this->userInfo = $userInfo;
-        $this->host = $host;
-        $this->port = $port;
-        $this->path = $path;
-        $this->query = $query;
-        $this->fragment = $fragment;
+        $parts = parse_url($uri);
+
+        $this->scheme = $parts['scheme'] ?? '';
+        $this->userInfo = $parts['user'] ?? '';
+        $this->host = $parts['host'] ?? '';
+        $this->port = $parts['port'] ?? null;
+        $this->path = $parts['path'] ?? '';
+        $this->query = $parts['query'] ?? '';
+        $this->fragment = $parts['fragment'] ?? '';
+
+        if (isset($parts['user']) && isset($parts['pass'])) {
+            $this->userInfo .= ':' . $parts['pass'];
+        }
+
+        if ($this->scheme !== '' && strpos($this->path, '/') !== 0) {
+            $this->path = '/' . $this->path;
+        }
+
+        $this->authority = $this->host;
+        if ($this->port !== null) {
+            $this->authority .= ':' . $this->port;
+        }
     }
 
     public function getScheme()
