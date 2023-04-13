@@ -3,15 +3,11 @@
 
 namespace Isoros\models;
 
-class ExamUser
+use Isoros\core\Model;
+use PDO;
+
+class ExamUser extends Model
 {
-    private $pdo;
-
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
-    }
-
     public function create(int $examId, int $userId)
     {
         $stmt = $this->pdo->prepare('INSERT INTO exam_user (exam_id, user_id, created_at, updated_at) VALUES (:exam_id, :user_id, NOW(), NOW())');
