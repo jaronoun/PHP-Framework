@@ -59,6 +59,7 @@ class LoginController extends Controller
     {
         $view = $this->getContainer()->get(View::class);
         $loggedIn = false;
+        (new Session())->destroy();
         $view->renderParams('auth/login',['loggedIn' => $loggedIn]);
     }
 
