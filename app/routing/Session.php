@@ -6,7 +6,9 @@ class Session {
     private string $session_id;
 
     public function __construct() {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $this->session_id = session_id();
     }
 
