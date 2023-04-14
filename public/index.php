@@ -60,6 +60,8 @@ $container->set(Router::class, function () {
     $router->addRoute('GET', '/login', 'LoginController@index');
     $router->addRoute('POST', '/login', 'LoginController@handleLogin');
 
+    $router->addRoute('GET', '/logout', 'LoginController@handleLogout');
+
     $router->addRoute('GET', '/register', 'RegisterController@index');
     $router->addRoute('POST', '/register', 'RegisterController@handleRegister');
 

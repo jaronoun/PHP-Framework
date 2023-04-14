@@ -53,9 +53,13 @@ class LoginController extends Controller
         (new Session())->set('user', $username);
         $loggedIn = true;
         $view->renderParams('homepage/index',['user' => $user, 'loggedIn' => $loggedIn]);
-
-
-        // Hier kun je de login logica uitvoeren
-        // ...
     }
+
+    public function handleLogout()
+    {
+        $view = $this->getContainer()->get(View::class);
+        $loggedIn = false;
+        $view->renderParams('auth/login',['loggedIn' => $loggedIn]);
+    }
+
 }

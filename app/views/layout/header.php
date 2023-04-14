@@ -21,18 +21,17 @@ require __DIR__.'/../../../vendor/autoload.php';
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/cijfers">Cijfers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/tentamens">Tentamens</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profiel">Profiel</a>
-                </li>
-
                 <?php if ($loggedIn): ?>
-                    <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/cijfers">Cijfers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tentamens">Tentamens</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profiel">Profiel</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Log Out</a></li>
                 <?php else: ?>
                     <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
                     <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>

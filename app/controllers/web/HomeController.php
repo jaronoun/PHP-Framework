@@ -12,13 +12,8 @@ class HomeController extends Controller
     public function index()
     {
         $title = "Login";
-
         $container = $this->getContainer();
-
         $view = $container->get(View::class);
-
-
         $view->render('homepage/index');
-
     }
 }
