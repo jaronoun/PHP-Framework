@@ -65,16 +65,16 @@ $container->set(Router::class, function () {
     $router->addRoute('GET', '/register', 'RegisterController@index');
     $router->addRoute('POST', '/register', 'RegisterController@handleRegister');
 
+    $router->addRoute('GET', '/cijfers', 'GradeController@index');
+    $router->addRoute('GET', '/tentamens', 'ExamController@index');
+    $router->addRoute('GET', '/profiel', 'UserController@index');
+
     $router->addRoute('GET', '/users', 'UserRepository@index');
     $router->addRoute('GET', '/users/{id}', 'UserRepository@show');
     $router->addRoute('POST', '/users', 'UserRepository@store');
     $router->addRoute('PUT', '/users/{id}', 'UserRepository@update');
     $router->addRoute('DELETE', '/users/{id}', 'UserRepository@delete');
 
-    $router->addRoute('GET', '/home', 'HomeController@index');
-    $router->addRoute('GET', '/cijfers', 'GradeController@index');
-    $router->addRoute('GET', '/tentamens', 'ExamController@index');
-    $router->addRoute('GET', '/profiel', 'UserController@index');
     //REGISTER
 
     return $router;
