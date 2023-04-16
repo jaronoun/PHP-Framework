@@ -29,7 +29,7 @@ class Middleware implements MiddlewareInterface
 
 
         $path = $request->getUri()->getPath();
-        if ($path === '/login') {
+        if ($path === '/login' || $path === '/register') {
             // Skip authentication check
             return $handler->handle($request);
         } else {
