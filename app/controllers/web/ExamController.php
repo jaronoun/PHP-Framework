@@ -9,19 +9,7 @@ use Isoros\routing\Session;
 
 class ExamController extends Controller
 {
-    public function index()
-    {
-        $this->gradeRepository = new ExamRepository();
-        $title = "Login";
 
-        $container = $this->getContainer();
-
-        $view = $container->get(View::class);
-
-
-        $view->render('exams/index');
-
-    }
 
     public function show()
     {

@@ -9,20 +9,6 @@ use Isoros\routing\Session;
 
 class GradeController extends Controller
 {
-    public function index()
-    {
-        var_dump($this->getContainer()->get(Session::class)->get('user'));
-        $this->gradeRepository = new GradeRepository();
-        $title = "Login";
-
-        $container = $this->getContainer();
-
-        $view = $container->get(View::class);
-
-
-        $view->render('grades/index');
-
-    }
 
     public function show()
     {

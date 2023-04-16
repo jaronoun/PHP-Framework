@@ -13,24 +13,6 @@ use Psr\Container\NotFoundExceptionInterface;
 class UserController extends Controller
 {
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function index()
-    {
-        $this->gradeRepository = new UserRepository();
-        $title = "Login";
-
-        $container = $this->getContainer();
-
-        $view = $container->get(View::class);
-
-
-        $view->render('users/index');
-
-    }
-
     public function show()
     {
         $container = $this->getContainer();
