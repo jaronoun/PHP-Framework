@@ -7,6 +7,13 @@ class Session {
 
     public function __construct() {
         if (session_status() === PHP_SESSION_NONE) {
+            session_set_cookie_params([
+                'lifetime' => 0,
+                'path' => '/',
+                'secure' => true,
+                'httponly' => true,
+                'samesite' => 'None'
+            ]);
             session_start();
         }
         $this->session_id = session_id();

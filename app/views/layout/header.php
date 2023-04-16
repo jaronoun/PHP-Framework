@@ -13,7 +13,7 @@ require __DIR__.'/../../../vendor/autoload.php';
     <link rel="stylesheet" type="text/css" href= '/css/style.css'>
 </head>
 <body>
-<header>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-lg-block">
         <div class="container-fluid">
         <a class="navbar-brand">Isoros</a>
@@ -44,6 +44,6 @@ require __DIR__.'/../../../vendor/autoload.php';
             </div>
         </div>
     </nav>
-</header>
+
 <main>
 <div class="container">

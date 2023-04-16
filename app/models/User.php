@@ -33,9 +33,9 @@ class User extends Model
         ?string $remember_token,
     ) {
 
-        $this->name = $name ?? null;
+        $this->name = $name ;
 
-        $this->email = $email ?? null;
+        $this->email = $email ;
         $this->password = $password ?? null;
         $this->role = $role ?? null;
         $this->remember_token = $remember_token ?? null;
@@ -43,6 +43,7 @@ class User extends Model
         $this->updated_at = Date('Y-m-d H:i:s');
         parent::__construct();
     }
+
     // Getters
     public function getId(): ?int
     {
@@ -166,27 +167,37 @@ class User extends Model
 
     public static function findByEmail(string $email): ?User
     {
+        $user = null;
         try {
             $stmt = self::query("SELECT * FROM users WHERE email = ?", [$email]);
+
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result ? new User(
-                $result['id'],
-                $result['name'],
-                $result['email'],
-                $result['password'],
-                $result['role'],
-                $result['remember_token'],
-                $result['created_at'],
-                $result['updated_at']
-            ) : null;
+            if($result) {
+                $user = new User(
+                    $result['name'],
+                    $result['email'],
+                    $result['password'],
+                    $result['role'],
+                    $result['remember_token'],
+
+                );
+
+                $user->setId($result['id']);
+                $user->setCreatedAt($result['created_at']);
+                $user->setUpdatedAt($result['updated_at']);
+
+            }
+
         } catch (PDOException $e) {
             // log the error or throw a custom exception
-            return null;
         }
+
+        return $user ?? null;
     }
 
     public function save(): bool
     {
+
         if (! self::findByEmail($this->email)) {
 
             return $this->create();
@@ -197,7 +208,7 @@ class User extends Model
 
     private function create(): bool
     {
-        $stmt = self::query("INSERT INTO users (name, email, password, role, remember_token, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)", [
+        $result = self::query("INSERT INTO users (name, email, password, role, remember_token, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)", [
             $this->name,
             $this->email,
             $this->password,
@@ -207,12 +218,14 @@ class User extends Model
             $this->updated_at
         ]);
 
+        $this->setId($result['id']);
+
         return true;
     }
 
     private function update(): bool
     {
-        $stmt = self::query("UPDATE users SET name = ?, email = ?, password = ?, role = ?, remember_token = ?, created_at = ?, updated_at = ? WHERE id = ?", [
+        self::query("UPDATE users SET name = ?, email = ?, password = ?, role = ?, remember_token = ?, created_at = ?, updated_at = ? WHERE id = ?", [
             $this->name,
             $this->email,
             $this->password,

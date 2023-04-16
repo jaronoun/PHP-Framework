@@ -2,42 +2,66 @@
 
 namespace Isoros\controllers\api;
 
-use Isoros\core\Model;
+
 use Isoros\models\Exam;
+use Isoros\models\User;
+use PDOException;
 
 
-class ExamRepository extends Model
+class ExamRepository
 {
-    private string $exam;
 
-    public function getAllExams()
+    public function getExams()
     {
-        return $this->exam->getAll();
+        return Exam::all();
     }
 
-    public function getExamById($id)
+    public function findExamById($id)
     {
-        return $this->exam->getById($id);
+        return Exam::findById($id);
     }
 
     public function getExamByName($name)
     {
-        return $this->exam->getById($id);
+        return Exam::findByName($name);
     }
 
     public function createExam($name, $desc, $start_time, $end_time)
     {
-        return $this->exam->create($name, $desc, $start_time, $end_time);
+        $exam = new Exam($name, $desc, $start_time, $end_time);
+
+        if($exam->save()){
+            return $exam;
+        } else {
+            return null;
+        }
     }
 
     public function updateExam($id, $name, $desc, $start_time, $end_time)
     {
-        return $this->exam->update($id, $name, $desc, $start_time, $end_time);
+        try {
+            $exam = Exam::findById($id);
+            $exam->setDescription($desc);
+            $exam->setStartTime($start_time);
+            $exam->setEndTime($end_time);
+            $exam->save();
+
+            return json_encode($exam);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
     }
 
     public function deleteExam($id)
     {
-        $this->exam->delete($id);
+        try {
+            $exam = Exam::findById($id);
+            $exam->delete();
+
+            return json_encode(['success' => true]);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
     }
 }
 

@@ -17,7 +17,7 @@ class UserRepository
         }
     }
 
-    public function getUser($id)
+    public function findUserById($id)
     {
         try {
             $user = User::findById($id);
@@ -27,15 +27,24 @@ class UserRepository
         }
     }
 
+    public function findUserByEmail($email){
+
+        return User::findByEmail($email);
+
+
+    }
+
     public function createUser($name, $email, $password, $role)
     {
-            $user = new User($name, $email, $password, $role, null);
+        var_dump($name);
+        $user = new User($name, $email, $password, $role, null);
 
-            if($user->save()){
-                return true;
-            } else {
-                return false;
-            }
+
+        if($user->save()){
+            return $user;
+        } else {
+            return null;
+        }
 
     }
 
@@ -67,11 +76,6 @@ class UserRepository
         }
     }
 
-    public function findUserByEmail($email){
 
-            return User::findByEmail($email);
-
-
-    }
 
 }
