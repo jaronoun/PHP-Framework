@@ -34,7 +34,11 @@ class RegisterController extends Controller
     {
         $request = $this->getContainer()->get(Request::class);
         $userRepository = $this->getContainer()->get(UserRepository::class);
-//        $user = $userRepository->createUser($request->getParams()["name"], $request->getParams()["email"], $request->getParams()["password"], $request->getParams()["role"]);
+        $user = $userRepository->createUser(
+                          $request->getParams()["name"],
+                          $request->getParams()["email"],
+                          password_hash($request->getParams()["password"], PASSWORD_DEFAULT),
+                          $request->getParams()["role"]);
 
 //        echo "$user";
 
