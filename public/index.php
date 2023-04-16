@@ -71,7 +71,7 @@ $container->set(Router::class, function () {
     $router->addRoute('GET', '/register', 'RegisterController@index');
     $router->addRoute('POST', '/register', 'RegisterController@handleRegister');
 
-    $router->addRoute('GET', '/cijfers', 'GradeController@index');
+    $router->addRoute('GET', '/cijfers', 'GradeController@show');
     $router->addRoute('GET', '/tentamens', 'ExamController@index');
     $router->addRoute('GET', '/profiel', 'UserController@index');
 
