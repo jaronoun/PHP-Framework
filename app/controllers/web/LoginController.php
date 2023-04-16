@@ -45,14 +45,14 @@ class LoginController extends Controller
         $user = $userRepository->findUserByEmail($username);
 
         if (!$user) {
-            // Gebruiker niet gevonden
             echo "Ongeldige inloggegevens.";
             $view->render('auth/login');
-
         }
         (new Session())->set('user', $username);
         $loggedIn = true;
-        $view->renderParams('homepage/index',['user' => $user, 'loggedIn' => $loggedIn]);
+        $view->renderParams('grades/index',['user' => $user, 'loggedIn' => $loggedIn]);
+        header('Location: /cijfers');
+        exit;
     }
 
     public function handleLogout()

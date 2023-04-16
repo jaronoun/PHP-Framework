@@ -18,7 +18,7 @@ class View
         ob_start();
 
         // Set the page title
-        $title = "Home";
+        $title = "";
         $loggedIn = false;
 
         // Include the header template

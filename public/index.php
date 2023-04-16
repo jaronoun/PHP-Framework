@@ -72,8 +72,8 @@ $container->set(Router::class, function () {
     $router->addRoute('DELETE', '/users/{id}', 'UserRepository@delete');
 
     $router->addRoute('GET', '/home', 'HomeController@index');
-    $router->addRoute('GET', '/cijfers', 'HomeController@index');
-    $router->addRoute('GET', '/tentamens', 'HomeController@index');
+    $router->addRoute('GET', '/cijfers', 'GradeController@index');
+    $router->addRoute('GET', '/tentamens', 'ExamController@index');
     $router->addRoute('GET', '/profiel', 'UserController@index');
     //REGISTER
 
