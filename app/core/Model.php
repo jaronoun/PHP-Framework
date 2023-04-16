@@ -13,6 +13,7 @@ class Model
     public function __construct()
     {
         $this->connection = Database::connect();
+
     }
 
     protected static function query(string $sql, array $params = []): PDOStatement
@@ -64,5 +65,4 @@ class Model
         $joinTable = $joinTable ?? $this->table . '_' . $relatedTable;
         return $this->query("SELECT $relatedTable.* FROM $relatedTable JOIN $joinTable ON $relatedTable.id = $joinTable.$relatedKey WHERE $joinTable.$foreignKey = ?", [$this->id])->fetchAll(PDO::FETCH_ASSOC);
     }
-
 }

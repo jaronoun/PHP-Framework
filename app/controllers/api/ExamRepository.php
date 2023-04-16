@@ -20,6 +20,11 @@ class ExamRepository extends Model
         return $this->exam->getById($id);
     }
 
+    public function getExamByName($name)
+    {
+        return $this->exam->getById($id);
+    }
+
     public function createExam($name, $desc, $start_time, $end_time)
     {
         return $this->exam->create($name, $desc, $start_time, $end_time);

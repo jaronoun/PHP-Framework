@@ -1,4 +1,4 @@
-<?php?>
+<?php ?>
 
 <div class="row mt-3">
     <!-- Most recent result card -->
@@ -12,35 +12,11 @@
             </div>
         </div>
     </div>
-    <!-- Completed exams card -->
-    <div class="col-12 col-md-4 mb-3">
-        <div class="card">
-            <div class="card-header">Opkomende examens</div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <h5>Wiskunde</h5>
-                        <p>10 mei 2023</p>
-                        <p>Tijd: 10:00 - 12:00</p>
-                    </li>
-                    <li class="list-group-item">
-                        <h5>Nederlands</h5>
-                        <p>15 mei 2023</p>
-                        <p>Tijd: 14:00 - 16:00</p>
-                    </li>
-                    <li class="list-group-item">
-                        <h5>Geschiedenis</h5>
-                        <p>20 mei 2023</p>
-                        <p>Tijd: 9:00 - 11:00</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+
     <!-- Uncompleted exams card -->
-    <div class="col-12 col-md-4 mb-3">
+    <div class="col-12 col-md-6 mb-3">
         <div class="card">
-            <div class="card-header">Behaalde examens</div>
+            <div class="card-header">Behaalde cijfers</div>
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">

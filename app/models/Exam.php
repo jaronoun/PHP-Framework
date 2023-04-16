@@ -17,30 +17,45 @@ class Exam extends Model{
     protected ?DateTime $updated_at;
 
     public function getAll() {
-        $stmt = $this->db->query('SELECT * FROM exam');
+        $stmt = self::query('SELECT * FROM exam');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getById($id) {
-        $stmt = $this->db->prepare('SELECT * FROM exam WHERE id = :id');
+        $stmt = self::query('SELECT * FROM exam WHERE id = :id');
         $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getByName($name): ?Exam
+    {
+        $stmt = self::query('SELECT * FROM exam WHERE name = ?',['name' => $name]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? new Exam(
+            $result['id'],
+            $result['name'],
+            $result['desc'],
+            $result['start_time'],
+            $result['end_time'],
+            $result['created_at'],
+            $result['updated_at']
+        ) : null;
+    }
+
     public function create($name, $desc, $start_time, $end_time) {
-        $stmt = $this->db->prepare('INSERT INTO exam (name, desc, start_time, end_time, created_at) VALUES (:name, :desc, :start_time, :end_time, NOW())');
+        $stmt = self::query('INSERT INTO exam (name, desc, start_time, end_time, created_at) VALUES (:name, :desc, :start_time, :end_time, NOW())');
         $stmt->execute(['name' => $name, 'desc' => $desc, 'start_time' => $start_time, 'end_time' => $end_time]);
-        return $this->getById($this->db->lastInsertId());
+        return $this->getById(self::lastInsertId());
     }
 
     public function update($id, $name, $desc, $start_time, $end_time) {
-        $stmt = $this->db->prepare('UPDATE exam SET name = :name, desc = :desc, start_time = :start_time, end_time = :end_time, updated_at = NOW() WHERE id = :id');
+        $stmt = self::query('UPDATE exam SET name = :name, desc = :desc, start_time = :start_time, end_time = :end_time, updated_at = NOW() WHERE id = :id');
         $stmt->execute(['id' => $id, 'name' => $name, 'desc' => $desc, 'start_time' => $start_time, 'end_time' => $end_time]);
         return $this->getById($id);
     }
 
     public function delete($id) {
-        $stmt = $this->db->prepare('DELETE FROM exam WHERE id = :id');
+        $stmt = self::query('DELETE FROM exam WHERE id = :id');
         $stmt->execute(['id' => $id]);
     }
 

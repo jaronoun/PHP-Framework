@@ -7,7 +7,7 @@ class SetupSeeder extends Seeder
     public function run()
     {
         $SQL = "CREATE TABLE IF NOT EXISTS exam (
-          id int NOT NULL,
+          id int NOT NULL AUTO_INCREMENT,
           name varchar(45) NOT NULL,
           description varchar(45) DEFAULT NULL,
           start_time datetime DEFAULT NULL,
@@ -18,15 +18,16 @@ class SetupSeeder extends Seeder
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
         CREATE TABLE IF NOT EXISTS users (
-          id int NOT NULL,
+          id int NOT NULL AUTO_INCREMENT,
           name varchar(45) DEFAULT NULL,
           email varchar(45) DEFAULT NULL,
-          password varchar(45) DEFAULT NULL,
+          password varchar(60) DEFAULT NULL,
           role enum('student','teacher','admin') DEFAULT NULL,
           remember_token varchar(45) DEFAULT NULL,  
           created_at datetime DEFAULT NULL,
           updated_at datetime DEFAULT NULL,
-          PRIMARY KEY (id)
+          PRIMARY KEY (id),
+          UNIQUE KEY `id_UNIQUE` (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci; 
 
         CREATE TABLE IF NOT EXISTS exam_user (
@@ -41,7 +42,7 @@ class SetupSeeder extends Seeder
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci; 
         
         CREATE TABLE IF NOT EXISTS grades (
-          id int NOT NULL,
+          id int NOT NULL AUTO_INCREMENT,
           exam_id int DEFAULT NULL,
           user_id int DEFAULT NULL,
           grade int DEFAULT NULL,
