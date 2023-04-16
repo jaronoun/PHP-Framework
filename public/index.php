@@ -12,6 +12,7 @@ use Isoros\routing\Router;
 use Isoros\routing\MiddlewareDispatcher;
 use Isoros\routing\Response;
 use Isoros\routing\Session;
+use Isoros\seeders\ExamSeeder;
 
 // Laad de autoload file in
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -87,6 +88,9 @@ $container->set(Router::class, function () {
     return $router;
 });
 
+//(new ExamSeeder())->run();
+//(new GradeSeeder())->run();
+
 // Voeg de Middleware objecten toe aan de container
 //$container->set('middleware.auth', function () {
 //return new AuthMiddleware();
@@ -108,4 +112,6 @@ $router = $container->get(Router::class);
 
 // Dispatch de request en krijg de response terug
 $middlewareDispatcher->process($request, $router);
+
+
 

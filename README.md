@@ -23,6 +23,7 @@ als echte diensten, maar de dienst niet daadwerkelijk implementeren.
 2. Ga naar de projectmap: `cd yourproject`
 3. Installeer de afhankelijkheden: `composer install`
 4. Maak een database (SQL) aan en configureer de databaseverbinding in `config/database.php`
+5. Om de code te laten werken moet er wel eerst een database met data zijn. 
 
 ## Gebruik
 
