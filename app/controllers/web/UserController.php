@@ -21,11 +21,8 @@ class UserController extends Controller
         $loggedIn = $session->get('loggedIn');
         $user = $session->get('user');
 
-        $this->userRepository = new UserRepository();
+        $this->gradeRepository = new UserRepository();
         $title = "Login";
-
-        $user = $this->userRepository->findUserByEmail($user);
-
 
         $view = $container->get(View::class);
 

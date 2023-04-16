@@ -170,13 +170,14 @@ class User extends Model
             $stmt = self::query("SELECT * FROM users WHERE email = ?", [$email]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result ? new User(
-
+                $result['id'],
                 $result['name'],
                 $result['email'],
                 $result['password'],
                 $result['role'],
                 $result['remember_token'],
-
+                $result['created_at'],
+                $result['updated_at']
             ) : null;
         } catch (PDOException $e) {
             // log the error or throw a custom exception
