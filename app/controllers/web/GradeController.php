@@ -17,14 +17,13 @@ class GradeController extends Controller
         $user = $session->get('user');
 
         $this->gradeRepository = new GradeRepository();
-        $title = "Login";
 
         $container = $this->getContainer();
 
         $view = $container->get(View::class);
 
 
-        $view->renderParams('grades/index',['user' => $user, 'loggedIn' => $loggedIn]);
+        $view->renderParams('grades/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'grades']);
 
     }
 }
