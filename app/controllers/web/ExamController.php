@@ -25,7 +25,7 @@ class ExamController extends Controller
         $view = $container->get(View::class);
 
 
-        $view->renderParams('exams/index',['user' => $user, 'loggedIn' => $loggedIn]);
+        $view->renderParams('exams/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'exams']);
 
     }
 }

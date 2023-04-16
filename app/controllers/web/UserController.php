@@ -26,6 +26,6 @@ class UserController extends Controller
 
         $view = $container->get(View::class);
 
-        $view->renderParams('users/index',['user' => $user, 'loggedIn' => $loggedIn]);
+        $view->renderParams('users/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'users']);
     }
 }

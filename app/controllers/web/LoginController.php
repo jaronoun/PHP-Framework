@@ -50,8 +50,6 @@ class LoginController extends Controller
         }
         $this->getContainer()->get(Session::class)->set('user', $username);
         $this->getContainer()->get(Session::class)->set('loggedIn', true);
-
-
         header('Location: /cijfers');
         exit;
     }
@@ -61,7 +59,7 @@ class LoginController extends Controller
         $view = $this->getContainer()->get(View::class);
         $loggedIn = false;
         $this->getContainer()->get(Session::class)->destroy();
-        $view->renderParams('auth/login',['loggedIn' => $loggedIn]);
+        $view->renderParams('auth/login',['loggedIn' => $loggedIn, 'page' => 'login']);
     }
 
 }
