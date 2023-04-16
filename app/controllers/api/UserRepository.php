@@ -29,14 +29,14 @@ class UserRepository
 
     public function createUser($name, $email, $password, $role)
     {
-        try {
-            $user = new User(null, $name, $email, $password, $role, null, null, null);
-            $user->save();
+            $user = new User($name, $email, $password, $role, null);
 
-            return json_encode($user);
-        } catch (PDOException $e) {
-            return json_encode(['error' => $e->getMessage()]);
-        }
+            if($user->save()){
+                return true;
+            } else {
+                return false;
+            }
+
     }
 
     public function updateUser($id, $name, $email, $password, $role)
@@ -68,12 +68,10 @@ class UserRepository
     }
 
     public function findUserByEmail($email){
-        try {
+
             return User::findByEmail($email);
 
-        } catch (PDOException $e) {
-            return json_encode(['error' => $e->getMessage()]);
-        }
+
     }
 
 }
