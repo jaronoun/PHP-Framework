@@ -4,6 +4,11 @@ namespace Isoros\seeders;
 
 class SetupSeeder extends Seeder
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function run()
     {
         $SQL = "CREATE TABLE IF NOT EXISTS exam (
@@ -14,7 +19,8 @@ class SetupSeeder extends Seeder
           end_time datetime DEFAULT NULL,
           created_at datetime DEFAULT NULL,
           updated_at datetime DEFAULT NULL,
-          PRIMARY KEY (id)
+          PRIMARY KEY (id),
+            UNIQUE KEY `id_UNIQUE` (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
         CREATE TABLE IF NOT EXISTS users (
@@ -49,6 +55,7 @@ class SetupSeeder extends Seeder
           created_at varchar(45) DEFAULT NULL,
           updated_at varchar(45) DEFAULT NULL,
           PRIMARY KEY (id),
+          UNIQUE KEY `id_UNIQUE` (`id`),
           KEY exam_id_idx (exam_id),
           KEY user_id_idx (user_id),
           CONSTRAINT exam_id_2 FOREIGN KEY (exam_id) REFERENCES exam (id),
