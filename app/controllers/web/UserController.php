@@ -1,10 +1,12 @@
 <?php
 namespace Isoros\Controllers\Web;
 
+use Isoros\Controllers\api\GradeRepository;
 use Isoros\controllers\api\UserRepository;
 use Isoros\core\Controller;
 use Isoros\core\View;
 use Isoros\models\User;
+use Isoros\routing\Session;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -29,10 +31,19 @@ class UserController extends Controller
 
     }
 
-    public function show($params)
+    public function show()
     {
-        $userId = $params['id'];
+        $container = $this->getContainer();
 
-        require_once 'app/views/users/show.php';
+        $session = $container->get(Session::class);
+        $loggedIn = $session->get('loggedIn');
+        $user = $session->get('user');
+
+        $this->gradeRepository = new UserRepository();
+        $title = "Login";
+
+        $view = $container->get(View::class);
+
+        $view->renderParams('users/index',['user' => $user, 'loggedIn' => $loggedIn]);
     }
 }
