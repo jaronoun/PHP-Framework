@@ -30,7 +30,7 @@ class User extends Model
         string $email,
         ?string $password,
         ?string $role,
-        ?int $remember_token,
+        ?string $remember_token,
     ) {
 
         $this->name = $name ?? null;
@@ -191,9 +191,8 @@ class User extends Model
 
             return $this->create();
         }
-        echo "hoi";
 
-        return $this->update();
+        return false;
     }
 
     private function create(): bool
@@ -207,8 +206,6 @@ class User extends Model
             $this->created_at,
             $this->updated_at
         ]);
-
-        var_dump($stmt);
 
         return true;
     }
