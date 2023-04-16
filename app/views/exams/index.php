@@ -1,5 +1,4 @@
 <?php?>
-<h1 class="text-center mb-4">Tentamen Inschrijving</h1>
 <div class="row">
     <!-- Search Exams Card -->
     <div class="col-md-6">
