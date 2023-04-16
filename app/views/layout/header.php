@@ -14,7 +14,7 @@ require __DIR__.'/../../../vendor/autoload.php';
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-lg-block">
         <div class="container-fluid">
         <a class="navbar-brand">Isoros</a>
             <div class="collapse navbar-collapse" id="navbarNav">

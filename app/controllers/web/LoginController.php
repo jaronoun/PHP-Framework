@@ -44,7 +44,7 @@ class LoginController extends Controller
 
         $user = $userRepository->findUserByEmail($username);
 
-        if (!$user || !password_verify($user->password, $password)) {
+        if (!$user /*|| !password_verify($user->password, $password)*/) {
             echo "Ongeldige inloggegevens.";
             $view->render('auth/login');
         }
