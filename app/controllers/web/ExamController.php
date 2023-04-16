@@ -5,6 +5,7 @@ namespace Isoros\controllers\web;
 use Isoros\controllers\api\ExamRepository;
 use Isoros\core\Controller;
 use Isoros\core\View;
+use Isoros\routing\Session;
 
 class ExamController extends Controller
 {
@@ -24,6 +25,10 @@ class ExamController extends Controller
 
     public function show()
     {
+        $session = $this->getContainer()->get(Session::class);
+        $loggedIn = $session->get('loggedIn');
+        $user = $session->get('user');
+
         $this->gradeRepository = new ExamRepository();
         $title = "Login";
 
@@ -32,7 +37,7 @@ class ExamController extends Controller
         $view = $container->get(View::class);
 
 
-        $view->render('exams/index');
+        $view->renderParams('exams/index',['user' => $user, 'loggedIn' => $loggedIn]);
 
     }
 }

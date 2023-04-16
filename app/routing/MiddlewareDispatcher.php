@@ -29,11 +29,12 @@ class MiddlewareDispatcher implements MiddlewareInterface
      */
     public function process(RequestInterface|ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $session = $this->container->get(Session::class);
         // Bouw de middlewareketen op
-        $current = new Middleware(new Session());
+        $current = new Middleware($session);
         for ($i = count($this->middlewares) - 1; $i >= 0; $i--) {
             $middleware = $this->container->get($this->middlewares[$i]);
-            $middleware = new $middleware(new Session());
+            $middleware = new $middleware($session);
             $middleware->setNext($current);
             $current = $middleware;
         }

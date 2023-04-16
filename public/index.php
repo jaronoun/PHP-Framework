@@ -11,6 +11,7 @@ use Isoros\routing\Request;
 use Isoros\routing\Router;
 use Isoros\routing\MiddlewareDispatcher;
 use Isoros\routing\Response;
+use Isoros\routing\Session;
 
 // Laad de autoload file in
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -47,6 +48,11 @@ $container->set(Response::class, function () {
     return new Response();
 });
 
+// Voeg de Request en Response objects toe aan de container
+$container->set(Session::class, function () {
+    return new Session();
+});
+
 // Maak de HomeController en geef de container door
 // $controller = new Controller($container);
 
@@ -72,8 +78,8 @@ $container->set(Router::class, function () {
     $router->addRoute('DELETE', '/users/{id}', 'UserRepository@delete');
 
     $router->addRoute('GET', '/home', 'HomeController@index');
-    $router->addRoute('GET', '/cijfers', 'GradeController@index');
-    $router->addRoute('GET', '/tentamens', 'ExamController@index');
+    $router->addRoute('GET', '/cijfers', 'GradeController@show');
+    $router->addRoute('GET', '/tentamens', 'ExamController@show');
     $router->addRoute('GET', '/profiel', 'UserController@index');
     //REGISTER
 

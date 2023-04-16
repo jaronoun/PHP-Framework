@@ -48,9 +48,10 @@ class LoginController extends Controller
             echo "Ongeldige inloggegevens.";
             $view->render('auth/login');
         }
-        (new Session())->set('user', $username);
-        $loggedIn = true;
-        $view->renderParams('grades/index',['user' => $user, 'loggedIn' => $loggedIn]);
+        $this->getContainer()->get(Session::class)->set('user', $username);
+        $this->getContainer()->get(Session::class)->set('loggedIn', true);
+
+
         header('Location: /cijfers');
         exit;
     }
