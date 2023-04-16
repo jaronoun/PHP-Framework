@@ -7,6 +7,7 @@
 
 namespace Isoros\models;
 
+use DateTime;
 use Isoros\core\Model;
 use PDO;
 use PDOException;
@@ -25,23 +26,21 @@ class User extends Model
     public ?string $updated_at = null;
 
     public function __construct(
-        int $id,
         string $name,
         string $email,
         ?string $password,
         ?string $role,
-        ?string $remember_token,
-        ?string $created_at,
-        ?string $updated_at
+        ?int $remember_token,
     ) {
-        $this->id = $id ?? null;
+
         $this->name = $name ?? null;
+
         $this->email = $email ?? null;
         $this->password = $password ?? null;
         $this->role = $role ?? null;
         $this->remember_token = $remember_token ?? null;
-        $this->created_at = $created_at ?? null;
-        $this->updated_at = $updated_at ?? null;
+        $this->created_at = Date('Y-m-d H:i:s');
+        $this->updated_at = Date('Y-m-d H:i:s');
         parent::__construct();
     }
     // Getters
@@ -188,9 +187,12 @@ class User extends Model
 
     public function save(): bool
     {
-        if (!$this->id) {
+        if (! self::findByEmail($this->email)) {
+
             return $this->create();
         }
+        echo "hoi";
+
         return $this->update();
     }
 
@@ -205,7 +207,9 @@ class User extends Model
             $this->created_at,
             $this->updated_at
         ]);
-        $this->id = self::lastInsertId();
+
+        var_dump($stmt);
+
         return true;
     }
 
@@ -221,6 +225,7 @@ class User extends Model
             $this->updated_at,
             $this->id
         ]);
+
         return true;
     }
 

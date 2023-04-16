@@ -30,8 +30,9 @@ class UserRepository
     public function createUser($name, $email, $password, $role)
     {
         try {
-            $user = new User(null, $name, $email, $password, $role, null, null, null);
-            $user->save();
+            $user = new User($name, $email, $password, $role, null);
+
+            var_dump($user->save());
 
             return json_encode($user);
         } catch (PDOException $e) {

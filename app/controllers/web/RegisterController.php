@@ -33,6 +33,7 @@ class RegisterController extends Controller
     public function handleRegister()
     {
         $request = $this->getContainer()->get(Request::class);
+
         $userRepository = $this->getContainer()->get(UserRepository::class);
         $user = $userRepository->createUser(
                           $request->getParams()["name"],
