@@ -4,11 +4,11 @@
     <!-- Search Exams Card -->
     <div class="col-md-6">
         <div class="card">
-            <div class="card-header bg-primary text-white">Zoek Tentamen</div>
+            <div class="card-header">Zoek Tentamen</div>
             <div class="card-body">
                 <form action="#" method="get">
                     <div class="form-group">
-                        <label for="exam-name">Exam Name</label>
+                        <label for="exam-name">Tentamen Naam</label>
                         <input type="text" class="form-control" id="exam-name" name="exam-name" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Search</button>
@@ -19,7 +19,7 @@
     <!-- Enrolled Exams Card -->
     <div class="col-md-6">
         <div class="card">
-            <div class="card-header bg-success text-white">Ingeschreven Tentamens</div>
+            <div class="card-header ">Ingeschreven Tentamens</div>
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">Exam 1 <button class="btn btn-danger btn-sm float-right">Unenroll</button></li>

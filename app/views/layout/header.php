@@ -19,25 +19,31 @@ require __DIR__.'/../../../vendor/autoload.php';
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <?php if ($loggedIn): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cijfers">Cijfers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/tentamens">Tentamens</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profiel">Profiel</a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
                 <?php if ($loggedIn): ?>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/cijfers">Cijfers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/tentamens">Tentamens</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profiel">Profiel</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="/login">Log Out</a></li>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                    </ul>
                 <?php else: ?>
-                    <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                    </ul>
                 <?php endif; ?>
-            </ul>
-        </div>
+            </div>
         </div>
     </nav>
 </header>
