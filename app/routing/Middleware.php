@@ -26,12 +26,15 @@ class Middleware implements MiddlewareInterface
         // Code voor het verwerken van de request
         // Authentication
         // Create a new Session object
+
+
         $path = $request->getUri()->getPath();
         if ($path === '/login') {
             // Skip authentication check
             return $handler->handle($request);
         } else {
             if (!$this->session->get('user')) {
+                echo "hoi";
                 // If 'user_id' session variable is not set,
                 // redirect to the login page
                 header('Location: /login');

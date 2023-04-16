@@ -11,6 +11,7 @@ use Isoros\routing\Request;
 use Isoros\routing\Router;
 use Isoros\routing\MiddlewareDispatcher;
 use Isoros\routing\Response;
+use Isoros\routing\Session;
 
 // Laad de autoload file in
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -45,6 +46,11 @@ $container->set(Request::class, function () {
 });
 $container->set(Response::class, function () {
     return new Response();
+});
+
+// Voeg de Request en Response objects toe aan de container
+$container->set(Session::class, function () {
+    return new Session();
 });
 
 // Maak de HomeController en geef de container door
