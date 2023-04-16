@@ -168,31 +168,27 @@ class User extends Model
     public static function findByEmail(string $email): ?User
     {
         $user = null;
-        try {
-            $stmt = self::query("SELECT * FROM users WHERE email = ?", [$email]);
 
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($result) {
-                $user = new User(
-                    $result['name'],
-                    $result['email'],
-                    $result['password'],
-                    $result['role'],
-                    $result['remember_token'],
+        $stmt = self::query("SELECT * FROM users WHERE email = ?", [$email]);
 
-                );
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($result) {
+            $user = new User(
+                $result['name'],
+                $result['email'],
+                $result['password'],
+                $result['role'],
+                $result['remember_token'],
 
-                $user->setId($result['id']);
-                $user->setCreatedAt($result['created_at']);
-                $user->setUpdatedAt($result['updated_at']);
+            );
 
-            }
+            $user->setId($result['id']);
+            $user->setCreatedAt($result['created_at']);
+            $user->setUpdatedAt($result['updated_at']);
 
-        } catch (PDOException $e) {
-            // log the error or throw a custom exception
         }
 
-        return $user ?? null;
+        return $result ? $user : null;
     }
 
     public function save(): bool

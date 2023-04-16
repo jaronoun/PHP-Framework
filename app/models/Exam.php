@@ -23,6 +23,7 @@ class Exam extends Model{
         $this->end_time = $end_time;
         $this->created_at = Date('Y-m-d H:i:s');
         $this->updated_at = Date('Y-m-d H:i:s');
+        parent::__construct();
     }
 
     public function setId(int $id): void
@@ -111,29 +112,34 @@ class Exam extends Model{
     {
         $stmt = self::query("SELECT * FROM exam WHERE id = ?", [$id]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? new Exam(
-            $result['id'],
-            $result['name'],
-            $result['desc'],
-            $result['start_time'],
-            $result['end_time'],
-            $result['created_at'],
-            $result['updated_at']
-        ) : null;
+
+        if($result){
+            $exam = new Exam($result['name'],
+                $result['desc'],
+                $result['start_time'],
+                $result['end_time'],
+            );
+            $exam->setId($result['id']);
+            $exam->setCreatedAt($result['created_at']);
+            $exam->setUpdatedAt($result['updated_at']);
+        }
+        return $result ? $exam : null;
     }
 
     public static function findByName(string $name): ?Exam
     {
         $stmt = self::query("SELECT * FROM exam WHERE name = ?", [$name]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $exam = new Exam($result['name'],
-            $result['desc'],
-            $result['start_time'],
-            $result['end_time'],
-        );
-        $exam->setId($result['id']);
-        $exam->setCreatedAt($result['created_at']);
-        $exam->setUpdatedAt($result['updated_at']);
+        if($result){
+            $exam = new Exam($result['name'],
+                $result['desc'],
+                $result['start_time'],
+                $result['end_time'],
+            );
+            $exam->setId($result['id']);
+            $exam->setCreatedAt($result['created_at']);
+            $exam->setUpdatedAt($result['updated_at']);
+        }
 
         return $result ? $exam : null;
     }
