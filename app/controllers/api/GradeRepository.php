@@ -18,7 +18,7 @@ class GradeRepository extends Model
         return Grade::findById($id);
     }
 
-    public function findGradeByExamId($exam_id)
+    public function findExamName($exam_id)
     {
         return (new ExamRepository())->findExamById($exam_id)->getName();
 

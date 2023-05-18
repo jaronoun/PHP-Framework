@@ -11,13 +11,6 @@ use Isoros\routing\Session;
 class GradeController extends Controller
 {
 
-    public function __construct(GradeRepository $gradeRepository, UserRepository $userRepository, Session $session, View $view)
-    {
-        $this->gradeRepository = $gradeRepository;
-        $this->userRepository = $userRepository;
-        $this->session = $session;
-        $this->view = $view;
-    }
 
     public function show()
     {
@@ -28,7 +21,7 @@ class GradeController extends Controller
         $user = $userRepository->findUserByEmail($session->get('user'));
 
         $gradeRepository = new GradeRepository();
-        $data = $gradeRepository->findGradeByUser($user->getId());
+        $data = $gradeRepository->findGradeByUserId($user->getId());
 
         $view = $this->getContainer()->get(View::class);
         $view->renderParams('grades/index',['gradeRepo' => $gradeRepository, 'data' => $data, 'loggedIn' => $loggedIn, 'page' => 'grades']);
