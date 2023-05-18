@@ -75,6 +75,7 @@ class Grade extends Model{
         $this->updated_at = $updated_at;
     }
 
+
     public static function all(): array
     {
         $stmt = self::query("SELECT * FROM grades");
@@ -116,10 +117,11 @@ class Grade extends Model{
         return $result ?? null;
     }
 
-//    public static function findByName(string $name): ? Grade
-//    {
-//        $stmt = self::query("SELECT * FROM grades WHERE name = ?", [$name]);
-//        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    public static function findByExamId(int $exam_id): ? array
+    {
+        $stmt = self::query("SELECT * FROM grades WHERE exam_id = ?", [$exam_id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
 //        if($result){
 //            $grades = new Grade($result['name'],
 //                $result['desc'],
@@ -130,9 +132,8 @@ class Grade extends Model{
 //            $grades->setCreatedAt($result['created_at']);
 //            $grades->setUpdatedAt($result['updated_at']);
 //        }
-//
-//        return $result ? $grades : null;
-//    }
+        return $result ?? null;
+    }
 
     public function save(): bool
     {

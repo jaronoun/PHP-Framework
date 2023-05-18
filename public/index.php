@@ -1,7 +1,7 @@
 <?php
 
 use Isoros\controllers\api\ExamRepository;
-use Isoros\Controllers\api\GradeRepository;
+use Isoros\controllers\api\GradeRepository;
 use Isoros\controllers\api\UserRepository;
 use Isoros\core\Container;
 use Isoros\core\Database;

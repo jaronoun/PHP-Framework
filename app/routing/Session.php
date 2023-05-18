@@ -2,6 +2,8 @@
 
 namespace Isoros\routing;
 
+use Isoros\models\User;
+
 class Session {
     private string $session_id;
 
@@ -24,7 +26,7 @@ class Session {
         $_SESSION[$key] = $value;
     }
 
-    public function get($key): string|null
+    public function get($key): String|null
     {
         return $_SESSION[$key] ?? null;
     }

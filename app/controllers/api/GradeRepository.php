@@ -1,77 +1,70 @@
 <?php
 
-namespace Isoros\Controllers\api;
+namespace Isoros\controllers\api;
 
-use Grade;
 use Isoros\core\Model;
+use Isoros\models\Grade;
+use PDOException;
 
 class GradeRepository extends Model
 {
-
-
-    public function createGrade($exam_id, $user_id, $grade)
-    {
-        $grade = new Grade($this->db);
-
-        $grade->exam_id = $exam_id;
-        $grade->user_id = $user_id;
-        $grade->grade = $grade;
-        $grade->created_at = date('Y-m-d H:i:s');
-        $grade->updated_at = date('Y-m-d H:i:s');
-
-        if ($grade->create()) {
-            return true;
-        }
-
-        return false;
-    }
-
     public function getGrades()
     {
-        $grades = new Grade($this->db);
-
-        return $grades->read();
+        return Grade::all();
     }
 
-    public function getGradeById($id)
+    public function findGradeById($id)
     {
-        $grade = new Grade($this->db);
-
-        $grade->id = $id;
-
-        $grade->read_single();
-
-        return $grade;
+        return Grade::findById($id);
     }
 
-    public function updateGrade($id, $exam_id, $user_id, $grade)
+    public function findGradeByExamId($exam_id)
     {
-        $grade = new Grade($this->db);
+        return (new ExamRepository())->findExamById($exam_id)->getName();
 
-        $grade->id = $id;
-        $grade->exam_id = $exam_id;
-        $grade->user_id = $user_id;
-        $grade->grade = $grade;
-        $grade->updated_at = date('Y-m-d H:i:s');
+    }
 
-        if ($grade->update()) {
-            return true;
+    public function findGradeByUserId($user_id)
+    {
+        return Grade::findByUserId($user_id);
+    }
+
+    public function createGrade($name, $desc, $start_time, $end_time)
+    {
+        $grade = new Grade($name, $desc, $start_time, $end_time);
+
+        if($grade->save()){
+            return $grade;
+        } else {
+            return null;
         }
+    }
 
-        return false;
+    public function updateGrade($id, $name, $desc, $start_time, $end_time)
+    {
+        try {
+            $grade = Grade::findById($id);
+            $grade->setDescription($desc);
+            $grade->setStartTime($start_time);
+            $grade->setEndTime($end_time);
+            $grade->save();
+
+            return json_encode($grade);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
     }
 
     public function deleteGrade($id)
     {
-        $grade = new Grade($this->db);
+        try {
+            $grade = Grade::findById($id);
+            $grade->delete();
 
-        $grade->id = $id;
-
-        if ($grade->delete()) {
-            return true;
+            return json_encode(['success' => true]);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
         }
-
-        return false;
     }
 }
 

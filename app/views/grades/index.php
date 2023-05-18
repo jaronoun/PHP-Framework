@@ -6,9 +6,13 @@
         <div class="card">
             <div class="card-header">Meest recente resultaat</div>
             <div class="card-body">
-                <h1 class="display-1 text-center">85</h1>
-                <h2 class="text-center mb-4">Wiskunde</h2>
-                <p class="text-center mb-0">Examendatum: 16 april 2023</p>
+                <h1 class="display-1 text-center"><?php echo $data["grade"]?></h1>
+                <h2 class="text-center mb-4"><?php echo $gradeRepo->getExamById($data["exam_id"]); ?></h2>
+                <p class="text-center mb-0">Examendatum: <?php if(!empty($data)){
+                        echo $data["created_at"];
+                    } else {
+                        echo 'Geen gegevens beschikbaar';
+                    }; ?></p>
             </div>
         </div>
     </div>

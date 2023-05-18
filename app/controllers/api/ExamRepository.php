@@ -11,7 +11,7 @@ use PDOException;
 class ExamRepository
 {
 
-    public function getExams()
+    public function getExams(): array
     {
         return Exam::all();
     }

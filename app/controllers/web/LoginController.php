@@ -49,7 +49,7 @@ class LoginController extends Controller
             $view->render('auth/login');
         }
         $session = $this->getContainer()->get(Session::class);
-        $session->set('user', $username);
+        $session->set('user', $user);
         $session->set('loggedIn', true);
 
 

@@ -31,8 +31,8 @@ class UserRepository
 
         return User::findByEmail($email);
 
-
     }
+
 
     public function createUser($name, $email, $password, $role)
     {
