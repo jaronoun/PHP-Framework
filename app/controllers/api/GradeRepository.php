@@ -6,14 +6,14 @@ use Isoros\core\Model;
 use Isoros\models\Grade;
 use PDOException;
 
-class GradeRepository extends Model
+class GradeRepository extends Model implements Repository
 {
-    public function getGrades()
+    public function getAll()
     {
         return Grade::all();
     }
 
-    public function findGradeById($id)
+    public function findById($id)
     {
         return Grade::findById($id);
     }
@@ -29,7 +29,7 @@ class GradeRepository extends Model
         return Grade::findByUserId($user_id);
     }
 
-    public function createGrade($name, $desc, $start_time, $end_time)
+    public function create($name, $desc, $start_time, $end_time)
     {
         $grade = new Grade($name, $desc, $start_time, $end_time);
 
@@ -40,7 +40,7 @@ class GradeRepository extends Model
         }
     }
 
-    public function updateGrade($id, $name, $desc, $start_time, $end_time)
+    public function update($id, $name, $desc, $start_time, $end_time)
     {
         try {
             $grade = Grade::findById($id);
@@ -55,7 +55,7 @@ class GradeRepository extends Model
         }
     }
 
-    public function deleteGrade($id)
+    public function delete($id)
     {
         try {
             $grade = Grade::findById($id);

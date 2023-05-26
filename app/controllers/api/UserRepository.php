@@ -5,9 +5,9 @@ namespace Isoros\controllers\api;
 use Isoros\models\User;
 use PDOException;
 
-class UserRepository
+class UserRepository implements Repository
 {
-    public function getUsers()
+    public function getAll()
     {
         try {
             $users = User::all();
@@ -17,7 +17,7 @@ class UserRepository
         }
     }
 
-    public function findUserById($id)
+    public function findById($id)
     {
         try {
             $user = User::findById($id);
@@ -34,7 +34,7 @@ class UserRepository
     }
 
 
-    public function createUser($name, $email, $password, $role)
+    public function create($name, $email, $password, $role)
     {
         var_dump($name);
         $user = new User($name, $email, $password, $role, null);
@@ -48,7 +48,7 @@ class UserRepository
 
     }
 
-    public function updateUser($id, $name, $email, $password, $role)
+    public function update($id, $name, $email, $password, $role)
     {
         try {
             $user = User::findById($id);
@@ -64,7 +64,7 @@ class UserRepository
         }
     }
 
-    public function deleteUser($id)
+    public function delete($id)
     {
         try {
             $user = User::findById($id);

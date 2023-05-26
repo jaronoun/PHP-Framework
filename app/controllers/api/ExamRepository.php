@@ -8,15 +8,15 @@ use Isoros\models\User;
 use PDOException;
 
 
-class ExamRepository
+class ExamRepository implements Repository
 {
 
-    public function getExams(): array
+    public function getAll(): array
     {
         return Exam::all();
     }
 
-    public function findExamById($id)
+    public function findById($id)
     {
         return Exam::findById($id);
     }
@@ -26,33 +26,41 @@ class ExamRepository
         return Exam::findByName($name);
     }
 
-    public function createExam($name, $desc, $start_time, $end_time)
+//    public function create($name, $desc, $start_time, $end_time)
+//    {
+//        $exam = new Exam($name, $desc, $start_time, $end_time);
+//
+//        if($exam->save()){
+//            return $exam;
+//        } else {
+//            return null;
+//        }
+//    }
+    public function create($data)
     {
-        $exam = new Exam($name, $desc, $start_time, $end_time);
-
-        if($exam->save()){
-            return $exam;
-        } else {
-            return null;
-        }
+        // TODO: Implement create() method.
     }
 
-    public function updateExam($id, $name, $desc, $start_time, $end_time)
+//    public function update($id, $name, $desc, $start_time, $end_time)
+//    {
+//        try {
+//            $exam = Exam::findById($id);
+//            $exam->setDescription($desc);
+//            $exam->setStartTime($start_time);
+//            $exam->setEndTime($end_time);
+//            $exam->save();
+//
+//            return json_encode($exam);
+//        } catch (PDOException $e) {
+//            return json_encode(['error' => $e->getMessage()]);
+//        }
+//    }
+    public function update($id, $data)
     {
-        try {
-            $exam = Exam::findById($id);
-            $exam->setDescription($desc);
-            $exam->setStartTime($start_time);
-            $exam->setEndTime($end_time);
-            $exam->save();
-
-            return json_encode($exam);
-        } catch (PDOException $e) {
-            return json_encode(['error' => $e->getMessage()]);
-        }
+        // TODO: Implement update() method.
     }
 
-    public function deleteExam($id)
+    public function delete($id)
     {
         try {
             $exam = Exam::findById($id);
@@ -63,5 +71,8 @@ class ExamRepository
             return json_encode(['error' => $e->getMessage()]);
         }
     }
+
+
+
 }
 
