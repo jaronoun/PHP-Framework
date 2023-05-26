@@ -23,8 +23,11 @@ class GradeController extends Controller
         $gradeRepository = new GradeRepository();
         $data = $gradeRepository->findGradeByUserId($user->getId());
 
-        $view = $this->getContainer()->get(View::class);
-        $view->renderParams('grades/index',['gradeRepo' => $gradeRepository, 'data' => $data, 'loggedIn' => $loggedIn, 'page' => 'grades']);
+        $view = $container->get(View::class);
+        $result = $view->render('grades/index.php', ['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'grades']);
+        echo $result;
+
+//        $view->renderParams('grades/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'grades']);
 
     }
 }

@@ -13,7 +13,6 @@ class Model
     public function __construct()
     {
         $this->connection = Database::connect();
-
     }
 
     protected static function query(string $sql, array $params = []): PDOStatement

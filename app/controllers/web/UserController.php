@@ -26,8 +26,14 @@ class UserController extends Controller
 
         $user = $this->userRepository->findUserByEmail($email);
 
-        $view = $container->get(View::class);
+        $data = ['name' => $title, 'loggedIn' => $loggedIn, 'page' => 'users', 'user' => $user];
 
-        $view->renderParams('users/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'users']);
+//        $view = new View(__DIR__ . '/../../../resources/views');
+//        $result = $view->render('users/index.php', $data);
+
+
+//        $view = $container->get(View::class);
+
+//        $view->renderParams('users/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'users']);
     }
 }

@@ -1,6 +1,4 @@
-<?php
-require __DIR__.'/../../../vendor/autoload.php';
-?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,37 +14,26 @@ require __DIR__.'/../../../vendor/autoload.php';
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <div>
-                <a class="navbar-brand">Isoros</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <?php if ($loggedIn): ?>
+        <a class="navbar-brand">Isoros</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/cijfers"><?php echo $page == 'grades' ? '<b>Cijfers</b>' : 'Cijfers'; ?></a>
+                            <a class="nav-link" href="/cijfers"><b>Cijfers</b></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/tentamens"><?php echo $page == 'exams' ? '<b>Tentamens</b>' : 'Tentamens'; ?></a>
+                            <a class="nav-link" href="/tentamens"><b>Tentamens</b></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/profiel"><?php echo $page == 'users' ? '<b>Profiel</b>' : 'Profiel'; ?></a>
+                            <a class="nav-link" href="/profiel"><b>Profiel</b></a>
                         </li>
-                    <?php endif; ?>
                 </ul>
-                <?php if ($loggedIn): ?>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                     </ul>
-                <?php else: ?>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
                         <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                     </ul>
-                <?php endif; ?>
             </div>
         </div>
     </nav>

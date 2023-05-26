@@ -1,7 +1,7 @@
 <?php?>
 <div class="row">
     <!-- Search Exams Card -->
-    <div class="col-md-6">
+    <div class="col-12 col-md-4 mb-3">
         <div class="card">
             <div class="card-header">Zoek Tentamen</div>
             <div class="card-body">
@@ -22,7 +22,7 @@
         </div>
     </div>
     <!-- Enrolled Exams Card -->
-    <div class="col-md-6">
+    <div class="col-12 col-md-4 mb-3">
         <div class="card">
             <div class="card-header ">Ingeschreven Tentamens</div>
             <div class="card-body">

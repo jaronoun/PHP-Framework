@@ -1,4 +1,4 @@
-<?php ?>
+{% extends layout/header.php %}
 
 <div class="row mt-3">
     <!-- Most recent result card -->
@@ -43,3 +43,5 @@
         </div>
     </div>
 </div>
+
+{% extends layout/footer.php %}
