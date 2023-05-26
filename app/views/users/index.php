@@ -1,8 +1,3 @@
-<?php
-// Include the necessary files for the view
-require_once __DIR__.'/../../../vendor/autoload.php';
-?>
-
 
 
 <div class="row">

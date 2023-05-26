@@ -45,7 +45,7 @@ class App
         });
 // Voeg de Request en Response objects toe aan de container
         $container->set(View::class, function () {
-            return new View();
+            return new View(dirname(__DIR__) . '\views');
         });
 // Voeg de Request en Response objects toe aan de container
         $container->set(Request::class, function () {

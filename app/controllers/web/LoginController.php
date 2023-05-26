@@ -25,7 +25,8 @@ class LoginController extends Controller
             $title = "Login";
             $container = $this->getContainer();
             $view = $container->get(View::class);
-            $view->render('auth/login');
+            $result = $view->render('auth\login.php', []);
+            echo $result;
         }
 
     /**
@@ -46,7 +47,7 @@ class LoginController extends Controller
 
         if (!$user || !password_verify($user->password, $password)) {
             echo "Ongeldige inloggegevens.";
-            $view->render('auth/login');
+            $view->render('auth\login.php', ['username' => $username]);
         }
         $session = $this->getContainer()->get(Session::class);
         $session->set('user', $username);

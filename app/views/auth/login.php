@@ -1,4 +1,4 @@
-
+{% extends layout/header.php %}
 
 <div class="row justify-content-center mt-5">
     <div class="col-md-6">
@@ -25,5 +25,6 @@
     </div>
 </div>
 
+{% extends layout/footer.php %}
 <!-- Include Bootstrap JS -->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.min.js"></script>-->

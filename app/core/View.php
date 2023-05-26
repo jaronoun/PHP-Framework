@@ -15,25 +15,8 @@ class View
         $this->templateDir = $templateDir;
     }
 
-//    public function render($view): void
-//    {
-//        // Set the page title
-//
-//        //extract($this->data);
-//        $data = ['title' => "", 'loggedIn' => false, 'page' => ""];
-//        extract($data);
-//        ob_start();
-//
-//        include __DIR__ . '/../views/layout/header.php';
-//        include __DIR__ . "/../views/{$view}.php";
-//        include __DIR__ . '/../views/layout/footer.php';
-//
-//        echo ob_get_clean();
-//
-//    }
-
     public function render($templateName, $data) {
-        $templatePath = $this->templateDir . '/' . $templateName;
+        $templatePath = $this->templateDir . '\\' . $templateName;
         if (!file_exists($templatePath)) {
             throw new Exception("Template file not found: " . $templatePath);
         }
@@ -49,21 +32,6 @@ class View
 
         return $output;
     }
-
-//    public function renderParams($view, $data = [])
-//    {
-//        extract($data);
-//
-//        ob_start();
-//
-//        $title = "Home";
-//
-//        include __DIR__ . '/../views/layout/header.php';
-//        include __DIR__ . "/../views/{$view}.php";
-//        include __DIR__ . '/../views/layout/footer.php';
-//
-//        echo ob_get_clean();
-//    }
 
     private function compileTemplate($templateContent, $data) {
         // Implement your template compilation logic here
