@@ -37,13 +37,11 @@ class LoginController
     public function index()
     {
         $title = "Login";
-        $loggedIn = false;
-
-        $result = $this->view->render('auth\login.php',['loggedIn' => $loggedIn, 'title' => $title]);
-
+        $login = false;
+        $result = $this->view->render('auth/login.php', ['login' => false, 'title' => $title]);
         echo $result;
-
     }
+
 
     /**
      * @throws ContainerExceptionInterface

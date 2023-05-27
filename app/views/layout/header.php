@@ -15,6 +15,7 @@
     <div class="container-fluid">
         <a class="navbar-brand">Isoros</a>
         <div class="collapse navbar-collapse" id="navbarNav">
+            {% if login %} test {% endif %}
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/cijfers"><b>Cijfers</b></a>
@@ -29,12 +30,10 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
             </ul>
-            {% if loggedIn %}
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
                 <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
             </ul>
-            {% endif %}
         </div>
     </div>
 </nav>

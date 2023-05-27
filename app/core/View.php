@@ -36,27 +36,31 @@ class View
     }
 
     private function compileTemplate($templateContent, $data) {
-        // Implement your template compilation logic here
-        // This could involve parsing placeholders, loops, conditionals, etc.
-        // and generating the corresponding PHP code
-
-        // For simplicity, let's assume we have variable placeholders {{ }},
-        // loop blocks {% %}, conditional blocks {% if %} {% else %} {% endif %},
-        // template inheritance {% extends %}, and comments {# #}
-
-
-
         // Remove comments
         $templateContent = preg_replace('/{#\s*(.*?)\s*#}/s', '', $templateContent);
 
         // Template inheritance
-        $templateContent = preg_replace_callback('/{%\s*extends\s+(.*?)\s*%}/', function ($matches) use ($templateContent) {
+        $templateContent = preg_replace_callback('/{%\s*extends\s+(.*?)\s*%}/', function ($matches) use ($templateContent, $data) {
             $parentTemplate = $matches[1];
-            // Load the parent template and replace the content within the blocks
-            // based on the child template's content
-            $parentContent = file_get_contents($this->templateDir . '/' . $parentTemplate);
-            $childContent = preg_replace('/{%\s*block\s+(.*?)\s*%}(.*?)\s*{%\s*endblock\s*%}/s', '<?php $1; ?>$2<?php end$1; ?>', $templateContent);
-            return str_replace('{% block content %}', $childContent, $parentContent);
+            $parentContent = file_get_contents($this->templateDir . '\\' . $parentTemplate);
+            $childContent = str_replace('{% block content %}', $templateContent, $parentContent);
+            return $this->compileTemplate($childContent, $data);
+        }, $templateContent);
+
+        // Conditional blocks
+        $templateContent = preg_replace_callback('/{%\s*if\s+(.*?)\s*%}(.*?)(?:{%\s*else\s*%}(.*?))?{%\s*endif\s*%}/s', function ($matches) use ($data) {
+            $condition = $data[$matches[1]];
+            $ifContent = $matches[2];
+            $elseContent = $matches[3] ?? '';
+
+            $output = '';
+            if (eval("return $condition;")) {
+                $output = $this->compileTemplate($ifContent, $data);
+            } else {
+                $output = $this->compileTemplate($elseContent, $data);
+            }
+
+            return $output;
         }, $templateContent);
 
         // Variable placeholders
@@ -81,29 +85,6 @@ class View
             return $output;
         }, $templateContent);
 
-        // Conditional blocks
-        $templateContent = preg_replace_callback('/{%\s*if\s+(.*?)\s*%}(.*?){%((?:\s*else\s*.*?)?)endif\s*%}/s', function ($matches) use ($data) {
-            $condition = $matches[1];
-            $ifContent = $matches[2];
-            $elseContent = $matches[3];
-
-            $output = '';
-            if (eval("return $condition;")) {
-                $output = $this->compileTemplate($ifContent, $data);
-            } elseif (!empty($elseContent)) {
-                $output = $this->compileTemplate($elseContent, $data);
-            }
-
-            return $output;
-        }, $templateContent);
-
-//        // Voorbeeldlogica om de header eerst te renderen
-//        $headerTemplate = 'header.php'; // Naam van het header-sjabloon
-//        $headerContent = file_get_contents($this->templateDir . '\\layout\\' . $headerTemplate);
-//        $headerOutput = $this->compileTemplate($headerContent, $data);
-//
-//        // Vervang de placeholder in het hoofdsjabloon door de header-output
-//        $templateContent = str_replace('{% block header %}', $headerOutput, $templateContent);
 
         return $templateContent;
     }
