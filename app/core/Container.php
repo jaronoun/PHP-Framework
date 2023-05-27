@@ -8,6 +8,7 @@ use Exception;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionNamedType;
 
 class Container implements ContainerInterface
 {
@@ -51,11 +52,16 @@ class Container implements ContainerInterface
     {
         $dependencies = [];
 
-
         foreach ($parameters as $parameter) {
 
-            $dependency = $parameter->getClass();
-
+            $dependencyType = $parameter->getType();
+            if ($dependencyType instanceof ReflectionNamedType && !$dependencyType->isBuiltin()) {
+                $dependencyClassName = $dependencyType->getName();
+                $dependency = new ReflectionClass($dependencyClassName);
+            } else {
+                // Handle non-class types or built-in types
+                $dependency = null;  // or any other appropriate handling
+            }
 
             if ($dependency === null) {
                 throw new Exception("Unresolvable dependency");

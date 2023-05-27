@@ -51,8 +51,6 @@ class LoginController
      */
     public function handleLogin()
     {
-
-
         // Hier haal je de gegevens op uit het inlogformulier
         $username = $this->request->getParams()["username"];
         $password = $this->request->getParams()["password"];
@@ -77,8 +75,10 @@ class LoginController
     {
 
         $loggedIn = false;
-        SESSION::destroy();
-        $this->view->renderParams('auth/login',[  ]);
+        $this->session->destroy();
+        $this->view->render('auth\login.php', ['loggedIn' => $loggedIn]);
+        header('Location: /login');
+        //        $this->view->renderParams('auth/login',[  ]);
     }
 
 }

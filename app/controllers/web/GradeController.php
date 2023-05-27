@@ -31,11 +31,11 @@ class GradeController
 
         $loggedIn = SESSION::get('loggedIn');
 
-        $user = $this->userRepository->findUserByEmail($this->session->get('user'));
+//        $user = $this->userRepository->findUserByEmail($this->session->get('user'));
 
-        $data = $this->gradeRepository->findGradeByUserId($user->getId());
+//        $data = $this->gradeRepository->findGradeByUserId($user->getId());
 
-        $result = $this->view->render('grades/index.php', ['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'grades']);
+        $result = $this->view->render('grades/index.php', []);
         echo $result;
 
 //       $view->renderParams('grades/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'grades']);

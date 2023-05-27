@@ -29,10 +29,12 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
             </ul>
+            {% if loggedIn %}
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
                 <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
             </ul>
+            {% endif %}
         </div>
     </div>
 </nav>
