@@ -7,7 +7,7 @@ use Exception;
 class View
 {
     protected $view;
-    protected $data = [];
+    protected array $data = [];
 
     private $templateDir;
 
@@ -15,8 +15,10 @@ class View
         $this->templateDir = $templateDir;
     }
 
-    public function render($templateName, $data) {
+    public function render($templateName, $data): bool|string
+    {
         $templatePath = $this->templateDir . '\\' . $templateName;
+
         if (!file_exists($templatePath)) {
             throw new Exception("Template file not found: " . $templatePath);
         }
@@ -41,6 +43,8 @@ class View
         // For simplicity, let's assume we have variable placeholders {{ }},
         // loop blocks {% %}, conditional blocks {% if %} {% else %} {% endif %},
         // template inheritance {% extends %}, and comments {# #}
+
+
 
         // Remove comments
         $templateContent = preg_replace('/{#\s*(.*?)\s*#}/s', '', $templateContent);
@@ -92,6 +96,14 @@ class View
 
             return $output;
         }, $templateContent);
+
+//        // Voorbeeldlogica om de header eerst te renderen
+//        $headerTemplate = 'header.php'; // Naam van het header-sjabloon
+//        $headerContent = file_get_contents($this->templateDir . '\\layout\\' . $headerTemplate);
+//        $headerOutput = $this->compileTemplate($headerContent, $data);
+//
+//        // Vervang de placeholder in het hoofdsjabloon door de header-output
+//        $templateContent = str_replace('{% block header %}', $headerOutput, $templateContent);
 
         return $templateContent;
     }

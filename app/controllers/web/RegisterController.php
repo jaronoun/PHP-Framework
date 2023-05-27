@@ -1,7 +1,7 @@
 <?php
 namespace Isoros\controllers\web;
 
-use Isoros\core\controller;
+use Isoros\controllers\api\Repository;
 use Isoros\core\View;
 use Isoros\routing\Request;
 use Isoros\controllers\api\UserRepository;
@@ -13,8 +13,15 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 
 
-class RegisterController extends Controller
+class RegisterController
 {
+    public function __construct(Repository $repository, View $view)
+    {
+
+        $this->userRepository = $repository;
+        $this->view = $view;
+    }
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

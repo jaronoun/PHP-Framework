@@ -129,8 +129,7 @@ class User extends Model
     public static function all(): array
     {
         $stmt = self::query("SELECT * FROM users");
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 //        $users = [];
 //        foreach ($results as $result) {

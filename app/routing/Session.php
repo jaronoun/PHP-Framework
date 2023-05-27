@@ -21,12 +21,12 @@ class Session {
         $this->session_id = session_id();
     }
 
-    public function set($key, $value): void
+    public static function set($key, $value): void
     {
         $_SESSION[$key] = $value;
     }
 
-    public function get($key): String|null
+    public static function get($key): String|null
     {
         return $_SESSION[$key] ?? null;
     }
@@ -36,7 +36,7 @@ class Session {
         unset($_SESSION[$key]);
     }
 
-    public function destroy(): void
+    public static function destroy(): void
     {
         session_destroy();
     }

@@ -14,20 +14,36 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 
 
-class LoginController extends Controller
+class LoginController
 {
+    public UserRepository $userRepository;
+    public View $view;
+    public Request $request;
+    public Session $session;
+
+    public function __construct(UserRepository $repository, View $view, Request $request, Session $session)
+    {
+
+        $this->userRepository = $repository;
+        $this->view = $view;
+        $this->request = $request;
+        $this->session = $session;
+    }
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function index()
-        {
-            $title = "Login";
-            $container = $this->getContainer();
-            $view = $container->get(View::class);
-            $result = $view->render('auth\login.php', []);
-            echo $result;
-        }
+    {
+        $title = "Login";
+        $loggedIn = false;
+
+        $result = $this->view->render('auth\login.php',['loggedIn' => $loggedIn, 'title' => $title]);
+
+        echo $result;
+
+    }
 
     /**
      * @throws ContainerExceptionInterface
@@ -35,23 +51,22 @@ class LoginController extends Controller
      */
     public function handleLogin()
     {
-        $request = $this->getContainer()->get(Request::class);
-        $view = $this->getContainer()->get(View::class);
-        $userRepository = new UserRepository();
+
 
         // Hier haal je de gegevens op uit het inlogformulier
-        $username = $request->getParams()["username"];
-        $password = $request->getParams()["password"];
+        $username = $this->request->getParams()["username"];
+        $password = $this->request->getParams()["password"];
+        var_dump($username);
 
-        $user = $userRepository->findUserByEmail($username);
+        $user = $this->userRepository->findUserByEmail($username);
 
         if (!$user || !password_verify($user->password, $password)) {
             echo "Ongeldige inloggegevens.";
-            $view->render('auth\login.php', ['username' => $username]);
+            $this->view->render('auth\login.php', ['username' => $username]);
         }
-        $session = $this->getContainer()->get(Session::class);
-        $session->set('user', $username);
-        $session->set('loggedIn', true);
+
+        $this->session->set('user', $username);
+        $this->session->set('loggedIn', true);
 
 
         header('Location: /cijfers');
@@ -60,10 +75,10 @@ class LoginController extends Controller
 
     public function handleLogout()
     {
-        $view = $this->getContainer()->get(View::class);
+
         $loggedIn = false;
-        $this->getContainer()->get(Session::class)->destroy();
-        $view->renderParams('auth/login',['loggedIn' => $loggedIn]);
+        SESSION::destroy();
+        $this->view->renderParams('auth/login',[  ]);
     }
 
 }

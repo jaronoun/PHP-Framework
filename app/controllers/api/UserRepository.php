@@ -7,7 +7,7 @@ use PDOException;
 
 class UserRepository implements Repository
 {
-    public function getAll()
+    public function getAll(): bool|string
     {
         try {
             $users = User::all();
@@ -17,7 +17,7 @@ class UserRepository implements Repository
         }
     }
 
-    public function findById($id)
+    public function findById($id): bool|string
     {
         try {
             $user = User::findById($id);
@@ -27,16 +27,19 @@ class UserRepository implements Repository
         }
     }
 
-    public function findUserByEmail($email){
-
+    public function findUserByEmail($email): ?User
+    {
         return User::findByEmail($email);
-
     }
 
 
-    public function create($name, $email, $password, $role)
+    public function create($data): ?User
     {
-        var_dump($name);
+        $name = $data[0];
+        $email = $data[1];
+        $password = $data[2];
+        $role = $data[3];
+
         $user = new User($name, $email, $password, $role, null);
 
 
@@ -45,11 +48,15 @@ class UserRepository implements Repository
         } else {
             return null;
         }
-
     }
 
-    public function update($id, $name, $email, $password, $role)
+    public function update($id, $data): bool|string
     {
+        $name = $data[0];
+        $email = $data[1];
+        $password = $data[2];
+        $role = $data[3];
+
         try {
             $user = User::findById($id);
             $user->name = $name;
@@ -64,7 +71,7 @@ class UserRepository implements Repository
         }
     }
 
-    public function delete($id)
+    public function delete($id): bool|string
     {
         try {
             $user = User::findById($id);

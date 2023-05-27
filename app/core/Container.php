@@ -4,50 +4,80 @@ namespace Isoros\core;
 
 require_once __DIR__ . '/../..//vendor/autoload.php';
 
-use Closure;
-//use DI\NotFoundException;
+use Exception;
 use Psr\Container\ContainerInterface;
+use ReflectionClass;
+use ReflectionException;
 
 class Container implements ContainerInterface
 {
-    private static Container $instance;
-    private $bindings = [];
 
-    public function __construct()
+    private array $bindings = [];
+
+    public function bind($abstract, $concrete): void
     {
-        self::$instance = $this;
+        $this->bindings[$abstract] = $concrete;
     }
 
-    public function set($id, $concrete)
+    /**
+     * @throws ReflectionException
+     */
+    public function make($abstract)
     {
-        $this->bindings[$id] = $concrete;
-    }
+        $concrete = $this->bindings[$abstract] ?? $abstract;
 
-    public function get($id)
-    {
-        if (!$this->has($id)) {
-            //throw new NotFoundException();
-        }
-
-        $concrete = $this->bindings[$id];
-
-        if ($concrete instanceof Closure) {
+        if (is_callable($concrete)) {
             return $concrete($this);
         }
 
-        return new $concrete;
+        $reflector = new ReflectionClass($concrete);
+        $constructor = $reflector->getConstructor();
+
+        if ($constructor === null) {
+            return new $concrete;
+        }
+
+        $parameters = $constructor->getParameters();
+        $dependencies = $this->resolveDependencies($parameters);
+
+        return $reflector->newInstanceArgs($dependencies);
     }
 
-    public static function getInstance()
+    /**
+     * @throws ReflectionException
+     * @throws Exception
+     */
+    private function resolveDependencies($parameters): array
     {
-        return self::$instance;
+        $dependencies = [];
+
+
+        foreach ($parameters as $parameter) {
+
+            $dependency = $parameter->getClass();
+
+
+            if ($dependency === null) {
+                throw new Exception("Unresolvable dependency");
+            }
+
+            $dependencies[] = $this->make($dependency->name);
+        }
+
+        return $dependencies;
     }
 
+
+    /**
+     * @throws ReflectionException
+     */
+    public function get($id)
+    {
+        return $this->make($id);
+    }
 
     public function has($id): bool
     {
         return isset($this->bindings[$id]);
     }
-
-
 }

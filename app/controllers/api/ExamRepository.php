@@ -21,7 +21,7 @@ class ExamRepository implements Repository
         return Exam::findById($id);
     }
 
-    public function findExamByName($name)
+    public function findExamByName($name): ?Exam
     {
         return Exam::findByName($name);
     }

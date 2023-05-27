@@ -13,9 +13,9 @@ class Router implements RequestHandlerInterface
     protected $routes = [];
     protected $container;
 
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
-        $this->container = Container::getInstance();
+        $this->container = $container;
     }
 
     public function addRoute($method, $uri, $handler)
@@ -30,6 +30,7 @@ class Router implements RequestHandlerInterface
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
 
         $handler = $this->routes[$method][$uri] ?? null;
+
 
         if (!$handler) {
             http_response_code(404);
@@ -50,7 +51,6 @@ class Router implements RequestHandlerInterface
         $controllerPath = realpath(__DIR__ . '/../../app/controllers/web/' . $controllerName . '.php');
 
 
-
         if (!file_exists($controllerPath)) {
             http_response_code(500);
             echo "Controller not found";
@@ -60,7 +60,7 @@ class Router implements RequestHandlerInterface
         // Met de juiste namespace
         $controllerName = "Isoros\\controllers\\web\\" . $parts[0];
         // create the controller instance
-        $controller = new $controllerName($this->container);
+        $controller = $this->container->make($controllerName);
 
         // call the method on the controller instance
         $controller->$methodName();

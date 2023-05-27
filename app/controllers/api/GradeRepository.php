@@ -18,19 +18,24 @@ class GradeRepository extends Model implements Repository
         return Grade::findById($id);
     }
 
-    public function findExamName($exam_id)
+    public function findExamName($exam_id): string
     {
-        return (new ExamRepository())->findExamById($exam_id)->getName();
+        return (new ExamRepository())->findById($exam_id)->getName();
 
     }
 
-    public function findGradeByUserId($user_id)
+    public function findGradeByUserId($user_id): ?array
     {
         return Grade::findByUserId($user_id);
     }
 
-    public function create($name, $desc, $start_time, $end_time)
+    public function create($data): ?Grade
     {
+        $name = $data[0];
+        $desc = $data[1];
+        $start_time = $data[2];
+        $end_time = $data[3];
+
         $grade = new Grade($name, $desc, $start_time, $end_time);
 
         if($grade->save()){
@@ -40,10 +45,18 @@ class GradeRepository extends Model implements Repository
         }
     }
 
-    public function update($id, $name, $desc, $start_time, $end_time)
+    public function update($id, $data): bool|string
     {
+        $examId = $data[0];
+        $user_id = $data[1];
+        $desc = $data[2];
+        $start_time = $data[3];
+        $end_time = $data[4];
+
         try {
             $grade = Grade::findById($id);
+            $grade->setExamId($examId);
+            $grade->setUserId($user_id);
             $grade->setDescription($desc);
             $grade->setStartTime($start_time);
             $grade->setEndTime($end_time);
@@ -55,7 +68,7 @@ class GradeRepository extends Model implements Repository
         }
     }
 
-    public function delete($id)
+    public function delete($id): bool|string
     {
         try {
             $grade = Grade::findById($id);

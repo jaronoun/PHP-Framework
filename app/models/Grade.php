@@ -15,8 +15,8 @@ class Grade extends Model{
     public $created_at;
     public $updated_at;
 
-    public function __construct($id, $exam_id, $user_id, $grade) {
-        $this->id = $id;
+    public function __construct($exam_id, $user_id, $grade) {
+
         $this->exam_id = $exam_id;
         $this->user_id = $user_id;
         $this->grade = $grade;
@@ -97,6 +97,24 @@ class Grade extends Model{
 //        }
 //
 //        return $grades;
+    }
+
+    public static function findById(int $id): ?Grade
+    {
+        $stmt = self::query("SELECT * FROM grade WHERE id = ?", [$id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($result){
+            $grade = new Grade($result['exam_id'],
+                $result['user_id'],
+                $result['grade'],
+
+            );
+            $grade->setId($result['id']);
+            $grade->setCreatedAt($result['created_at']);
+            $grade->setUpdatedAt($result['updated_at']);
+        }
+        return $result ? $grade : null;
     }
 
     public static function findByUserId(int $user_id): ? array
