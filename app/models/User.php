@@ -213,8 +213,6 @@ class User extends Model
             $this->updated_at
         ]);
 
-        $this->setId($result['id']);
-
         return true;
     }
 

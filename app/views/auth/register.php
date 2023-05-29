@@ -1,4 +1,4 @@
-<?php?>
+{% extends layout\header.php %}
 
 <div class="row justify-content-center mt-5">
 <div class="col-md-6">
@@ -36,3 +36,5 @@
   </div>
 </div>
 </div>
+
+{% extends layout\footer.php %}

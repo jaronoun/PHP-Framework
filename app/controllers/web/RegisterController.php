@@ -15,11 +15,19 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 class RegisterController
 {
-    public function __construct(Repository $repository, View $view)
+
+    public Request $request;
+    public Session $session;
+    public View $view;
+    public UserRepository $userRepository;
+
+    public function __construct(UserRepository $repository, View $view, Request $request, Session $session)
     {
 
         $this->userRepository = $repository;
         $this->view = $view;
+        $this->request = $request;
+        $this->session = $session;
     }
 
     /**
@@ -29,9 +37,8 @@ class RegisterController
     public function index()
         {
             $title = "Register";
-            $container = $this->getContainer();
-            $view = $container->get(View::class);
-            $view->render('auth/register');
+            $result = $this->view->render('auth/register.php', ['title' => $title, 'loggedIn' => $this->session->get('loggedIn')]);
+            echo $result;
         }
 
     /**
@@ -40,28 +47,21 @@ class RegisterController
      */
     public function handleRegister()
     {
-        $container = $this->getContainer();
-        $view = $container->get(View::class);
-        $request = $container->get(Request::class);
-
-        $userRepository = $container->get(UserRepository::class);
-        $user = $userRepository->createUser(
-                          $request->getParams()["name"],
-                          $request->getParams()["email"],
-                          password_hash($request->getParams()["password"], PASSWORD_DEFAULT),
-                          $request->getParams()["role"]);
+        $data = $this->request->getParams();
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $user = $this->userRepository->create($data);
 
         if(!$user){
             echo "Er is iets fout gegaan";
-            $view->render('auth/register');
+            $result = $this->view->render('auth\register.php', ['loggedIn' => $this->session->get('loggedIn')]);
+            echo $result;
 
         } else {
-            $session = $this->getContainer()->get(Session::class);
-            $session->set('user', $request->getParams()["email"]);
+            $session = $this->session;
+            $session->set('user', $this->request->getParams()["email"]);
             $session->set('loggedIn', true);
-
-
-            header('Location: /cijfers');
+            $result = $this->view->render('grades\index.php', ['loggedIn' => $this->session->get('loggedIn')]);
+            echo $result;
             exit;
         }
 

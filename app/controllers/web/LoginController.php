@@ -37,8 +37,8 @@ class LoginController
     public function index()
     {
         $title = "Login";
-        $login = false;
-        $result = $this->view->render('auth/login.php', ['login' => false, 'title' => $title]);
+        $loggedIn = $this->session->get('loggedIn');
+        $result = $this->view->render('auth/login.php', ['loggedIn' => $loggedIn, 'title' => $title]);
         echo $result;
     }
 
@@ -52,20 +52,19 @@ class LoginController
         // Hier haal je de gegevens op uit het inlogformulier
         $username = $this->request->getParams()["username"];
         $password = $this->request->getParams()["password"];
-        var_dump($username);
 
         $user = $this->userRepository->findUserByEmail($username);
 
         if (!$user || !password_verify($user->password, $password)) {
             echo "Ongeldige inloggegevens.";
-            $this->view->render('auth\login.php', ['username' => $username]);
+            $this->view->render('auth\login.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn')]);
         }
 
         $this->session->set('user', $username);
         $this->session->set('loggedIn', true);
 
 
-        header('Location: /cijfers');
+        $this->view->render('grades\index.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn')]);
         exit;
     }
 

@@ -35,10 +35,10 @@ class UserRepository implements Repository
 
     public function create($data): ?User
     {
-        $name = $data[0];
-        $email = $data[1];
-        $password = $data[2];
-        $role = $data[3];
+        $name = $data["name"];
+        $email = $data["email"];
+        $password = $data["password"];
+        $role = $data["role"];
 
         $user = new User($name, $email, $password, $role, null);
 
