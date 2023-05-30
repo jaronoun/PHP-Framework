@@ -23,14 +23,11 @@ class ExamController
 
     public function index()
     {
-
-
         $loggedIn = SESSION::get('loggedIn');
         $user = SESSION::get('user');
 
-
-        $this->view->renderParams('exams/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'exams']);
-
+        $result = $this->view->render('exams/index.php', ['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'exams']);
+        echo $result;
     }
 
     public function show()
@@ -40,7 +37,5 @@ class ExamController
 
         $name = $this->request->getParams()['exam-name'];
         $exam = $this->examRepository->findExamByName($name);
-
-        $this->view->renderParams('exams/show',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'exams', 'exam' => $exam]);
     }
 }

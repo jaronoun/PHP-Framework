@@ -1,4 +1,4 @@
-<?php?>
+{% extends layout/header.php %}
 <div class="row">
     <!-- Search Exams Card -->
     <div class="col-12 col-md-4 mb-3">
@@ -60,3 +60,4 @@
         </div>
     </div>
 </div>
+{% extends layout/footer.php %}

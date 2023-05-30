@@ -55,17 +55,18 @@ class LoginController
 
         $user = $this->userRepository->findUserByEmail($username);
 
-        if (!$user || !password_verify($user->password, $password)) {
+        if (!$user || !password_verify($password, $user->password)) {
             echo "Ongeldige inloggegevens.";
-            $this->view->render('auth\login.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn')]);
+            $result = $this->view->render('auth\login.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn')]);
+            echo $result;
+            exit;
         }
 
         $this->session->set('user', $username);
         $this->session->set('loggedIn', true);
 
-
-        $this->view->render('grades\index.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn')]);
-        exit;
+        $result = $this->view->render('grades\index.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn')]);
+        echo $result;
     }
 
     public function handleLogout()
@@ -73,9 +74,8 @@ class LoginController
 
         $loggedIn = false;
         $this->session->destroy();
-        $this->view->render('auth\login.php', ['loggedIn' => $loggedIn]);
-        header('Location: /login');
-        //        $this->view->renderParams('auth/login',[  ]);
+        $result = $this->view->render('auth\login.php', ['loggedIn' => $loggedIn]);
+        echo $result;
     }
 
 }

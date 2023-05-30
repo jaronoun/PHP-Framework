@@ -18,7 +18,6 @@ class GradeController
 
     public function __construct(GradeRepository $gradeRepository, UserRepository $userRepository, View $view, Session $session)
     {
-
         $this->gradeRepository = $gradeRepository;
         $this->userRepository = $userRepository;
         $this->view = $view;
@@ -28,17 +27,11 @@ class GradeController
 
     public function show()
     {
-
         $loggedIn = SESSION::get('loggedIn');
-
-//        $user = $this->userRepository->findUserByEmail($this->session->get('user'));
-
-//        $data = $this->gradeRepository->findGradeByUserId($user->getId());
-
-        $result = $this->view->render('grades/index.php', []);
+        $email = $this->session->get('user');
+        $user = $this->userRepository->findUserByEmail($email);
+        $result = $this->view->render('grades/index.php', ['loggedIn' => $loggedIn, 'user' => $user, 'page' => 'grades']);
         echo $result;
-
-//       $view->renderParams('grades/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'grades']);
 
     }
 }

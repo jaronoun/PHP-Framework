@@ -1,5 +1,5 @@
 
-
+{% extends layout/header.php %}
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -11,3 +11,4 @@
         </div>
     </div>
 </div>
+{% extends layout/footer.php %}

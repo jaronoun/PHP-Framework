@@ -23,27 +23,14 @@ class UserController
         $this->session = $session;
     }
 
-    public function show()
-    {
-
-        $loggedIn = $this->session->get('loggedIn');
-        $email = $this->session->get('user');
-
-        $title = "Login";
-
-        $user = $this->userRepository->findUserByEmail($email);
-
-        $this->view->renderParams('users/index',['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'users']);
-
-//        $data = ['name' => $title, 'loggedIn' => $loggedIn, 'page' => 'users', 'user' => $user];
-
-//        $view = new View(__DIR__ . '/../../../resources/views');
-//        $result = $view->render('users/index.php', $data);
-
-    }
-
     public function index()
     {
-        // TODO: Implement index() method.
+        $loggedIn = $this->session->get('loggedIn');
+        $title = "Login";
+        $email = $this->session->get('user');
+        $user = $this->userRepository->findUserByEmail($email);
+        $result = $this->view->render('users/index.php', ['loggedIn' => $loggedIn, 'title' => $title, 'name' => $user->name, 'email' => $user->email, 'role' => $user->role]);
+        echo $result;
     }
+
 }

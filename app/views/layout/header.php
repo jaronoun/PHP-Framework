@@ -16,15 +16,17 @@
         <a class="navbar-brand">Isoros</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
+                {% if loggedIn %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/cijfers"><b>Cijfers</b></a>
+                    <a class="nav-link" href="/cijfers">Cijfers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/tentamens"><b>Tentamens</b></a>
+                    <a class="nav-link" href="/tentamens">Tentamens</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profiel"><b>Profiel</b></a>
+                    <a class="nav-link" href="/profiel">Profiel</a>
                 </li>
+                {% endif %}
             </ul>
             {% if loggedIn %}
             <ul class="navbar-nav ms-auto">
