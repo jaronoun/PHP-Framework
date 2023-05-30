@@ -32,6 +32,14 @@ class GradeController
         $user = $this->userRepository->findUserByEmail($email);
         $result = $this->view->render('grades/index.php', ['loggedIn' => $loggedIn, 'user' => $user, 'page' => 'grades']);
         echo $result;
+    }
 
+    public function showGrading()
+    {
+        $loggedIn = SESSION::get('loggedIn');
+        $email = $this->session->get('user');
+        $user = $this->userRepository->findUserByEmail($email);
+        $result = $this->view->render('grading/index.php', ['loggedIn' => $loggedIn, 'user' => $user, 'page' => 'grades']);
+        echo $result;
     }
 }

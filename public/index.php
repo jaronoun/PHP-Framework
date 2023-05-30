@@ -42,6 +42,7 @@ $container->bind(Router::class, function ($container) {
     $router->addRoute('POST', '/register', 'RegisterController@handleRegister');
 
     $router->addRoute('GET', '/cijfers', 'GradeController@show');
+    $router->addRoute('GET', '/beoordeling', 'GradeController@showGrading');
     $router->addRoute('GET', '/tentamens', 'ExamController@index');
     $router->addRoute('POST', '/tentamens', 'ExamController@show');
     $router->addRoute('GET', '/profiel', 'UserController@index');

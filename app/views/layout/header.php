@@ -24,6 +24,9 @@
                     <a class="nav-link" href="/tentamens">Tentamens</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/beoordeling">Beoordeling</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/profiel">Profiel</a>
                 </li>
                 {% endif %}
