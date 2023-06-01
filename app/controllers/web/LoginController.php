@@ -37,8 +37,8 @@ class LoginController
     public function index()
     {
         $title = "Login";
-        $loggedIn = $this->session->get('loggedIn');
-        $result = $this->view->render('auth/login.php', ['loggedIn' => $loggedIn, 'title' => $title]);
+        $loggedIn = false;
+        $result = $this->view->render('auth/login.php', ['loggedIn' => $loggedIn, 'title' => $title, 'role' => '']);
         echo $result;
     }
 
@@ -57,7 +57,7 @@ class LoginController
 
         if (!$user || !password_verify($password, $user->password)) {
             echo "Ongeldige inloggegevens.";
-            $result = $this->view->render('auth\login.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn')]);
+            $result = $this->view->render('auth\login.php', ['username' => $username, 'loggedIn' => false, 'role' => $user->role]);
             echo $result;
             exit;
         }
@@ -65,7 +65,7 @@ class LoginController
         $this->session->set('user', $username);
         $this->session->set('loggedIn', true);
 
-        $result = $this->view->render('grades\index.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn')]);
+        $result = $this->view->render('grades\index.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn'), 'role' => $user->role]);
         echo $result;
     }
 
@@ -74,7 +74,7 @@ class LoginController
 
         $loggedIn = false;
         $this->session->destroy();
-        $result = $this->view->render('auth\login.php', ['loggedIn' => $loggedIn]);
+        $result = $this->view->render('auth\login.php', ['loggedIn' => $loggedIn, 'role' => '']);
         echo $result;
     }
 

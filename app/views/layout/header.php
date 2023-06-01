@@ -23,9 +23,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/tentamens">Tentamens</a>
                 </li>
+                {% endif %}
+                {% if role == teacher %}
                 <li class="nav-item">
                     <a class="nav-link" href="/beoordeling">Beoordeling</a>
                 </li>
+                {% endif %}
+                {% if loggedIn %}
                 <li class="nav-item">
                     <a class="nav-link" href="/profiel">Profiel</a>
                 </li>

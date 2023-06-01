@@ -49,12 +49,16 @@ class View
 
         // Conditional blocks
         $templateContent = preg_replace_callback('/{%\s*if\s+(.*?)\s*%}(.*?)(?:{%\s*else\s*%}(.*?))?{%\s*endif\s*%}/s', function ($matches) use ($data) {
-            $condition = $data[$matches[1]];
+            if (!isset($data[$matches[1]])) {
+                $condition = $matches[1];
+            } else {
+                $condition = $data[$matches[1]];
+            }
             $ifContent = $matches[2];
             $elseContent = $matches[3] ?? '';
 
             $output = '';
-            if (eval("return $condition;")) {
+            if ($this->evaluateCondition($condition, $data)) {
                 $output = $this->compileTemplate($ifContent, $data);
             } else {
                 $output = $this->compileTemplate($elseContent, $data);
@@ -87,6 +91,24 @@ class View
 
 
         return $templateContent;
+    }
+
+    private function evaluateCondition($condition, $data) {
+
+        // Remove leading/trailing whitespaces from the condition
+        $condition = trim($condition);
+
+        // Check for specific comparison operators
+        if (strpos($condition, '==') !== false) {
+            [$left, $right] = explode('==', $condition);
+            return $data[trim($left)] == trim($right);
+        } elseif (strpos($condition, '!=') !== false) {
+            [$left, $right] = explode('!=', $condition);
+            return trim($data[$left]) != trim($data[$right]);
+        }
+
+        // Default case: evaluate the condition as a truthy/falsy expression
+        return eval("return $condition;");
     }
 
 

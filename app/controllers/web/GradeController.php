@@ -30,7 +30,7 @@ class GradeController
         $loggedIn = SESSION::get('loggedIn');
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
-        $result = $this->view->render('grades/index.php', ['loggedIn' => $loggedIn, 'user' => $user, 'page' => 'grades']);
+        $result = $this->view->render('grades/index.php', ['loggedIn' => $loggedIn, 'role' => $user->role, 'page' => 'grades']);
         echo $result;
     }
 
@@ -39,7 +39,7 @@ class GradeController
         $loggedIn = SESSION::get('loggedIn');
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
-        $result = $this->view->render('grading/index.php', ['loggedIn' => $loggedIn, 'user' => $user, 'page' => 'grades']);
+        $result = $this->view->render('grading/index.php', ['loggedIn' => $loggedIn, 'role' => $user->role, 'page' => 'grades']);
         echo $result;
     }
 }
