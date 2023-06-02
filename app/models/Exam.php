@@ -16,11 +16,11 @@ class Exam extends Model{
     protected ?string $created_at = null;
     protected ?string $updated_at = null;
 
-    public function __construct(string $name, ?string $desc, ?DateTime $start_time, ?DateTime $end_time) {
+    public function __construct(string $name, ?string $desc, ?string $start_time, ?string $end_time) {
         $this->name = $name;
         $this->desc = $desc;
-        $this->start_time = $start_time;
-        $this->end_time = $end_time;
+        $this->start_time = DateTime::createFromFormat('Y-m-d\TH:i', $start_time)->format('Y-m-d H:i:s');
+        $this->end_time = DateTime::createFromFormat('Y-m-d\TH:i', $end_time)->format('Y-m-d H:i:s');
         $this->created_at = Date('Y-m-d H:i:s');
         $this->updated_at = Date('Y-m-d H:i:s');
         parent::__construct();

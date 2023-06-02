@@ -33,6 +33,7 @@ $container->bind(Router::class, function ($container) {
 
     // Define routes
     //LOGIN
+    $router->addRoute('GET', '/', 'LoginController@index');
     $router->addRoute('GET', '/login', 'LoginController@index');
     $router->addRoute('POST', '/login', 'LoginController@handleLogin');
 
@@ -44,7 +45,7 @@ $container->bind(Router::class, function ($container) {
     $router->addRoute('GET', '/cijfers', 'GradeController@show');
     $router->addRoute('GET', '/beoordeling', 'GradeController@showGrading');
     $router->addRoute('GET', '/tentamens', 'ExamController@index');
-    $router->addRoute('POST', '/tentamens', 'ExamController@show');
+    $router->addRoute('POST', '/tentamens', 'ExamController@storeExam');
     $router->addRoute('GET', '/profiel', 'UserController@index');
 
     $router->addRoute('GET', '/users', 'UserRepository@index');

@@ -38,7 +38,19 @@ class ExamRepository implements Repository
 //    }
     public function create($data)
     {
-        // TODO: Implement create() method.
+        $name = $data["name"];
+        $desc = $data["desc"];
+        $start = $data["start-time"];
+        $end = $data["end-time"];
+
+        $exam = new Exam($name, $desc, $start, $end);
+        var_dump($exam);
+
+        if($exam->save()){
+            return $exam;
+        } else {
+            return null;
+        }
     }
 
 //    public function update($id, $name, $desc, $start_time, $end_time)

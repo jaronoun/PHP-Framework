@@ -6,8 +6,8 @@
         <div class="card">
             <div class="card-header">Meest recente resultaat</div>
             <div class="card-body">
-                <h1 class="display-1 text-center"></h1>
-                <h2 class="text-center mb-4"></h2>
+                <h1 class="display-1 text-center">100</h1>
+                <h2 class="text-center mb-4">Wiskunde</h2>
                 <p class="text-center mb-0">Examendatum:</p>
             </div>
         </div>

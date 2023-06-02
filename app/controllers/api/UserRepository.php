@@ -42,7 +42,6 @@ class UserRepository implements Repository
 
         $user = new User($name, $email, $password, $role, null);
 
-
         if($user->save()){
             return $user;
         } else {
