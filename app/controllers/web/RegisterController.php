@@ -37,7 +37,8 @@ class RegisterController
     public function index()
         {
             $title = "Register";
-            $result = $this->view->render('auth/register.php', ['title' => $title, 'loggedIn' => $this->session->get('loggedIn')]);
+            $role = '';
+            $result = $this->view->render('auth/register.php', ['title' => $title, 'loggedIn' => false, 'role' => $role]);
             echo $result;
         }
 
@@ -50,17 +51,18 @@ class RegisterController
         $data = $this->request->getParams();
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $user = $this->userRepository->create($data);
+        $role = $user->role;
 
         if(!$user){
             echo "Er is iets fout gegaan";
-            $result = $this->view->render('auth\register.php', ['loggedIn' => $this->session->get('loggedIn')]);
+            $result = $this->view->render('auth\register.php', ['loggedIn' => $this->session->get('loggedIn'), 'role' => $role]);
             echo $result;
 
         } else {
             $session = $this->session;
             $session->set('user', $this->request->getParams()["email"]);
             $session->set('loggedIn', true);
-            $result = $this->view->render('grades\index.php', ['loggedIn' => $this->session->get('loggedIn')]);
+            $result = $this->view->render('grades\index.php', ['loggedIn' => $this->session->get('loggedIn'), 'role' => $role]);
             echo $result;
             exit;
         }
