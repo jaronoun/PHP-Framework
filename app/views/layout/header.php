@@ -7,15 +7,18 @@
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <!--    <link rel="stylesheet" type="text/css" href= '../../../public/css/style.css'>-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-nvBUEYQ6k3BcG3byZZ0ry2uHrT8LgB0/YOO8g/kU0yBBiSt1yGJrg/uR7szSwKq4yX3WpdzEYyzr+qM3FHHQZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href= '/css/style.css'>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand">Isoros</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 {% if loggedIn %}
                 <li class="nav-item">
                     <a class="nav-link" href="/cijfers">Cijfers</a>
@@ -49,5 +52,6 @@
     </div>
 </nav>
 
+
 <main>
-    <div class="container mt-5">
+        <div class="container mt-5">
