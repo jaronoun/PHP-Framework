@@ -4,7 +4,7 @@
     {% if role == student %}
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
-            <div class="card-header">Zoek Tentamen</div>
+            <div class="card-header text-white bg-dark">Zoek Tentamen</div>
             <div class="card-body">
                 <form action="/tentamens" method="post">
                     <div class="container">
@@ -23,7 +23,7 @@
     <!-- Enrolled Exams Card -->
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
-            <div class="card-header ">Ingeschreven Tentamens</div>
+            <div class="card-header text-white bg-dark">Ingeschreven Tentamens</div>
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">Exam 1 <button class="btn btn-dark float-right sml-btn">Uitschrijven</button></li>
@@ -38,7 +38,7 @@
     {% if role == teacher %}
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
-            <div class="card-header">Maak Tentamen</div>
+            <div class="card-header text-white bg-dark">Maak Tentamen</div>
             <div class="card-body">
                 <!-- Create Exam Form -->
                 <form action="/tentamens" method="post">
@@ -69,7 +69,7 @@
     </div>
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
-            <div class="card-header ">Tentamens</div>
+            <div class="card-header text-white bg-dark">Tentamens</div>
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">Exam 1 <button class="btn btn-dark float-right sml-btn">Uitschrijven</button></li>
@@ -83,7 +83,7 @@
     <!-- Completed exams card -->
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
-            <div class="card-header">Opkomende Tentamens</div>
+            <div class="card-header text-white bg-dark">Opkomende Tentamens</div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">

@@ -4,7 +4,7 @@
     <!-- Most recent result card -->
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
-            <div class="card-header">Meest recente resultaat</div>
+            <div class="card-header text-white bg-dark">Meest recente resultaat</div>
             <div class="card-body">
                 <h1 class="display-1 text-center">100</h1>
                 <h2 class="text-center mb-4">Wiskunde</h2>
@@ -16,7 +16,7 @@
     <!-- Uncompleted exams card -->
     <div class="col-12 col-md-6 mb-3">
         <div class="card">
-            <div class="card-header">Behaalde cijfers</div>
+            <div class="card-header text-white bg-dark">Behaalde cijfers</div>
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
