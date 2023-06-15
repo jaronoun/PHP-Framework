@@ -10,9 +10,15 @@ class View
     protected array $data = [];
 
     private $templateDir;
+    private $controller;
 
     public function __construct($templateDir) {
         $this->templateDir = $templateDir;
+    }
+
+    public function setController($cotroller)
+    {
+        $this->controller = $cotroller;
     }
 
     public function render($templateName, $data): bool|string
@@ -94,6 +100,27 @@ class View
 
             return $value;
         }, $templateContent);
+
+        // Functions in variables
+        $templateContent = preg_replace_callback('/{{\s*([\w\.]+)\((.*)\)\s*}}/', function ($matches) use ($data) {
+            $functionName = $matches[1];
+            $arguments = $matches[2];
+            $variablePath = explode('.', $arguments);
+            $value = $data;
+
+            foreach ($variablePath as $key) {
+                $value = isset($value[$key]) ? $value[$key] : '';
+            }
+
+            if (method_exists($this->controller, $functionName)) {
+                // Call the function dynamically on the controller instance
+                $value = call_user_func([$this->controller, $functionName], $value);
+            }
+
+            return $value;
+        }, $templateContent);
+
+
         return $templateContent;
     }
 

@@ -89,8 +89,11 @@
                     {% for exam in exams %}
                         <li class="list-group-item">
                             <h5>{{ exam.name }}</h5>
-                            <p>Start: {{ exam.start_time }}</br>
-                            Einde: {{ exam.end_time }}</p>
+                            <p>{{ getDate(exam.start_time) }}</p>
+                            <p>
+                                Start: {{ getTime(exam.start_time) }} </br>
+                                Eind: {{ getTime(exam.end_time) }}
+                            </p>
                         </li>
                     {% endfor %}
                 </ul>

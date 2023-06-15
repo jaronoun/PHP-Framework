@@ -33,6 +33,8 @@ class ExamController
         $this->view = $view;
         $this->request = $request;
         $this->session = $session;
+
+        $this->view->setController($this);
     }
 
     public function index()
@@ -57,7 +59,11 @@ class ExamController
         $user = $this->userRepository->findUserByEmail($email);
 
         $data = $this->request->getParams();
-        $exam = $this->examRepository->create($data);
+        $this->examRepository->create($data);
+
+        $exam = $this->examRepository->findExamByName($data['name']);
+        $this->examUserRepository->create(['exam_id' => $exam->getId(), 'user_id' => $user->id]);
+
         if (!$exam) {
             echo "Er is iets fout gegaan";
             $result = $this->view->render('exams/index.php', ['loggedIn' => $this->session->get('loggedIn'), 'role' => $user->role]);
@@ -66,5 +72,19 @@ class ExamController
             $result = $this->view->render('exams/index.php', ['loggedIn' => $this->session->get('loggedIn'), 'role' => $user->role]);
             echo $result;
         }
+    }
+
+    public function getTime($dateTime)
+    {
+        $timestamp = strtotime($dateTime);
+        $formattedTime = date('H:i', $timestamp);
+        return $formattedTime;
+    }
+
+    public function getDate($dateTime)
+    {
+        $timestamp = strtotime($dateTime);
+        $formattedDate = date('Y-m-d', $timestamp);
+        return $formattedDate;
     }
 }
