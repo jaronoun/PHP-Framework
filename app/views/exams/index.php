@@ -72,9 +72,9 @@
             <div class="card-header text-white bg-dark">Tentamens</div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item">Exam 1 <button class="btn btn-dark float-right sml-btn">Uitschrijven</button></li>
-                    <li class="list-group-item">Exam 2 <button class="btn btn-dark sml-btn float-right">Uitschrijven</button></li>
-                    <li class="list-group-item">Exam 3 <button class="btn btn-dark sml-btn float-right">Uitschrijven</button></li>
+                    {% for exam in exams %}
+                        <li class="list-group-item"> {{ exam.name }} <button class="btn btn-dark float-right sml-btn">Uitschrijven</button></li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -86,21 +86,13 @@
             <div class="card-header text-white bg-dark">Opkomende Tentamens</div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <h5>Wiskunde</h5>
-                        <p>10 mei 2023</p>
-                        <p>Tijd: 10:00 - 12:00</p>
-                    </li>
-                    <li class="list-group-item">
-                        <h5>Nederlands</h5>
-                        <p>15 mei 2023</p>
-                        <p>Tijd: 14:00 - 16:00</p>
-                    </li>
-                    <li class="list-group-item">
-                        <h5>Geschiedenis</h5>
-                        <p>20 mei 2023</p>
-                        <p>Tijd: 9:00 - 11:00</p>
-                    </li>
+                    {% for exam in exams %}
+                        <li class="list-group-item">
+                            <h5>{{ exam.name }}</h5>
+                            <p>Start: {{ exam.start_time }}</br>
+                            Einde: {{ exam.end_time }}</p>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>

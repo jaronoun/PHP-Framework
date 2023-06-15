@@ -8,44 +8,68 @@ use PDO;
 
 class ExamUser extends Model
 {
-    public $id;
     public $exam_id;
     public $user_id;
     public $created_at;
     public $updated_at;
-    private int $examId;
-    private int $userId;
 
-    public function create(int $examId, int $userId): void
+    public function __construct(
+        int $exam_id,
+        int $user_id)
     {
-        $this->examId = $examId;
-        $this->userId = $userId;
-        $this->created_at = Date('Y-m-d H:i:s');
-        $this->updated_at = Date('Y-m-d H:i:s');
+        $this->exam_id = $exam_id;
+        $this->user_id = $user_id;
+        $this->created_at = date('Y-m-d H:i:s');
+        $this->updated_at = date('Y-m-d H:i:s');
         parent::__construct();
     }
 
-    public function deleteByExamId(int $examId): bool|array
+    public static function all()
     {
-        $stmt = self::query('DELETE FROM exam_user WHERE exam_id = :exam_id');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = self::query("SELECT * FROM exam_user");
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
     }
 
-    public function deleteByUserId(int $userId): bool|array
+    public static function findByUser($userId)
     {
-        $stmt = self::query('DELETE FROM exam_user WHERE user_id = :user_id');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = self::query("SELECT * FROM exam_user WHERE user_id = ?", [$userId]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $exams = [];
+        foreach ($data as $exam) {
+            $examId = $exam['exam_id'];
+            $stmt = self::query("SELECT * FROM exam WHERE id = ?", [$examId]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            array_push($exams, $result);
+        }
+        return $exams;
     }
 
-    public function findExamIdsByUserId(int $userId): array
+    public static function findByExam($examId)
     {
-        $stmt = self::query('SELECT exam_id FROM exam_user WHERE user_id = :user_id');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = self::query("SELECT * FROM exam_user WHERE exam_id = ?", [$examId]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
     }
 
-    public function findUserIdsByExamId(int $examId): array
+    public function save()
     {
-        $stmt = self::query('SELECT user_id FROM exam_user WHERE exam_id = :exam_id');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (! self::findByExam($this->exam_id)) {
+            return $this->create();
+        }
+        return false;
     }
+
+    public function create() : bool
+    {
+        $stmt = self::query("INSERT INTO exam_user (exam_id, user_id, created_at, updated_at) VALUES (?, ?, ?, ?)",
+        [
+           $this->exam_id,
+           $this->user_id,
+           $this->created_at,
+           $this->updated_at
+        ]);
+        return true;
+    }
+
 }

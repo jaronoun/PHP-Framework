@@ -67,12 +67,6 @@ class View
             return $output;
         }, $templateContent);
 
-        // Variable placeholders
-        $templateContent = preg_replace_callback('/{{\s*([\w\.]+)\s*}}/', function ($matches) use ($data) {
-            $variableName = $matches[1];
-            return $data[$variableName] ?? '';
-        }, $templateContent);
-
         // Loop blocks
         $templateContent = preg_replace_callback('/{%\s*for\s+(\w+)\s+in\s+([\w\.]+)\s*%}(.*?)\s*{%\s*endfor\s*%}/s', function ($matches) use ($data) {
             $loopVariable = $matches[1];
@@ -82,14 +76,24 @@ class View
             $output = '';
             $array = $data[$arrayVariable] ?? [];
             foreach ($array as $item) {
-                $data[$loopVariable] = $item;
+                $data[$loopVariable] = $item[0];
                 $output .= $this->compileTemplate($loopContent, $data);
             }
 
             return $output;
         }, $templateContent);
 
+        // Variable placeholders
+        $templateContent = preg_replace_callback('/{{\s*([\w\.]+)\s*}}/', function ($matches) use ($data) {
+            $variablePath = explode('.', $matches[1]);
+            $value = $data;
 
+            foreach ($variablePath as $key) {
+                $value = isset($value[$key]) ? $value[$key] : '';
+            }
+
+            return $value;
+        }, $templateContent);
         return $templateContent;
     }
 

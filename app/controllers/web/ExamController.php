@@ -37,11 +37,17 @@ class ExamController
 
     public function index()
     {
-        $loggedIn = SESSION::get('loggedIn');
+        $loggedIn = $this->session->get('loggedIn');
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
+        $exams = $this->examUserRepository->findByUser($user->getId());
 
-        $result = $this->view->render('exams/index.php', ['user' => $user, 'loggedIn' => $loggedIn, 'page' => 'exams', 'role' => $user->role]);
+        $result = $this->view->render('exams/index.php', [
+            'loggedIn' => $loggedIn,
+            'page' => 'exams',
+            'role' => $user->role,
+            'exams' => $exams
+        ]);
         echo $result;
     }
 

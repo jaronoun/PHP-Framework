@@ -35,7 +35,7 @@ class ExamRepository implements Repository
 
         $exam = new Exam($name, $desc, $start, $end);
 
-        if($exam->save()){
+        if ($exam->save()) {
             return $exam;
         } else {
             return null;

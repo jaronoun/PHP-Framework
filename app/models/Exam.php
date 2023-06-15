@@ -7,7 +7,8 @@ use Isoros\core\Model;
 use DateTime;
 use PDO;
 
-class Exam extends Model{
+class Exam extends Model
+{
     public ?int $id = null;
     public string $name;
     public ?string $desc;
@@ -24,9 +25,11 @@ class Exam extends Model{
     {
         $this->name = $name;
         $this->desc = $desc === "" ? null : $desc;
+
         $currentDateTime = date('Y-m-d H:i:s');
         $this->start_time = ($start_time !== null) ? date('Y-m-d H:i:s', strtotime($start_time)) : $currentDateTime;
         $this->end_time = ($end_time !== null) ? date('Y-m-d H:i:s', strtotime($end_time)) : $currentDateTime;
+
         $this->created_at = $currentDateTime;
         $this->updated_at = $currentDateTime;
         parent::__construct();
@@ -104,7 +107,8 @@ class Exam extends Model{
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if($result){
-            $exam = new Exam($result['name'],
+            $exam = new Exam(
+                $result['name'],
                 $result['desc'],
                 $result['start_time'],
                 $result['end_time'],
@@ -137,10 +141,8 @@ class Exam extends Model{
     public function save(): bool
     {
         if (! self::findByName($this->name)) {
-
             return $this->create();
         }
-
         return false;
     }
 
@@ -154,7 +156,6 @@ class Exam extends Model{
             $this->created_at,
             $this->updated_at
         ]);
-
         return true;
     }
 
