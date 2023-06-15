@@ -26,16 +26,6 @@ class ExamRepository implements Repository
         return Exam::findByName($name);
     }
 
-//    public function create($name, $desc, $start_time, $end_time)
-//    {
-//        $exam = new Exam($name, $desc, $start_time, $end_time);
-//
-//        if($exam->save()){
-//            return $exam;
-//        } else {
-//            return null;
-//        }
-//    }
     public function create($data)
     {
         $name = $data["name"];
@@ -44,7 +34,6 @@ class ExamRepository implements Repository
         $end = $data["end-time"];
 
         $exam = new Exam($name, $desc, $start, $end);
-        var_dump($exam);
 
         if($exam->save()){
             return $exam;
@@ -53,20 +42,6 @@ class ExamRepository implements Repository
         }
     }
 
-//    public function update($id, $name, $desc, $start_time, $end_time)
-//    {
-//        try {
-//            $exam = Exam::findById($id);
-//            $exam->setDescription($desc);
-//            $exam->setStartTime($start_time);
-//            $exam->setEndTime($end_time);
-//            $exam->save();
-//
-//            return json_encode($exam);
-//        } catch (PDOException $e) {
-//            return json_encode(['error' => $e->getMessage()]);
-//        }
-//    }
     public function update($id, $data)
     {
         // TODO: Implement update() method.
@@ -83,8 +58,6 @@ class ExamRepository implements Repository
             return json_encode(['error' => $e->getMessage()]);
         }
     }
-
-
 
 }
 

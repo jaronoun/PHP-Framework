@@ -1,13 +1,13 @@
 <?php
 namespace Isoros\controllers\api;
 
+use DateTime;
 use Isoros\core\Model;
 use Isoros\models\ExamUser;
 use Psr\Container\ContainerInterface;
 
 class ExamUserRepository extends Model implements Repository
 {
-
     // Deze methode haalt een examuser op basis van het id uit de database en geeft null terug als er geen rij met dat id bestaat.
     public function getById(int $id): ?ExamUser {
         $stmt = $this->db->prepare("SELECT * FROM exam_user WHERE id = ?");
@@ -78,19 +78,7 @@ class ExamUserRepository extends Model implements Repository
         );
         $this->db->execute($query, $params);
     }
-
-//    public function update(ExamUser $exam_user)
-//    {
-//        $query = "UPDATE exam_user SET created_at = :created_at, updated_at = :updated_at WHERE exam_id = :exam_id AND user_id = :user_id";
-//        $params = array(
-//            ':exam_id' => $exam_user->getExamId(),
-//            ':user_id' => $exam_user->getUserId(),
-//            ':created_at' => $exam_user->getCreatedAt(),
-//            ':updated_at' => $exam_user->getUpdatedAt()
-//        );
-//        $this->db->execute($query, $params);
-//    }
-
+    
     public function getAll()
     {
         // TODO: Implement getAll() method.

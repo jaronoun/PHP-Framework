@@ -32,9 +32,7 @@ class User extends Model
         ?string $role,
         ?string $remember_token,
     ) {
-
         $this->name = $name ;
-
         $this->email = $email ;
         $this->password = $password ?? null;
         $this->role = $role ?? null;

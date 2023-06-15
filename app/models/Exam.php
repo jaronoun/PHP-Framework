@@ -8,17 +8,22 @@ use DateTime;
 use PDO;
 
 class Exam extends Model{
-    private int $id;
-    protected string $name;
-    protected ?string $desc;
-    protected ?string $start_time = null;
-    protected ?string $end_time = null;
-    protected ?string $created_at = null;
-    protected ?string $updated_at = null;
+    public ?int $id = null;
+    public string $name;
+    public ?string $desc;
+    public ?string $start_time = null;
+    public ?string $end_time = null;
+    public ?string $created_at = null;
+    public ?string $updated_at = null;
 
-    public function __construct(string $name, ?string $desc, ?string $start_time, ?string $end_time) {
+    public function __construct(
+        string $name,
+        ?string $desc,
+        ?string $start_time,
+        ?string $end_time)
+    {
         $this->name = $name;
-        $this->desc = $desc;
+        $this->desc = $desc === "" ? null : $desc;
         $currentDateTime = date('Y-m-d H:i:s');
         $this->start_time = ($start_time !== null) ? date('Y-m-d H:i:s', strtotime($start_time)) : $currentDateTime;
         $this->end_time = ($end_time !== null) ? date('Y-m-d H:i:s', strtotime($end_time)) : $currentDateTime;
@@ -91,22 +96,6 @@ class Exam extends Model{
         $stmt = self::query("SELECT * FROM exam");
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $results;
-
-//        $exam = [];
-//        foreach ($results as $result) {
-//            $exam[] = new User(
-//                $result['id'],
-//                $result['name'],
-//                $result['email'],
-//                $result['password'],
-//                $result['role'],
-//                $result['remember_token'] ?? null,
-//                $result['created_at']?? null,
-//                $result['updated_at']?? null
-//            );
-//        }
-//
-//        return $exam;
     }
 
     public static function findById(int $id): ?Exam
@@ -157,7 +146,7 @@ class Exam extends Model{
 
     private function create(): bool
     {
-        $stmt = self::query("INSERT INTO exam (name, desc, start_time, end_time, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)", [
+        $stmt = self::query("INSERT INTO exam (name, `desc`, start_time, end_time, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", [
             $this->name,
             $this->desc,
             $this->start_time,
@@ -165,7 +154,6 @@ class Exam extends Model{
             $this->created_at,
             $this->updated_at
         ]);
-
 
         return true;
     }
