@@ -47,7 +47,7 @@ $container->bind(Router::class, function ($container) {
 
     $router->addRoute('GET', '/tentamens', 'ExamController@index');
     $router->addRoute('POST', '/tentamens', 'ExamController@storeExam');
-    $router->addRoute('DELETE', '/tentamens/{id}', 'ExamController@removeExam');
+    $router->addRoute('GET', '/tentamens/{id}', 'ExamController@removeExam');
 
     $router->addRoute('GET', '/profiel', 'UserController@index');
 

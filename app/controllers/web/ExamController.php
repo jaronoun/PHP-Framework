@@ -86,8 +86,10 @@ class ExamController
         }
     }
 
-    public function removeExam()
+    public function removeExam($id)
     {
+        var_dump($id);
+
         $data = $this->request->getParams();
         var_dump($data);
 //        $this->examUserRepository->delete($data['id']);
@@ -114,4 +116,6 @@ class ExamController
         $formattedDate = date('j F Y', $timestamp);
         return $formattedDate;
     }
+
+
 }

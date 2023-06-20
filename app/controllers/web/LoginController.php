@@ -71,7 +71,6 @@ class LoginController
 
     public function handleLogout()
     {
-
         $loggedIn = false;
         $this->session->destroy();
         $result = $this->view->render('auth\login.php', ['loggedIn' => $loggedIn, 'role' => '']);
