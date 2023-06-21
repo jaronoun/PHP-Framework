@@ -84,10 +84,6 @@ class ExamController
 
     public function removeExam($id)
     {
-        var_dump($id);
-
-        $data = $this->request->getParams();
-        var_dump($data);
 //        $this->examUserRepository->delete($data['id']);
 //        $this->examRepository->delete($data['id']);
 //
