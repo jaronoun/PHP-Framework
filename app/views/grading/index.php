@@ -1,7 +1,7 @@
 {% extends layout/header.php %}
 
 <div class="card">
-    <div class="card-header">Beoordeel Tentamen</div>
+    <div class="card-header text-white bg-dark">Beoordeel Tentamen</div>
     <div class="card-body">
         <form>
             <div class="form-group mb-3">
