@@ -70,6 +70,7 @@ class ExamController
         ]);
 
         $this->exams = $this->examUserRepository->findByUser($this->user->getId());
+
         if (!$exam) {
             echo "Er is iets fout gegaan";
         } else {
@@ -84,15 +85,16 @@ class ExamController
 
     public function removeExam($id)
     {
-//        $this->examUserRepository->delete($data['id']);
-//        $this->examRepository->delete($data['id']);
-//
-//        $result = $this->view->render('exams/index.php', [
-//            'loggedIn' => $this->session->get('loggedIn'),
-//            'role' => $this->user->role,
-//            'exams' => $this->exams
-//            ]);
-//        echo $result;
+        $this->examUserRepository->delete($id);
+        $this->examRepository->delete($id);
+        $this->exams = $this->examUserRepository->findByUser($this->user->getId());
+
+        $result = $this->view->render('exams/index.php', [
+            'loggedIn' => $this->session->get('loggedIn'),
+            'role' => $this->user->role,
+            'exams' => $this->exams
+            ]);
+        echo $result;
     }
 
     public function getTime($dateTime)

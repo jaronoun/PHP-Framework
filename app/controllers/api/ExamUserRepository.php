@@ -29,7 +29,7 @@ class ExamUserRepository extends Model implements Repository
         $exam_id = $data["exam_id"];
         $user_id = $data["user_id"];
 
-        $examUser = new ExamUser($exam_id, $user_id);
+        $examUser = new ExamUser(null, $exam_id, $user_id);
 
         if ($examUser->save()) {
             return $examUser;
@@ -40,7 +40,21 @@ class ExamUserRepository extends Model implements Repository
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $deleted = true;
+        $examUsers = ExamUser::findByExam($id);
+        foreach ($examUsers as $data) {
+            $examUser = new ExamUser(
+                $data['id'],
+                $data['exam_id'],
+                $data['user_id'],
+                $data['created_at'],
+                $data['updated_at']
+            );
+            if (!$examUser->delete()) {
+                $deleted = false;
+            }
+        }
+        return $deleted;
     }
 
     public function update($id, $data)

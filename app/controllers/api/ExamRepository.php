@@ -52,7 +52,6 @@ class ExamRepository implements Repository
         try {
             $exam = Exam::findById($id);
             $exam->delete();
-
             return json_encode(['success' => true]);
         } catch (PDOException $e) {
             return json_encode(['error' => $e->getMessage()]);
