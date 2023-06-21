@@ -24,7 +24,7 @@ class ExamUserRepository extends Model implements Repository
         return ExamUser::findByExam($examId);
     }
 
-    public function create($data)
+    public function create($data): ?ExamUser
     {
         $exam_id = $data["exam_id"];
         $user_id = $data["user_id"];

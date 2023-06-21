@@ -7,24 +7,25 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use ReflectionException;
 
 class Router implements RequestHandlerInterface
 {
-    protected $routes = [];
-    protected $container;
+    protected array $routes = [];
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    public function addRoute($method, $uri, $handler)
+    public function addRoute($method, $uri, $handler): void
     {
         $pattern = $this->convertUriToPattern($uri);
         $this->routes[$method][$pattern] = $handler;
     }
 
-    protected function convertUriToPattern($uri)
+    protected function convertUriToPattern($uri): string
     {
         // Vervang de ID-placeholder door een reguliere expressie-patroon
         $pattern = preg_replace('/\{(\w+)\}/', '(?<$1>[^/]+)', $uri);
@@ -35,7 +36,7 @@ class Router implements RequestHandlerInterface
         return $pattern;
     }
 
-    protected function extractIdFromUri($uri, $pattern)
+    protected function extractIdFromUri($uri, $pattern): ?string
     {
         preg_match($pattern, $uri, $matches);
         $id = $matches['id'] ?? null;
@@ -51,9 +52,7 @@ class Router implements RequestHandlerInterface
         $handler = $this->matchRoute($method, $uri);
 
         if (!$handler) {
-            http_response_code(404);
-            echo "Page not found";
-            return new Response();
+            return new Response(404, [], 'Page not found');
         }
 
         // Haal het reguliere expressiepatroon op dat overeenkomt met de route
@@ -80,7 +79,10 @@ class Router implements RequestHandlerInterface
     // Method to load the appropriate view based on the handler
 
 
-    protected function loadView($handler, $id)
+    /**
+     * @throws ReflectionException
+     */
+    protected function loadView($handler, $id): Response
     {
 
         $parts = explode('@', $handler);
@@ -89,9 +91,7 @@ class Router implements RequestHandlerInterface
         $controllerPath = realpath(__DIR__ . '/../../app/controllers/web/' . $controllerName . '.php');
 
         if (!file_exists($controllerPath)) {
-            http_response_code(500);
-            echo "Controller not found";
-            return;
+            return new Response(500, [], 'Controller not found');
         }
 
         // Met de juiste namespace

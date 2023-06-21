@@ -4,7 +4,6 @@ namespace Isoros\controllers\api;
 
 
 use Isoros\models\Exam;
-use Isoros\models\User;
 use PDOException;
 
 
@@ -16,7 +15,7 @@ class ExamRepository implements Repository
         return Exam::all();
     }
 
-    public function findById($id)
+    public function findById($id): ?Exam
     {
         return Exam::findById($id);
     }
@@ -26,7 +25,7 @@ class ExamRepository implements Repository
         return Exam::findByName($name);
     }
 
-    public function create($data)
+    public function create($data): ?Exam
     {
         $name = $data["name"];
         $desc = $data["desc"];
@@ -42,12 +41,32 @@ class ExamRepository implements Repository
         }
     }
 
-    public function update($id, $data)
+    public function update($id, $data): false|string
     {
-        // TODO: Implement update() method.
+        $name = $data[0];
+        $desc = $data[1];
+        $start_time = $data[2];
+        $end_time = $data[3];
+        $updated_at = $data[4];
+
+
+        try {
+            $exam = Exam::findById($id);
+            $exam->setExamId($name);
+            $exam->setUserId($desc);
+            $exam->setDescription($desc);
+            $exam->setStartTime($start_time);
+            $exam->setEndTime($end_time);
+            $exam->setUpdatedAt($updated_at);
+            $exam->save();
+
+            return json_encode($exam);
+        } catch (PDOException $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
     }
 
-    public function delete($id)
+    public function delete($id): false|string
     {
         try {
             $exam = Exam::findById($id);

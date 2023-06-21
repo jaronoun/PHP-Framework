@@ -8,12 +8,12 @@ use PDOException;
 
 class GradeRepository extends Model implements Repository
 {
-    public function getAll()
+    public function getAll(): array
     {
         return Grade::all();
     }
 
-    public function findById($id)
+    public function findById($id): ?Grade
     {
         return Grade::findById($id);
     }
