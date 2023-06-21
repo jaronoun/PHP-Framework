@@ -15,7 +15,7 @@ class Model
         $this->connection = Database::connect();
     }
 
-    protected static function query(string $sql, array $params = []): PDOStatement
+    protected static function query(string $sql, array $params = []): array
     {
         $stmt = Database::connect()->prepare($sql);
 
@@ -30,7 +30,14 @@ class Model
 
         $stmt->execute();
 
-        return $stmt;
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//        $results = [];
+//
+//        foreach($data as $item){
+//            array_push($results, $item);
+//        }
+
+        return $data;
     }
 
     public function hasOne(string $relatedModel, ?string $foreignKey = null): ?array

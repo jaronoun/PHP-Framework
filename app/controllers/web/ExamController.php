@@ -2,12 +2,14 @@
 
 namespace Isoros\controllers\web;
 
+use Exception;
 use Isoros\controllers\api\ExamRepository;
 use Isoros\controllers\api\ExamUserRepository;
 use Isoros\controllers\api\UserRepository;
 use Isoros\core\View;
 use Isoros\models\User;
 use Isoros\routing\Request;
+use Isoros\routing\Response;
 use Isoros\routing\Session;
 
 class ExamController
@@ -45,19 +47,25 @@ class ExamController
         $this->exams = $this->examUserRepository->findByUser($this->user->getId());
     }
 
-    public function index()
+    /**
+     * @throws Exception
+     */
+    public function index(): void
     {
         $loggedIn = $this->session->get('loggedIn');
 
-        $result = $this->view->render('exams/index.php', [
+        $this->view->render('exams/index.php', [
             'loggedIn' => $loggedIn,
             'page' => 'exams',
             'role' => $this->user->role,
             'exams' => $this->exams
         ]);
-        echo $result;
+
     }
 
+    /**
+     * @throws Exception
+     */
     public function storeExam()
     {
         $data = $this->request->getParams();
@@ -72,29 +80,32 @@ class ExamController
         $this->exams = $this->examUserRepository->findByUser($this->user->getId());
 
         if (!$exam) {
-            echo "Er is iets fout gegaan";
+            return new Response(502,[],"Er is iets fout gegaan");
         } else {
-            $result = $this->view->render('exams/index.php', [
+            $this->view->render('exams/index.php', [
                 'loggedIn' => $this->session->get('loggedIn'),
                 'role' => $this->user->role,
                 'exams' => $this->exams,
                 ]);
-            echo $result;
+
         }
     }
 
-    public function removeExam($id)
+    /**
+     * @throws Exception
+     */
+    public function removeExam($id): void
     {
         $this->examUserRepository->delete($id);
         $this->examRepository->delete($id);
         $this->exams = $this->examUserRepository->findByUser($this->user->getId());
 
-        $result = $this->view->render('exams/index.php', [
+        $this->view->render('exams/index.php', [
             'loggedIn' => $this->session->get('loggedIn'),
             'role' => $this->user->role,
             'exams' => $this->exams
             ]);
-        echo $result;
+
     }
 
     public function getTime($dateTime)

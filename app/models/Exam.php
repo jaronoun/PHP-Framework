@@ -98,15 +98,15 @@ class Exam extends Model
 
     public static function all(): array
     {
-        $stmt = self::query("SELECT * FROM exam");
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = self::query("SELECT * FROM exam");
+
         return $results;
     }
 
     public static function findById(int $id): ?Exam
     {
-        $stmt = self::query("SELECT * FROM exam WHERE id = ?", [$id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = self::query("SELECT * FROM exam WHERE id = ?", [$id]);
+
 
         if($result){
             $exam = new Exam(
@@ -124,8 +124,8 @@ class Exam extends Model
 
     public static function findByName(string $name): ?Exam
     {
-        $stmt = self::query("SELECT * FROM exam WHERE name = ?", [$name]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = self::query("SELECT * FROM exam WHERE name = ?", [$name]);
+
         if($result){
             $exam = new Exam($result['name'],
                 $result['desc'],

@@ -76,33 +76,17 @@ class Grade extends Model{
     }
 
 
-    public static function all(): array
+    public static function all()
     {
-        $stmt = self::query("SELECT * FROM grades");
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
+        $data = self::query("SELECT * FROM grades");
 
-//        $grades = [];
-//        foreach ($results as $result) {
-//            $grades[] = new User(
-//                $result['id'],
-//                $result['name'],
-//                $result['email'],
-//                $result['password'],
-//                $result['role'],
-//                $result['remember_token'] ?? null,
-//                $result['created_at']?? null,
-//                $result['updated_at']?? null
-//            );
-//        }
-//
-//        return $grades;
+        return $data;
+
     }
 
     public static function findById(int $id): ?Grade
     {
-        $stmt = self::query("SELECT * FROM grade WHERE id = ?", [$id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = self::query("SELECT * FROM grade WHERE id = ?", [$id]);
 
         if($result){
             $grade = new Grade($result['exam_id'],
@@ -119,8 +103,7 @@ class Grade extends Model{
 
     public static function findByUserId(int $user_id): ? array
     {
-        $stmt = self::query("SELECT * FROM grades WHERE user_id = ?", [$user_id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = self::query("SELECT * FROM grades WHERE user_id = ?", [$user_id]);
 
 //        if($result){
 //            $grades = new Grade($result['name'],
@@ -137,8 +120,7 @@ class Grade extends Model{
 
     public static function findByExamId(int $exam_id): ? array
     {
-        $stmt = self::query("SELECT * FROM grades WHERE exam_id = ?", [$exam_id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = self::query("SELECT * FROM grades WHERE exam_id = ?", [$exam_id]);
 
 //        if($result){
 //            $grades = new Grade($result['name'],
@@ -163,7 +145,7 @@ class Grade extends Model{
 
     private function create(): bool
     {
-        $stmt = self::query("INSERT INTO grades (exam_id, user_id, grade, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)", [
+        self::query("INSERT INTO grades (exam_id, user_id, grade, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)", [
             $this->getExamId(),
             $this->getUserId(),
             $this->getGrade(),

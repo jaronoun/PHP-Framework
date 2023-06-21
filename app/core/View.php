@@ -16,12 +16,12 @@ class View
         $this->templateDir = $templateDir;
     }
 
-    public function setController($cotroller)
+    public function setController($cotroller): void
     {
         $this->controller = $cotroller;
     }
 
-    public function render($templateName, $data): bool|string
+    public function render($templateName, $data): void
     {
         $templatePath = $this->templateDir . '\\' . $templateName;
 
@@ -38,10 +38,11 @@ class View
         $output = ob_get_contents();
         ob_end_clean();
 
-        return $output;
+        echo $output;
     }
 
-    private function compileTemplate($templateContent, $data) {
+    private function compileTemplate($templateContent, $data): array|string|null
+    {
         // Remove comments
         $templateContent = preg_replace('/{#\s*(.*?)\s*#}/s', '', $templateContent);
 
@@ -82,30 +83,25 @@ class View
             $output = '';
             $array = $data[$arrayVariable] ?? [];
 
-            foreach ($array as $exam) {
-                foreach ($exam as $item) {
-                    $data[$loopVariable] = $item;
-                }
+            foreach ($array as $item) {
+                $data[$loopVariable] = $item;
                 $output .= $this->compileTemplate($loopContent, $data);
             }
 
             return $output;
         }, $templateContent);
-
         // Variable placeholders
         $templateContent = preg_replace_callback('/{{\s*([\w\.]+)\s*}}/', function ($matches) use ($data) {
-
             $variablePath = explode('.', $matches[1]);
             $value = $data;
 
-//            var_dump($value);
-
             foreach ($variablePath as $key) {
-                $value = isset($value[$key]) ? $value[$key] : '';
+                $value = $value[$key] ?? '';
             }
 
-            return $value;
+            return htmlspecialchars($value);
         }, $templateContent);
+
 
         // Functions in variables
         $templateContent = preg_replace_callback('/{{\s*([\w\.]+)\((.*)\)\s*}}/', function ($matches) use ($data) {

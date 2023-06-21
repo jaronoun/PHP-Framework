@@ -1,7 +1,8 @@
 {% extends layout/header.php %}
 
 <div class="row mt-3">
-    <!-- Most recent result card -->
+
+    {% if role == student %}
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
             <div class="card-header text-white bg-dark">Meest recente resultaat</div>
@@ -13,7 +14,6 @@
         </div>
     </div>
 
-    <!-- Uncompleted exams card -->
     <div class="col-12 col-md-6 mb-3">
         <div class="card">
             <div class="card-header text-white bg-dark">Behaalde cijfers</div>
@@ -38,6 +38,20 @@
             </div>
         </div>
     </div>
+    {% endif %}
+
+
+    <div>
+    {% for grade in data %}
+        <p>{{ grade.id }}</p>
+        <p>Exam ID: {{ grade.exam_id }}</p>
+        <p>User ID: {{ grade.user_id }}</p>
+        <p>Grade: {{ grade.grade }}</p>
+        <p>Created At: {{ grade.created_at }}</p>
+        <p>Updated At: {{ grade.updated_at }}</p>
+    {% endfor %}
+    </div>
+
 </div>
 
-{% extends layout/footer.php %}
+
