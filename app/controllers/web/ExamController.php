@@ -43,7 +43,6 @@ class ExamController
         $email = $this->session->get('user');
         $this->user = $this->userRepository->findUserByEmail($email);
         $this->exams = $this->examUserRepository->findByUser($this->user->getId());
-
     }
 
     public function index()
@@ -63,20 +62,21 @@ class ExamController
     {
         $data = $this->request->getParams();
         $this->examRepository->create($data);
-
         $exam = $this->examRepository->findExamByName($data['name']);
+
         $this->examUserRepository->create([
             'exam_id' => $exam->getId(),
             'user_id' => $this->user->id
         ]);
 
+        $this->exams = $this->examUserRepository->findByUser($this->user->getId());
         if (!$exam) {
             echo "Er is iets fout gegaan";
         } else {
             $result = $this->view->render('exams/index.php', [
                 'loggedIn' => $this->session->get('loggedIn'),
                 'role' => $this->user->role,
-                'exams' => $exam,
+                'exams' => $this->exams,
                 ]);
             echo $result;
         }

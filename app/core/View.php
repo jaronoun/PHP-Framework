@@ -81,8 +81,11 @@ class View
 
             $output = '';
             $array = $data[$arrayVariable] ?? [];
-            foreach ($array as $item) {
-                $data[$loopVariable] = $item[0];
+
+            foreach ($array as $exam) {
+                foreach ($exam as $item) {
+                    $data[$loopVariable] = $item;
+                }
                 $output .= $this->compileTemplate($loopContent, $data);
             }
 
@@ -91,8 +94,11 @@ class View
 
         // Variable placeholders
         $templateContent = preg_replace_callback('/{{\s*([\w\.]+)\s*}}/', function ($matches) use ($data) {
+
             $variablePath = explode('.', $matches[1]);
             $value = $data;
+
+//            var_dump($value);
 
             foreach ($variablePath as $key) {
                 $value = isset($value[$key]) ? $value[$key] : '';
@@ -130,10 +136,10 @@ class View
         $condition = trim($condition);
 
         // Check for specific comparison operators
-        if (strpos($condition, '==') !== false) {
+        if (str_contains($condition, '==')) {
             [$left, $right] = explode('==', $condition);
             return $data[trim($left)] == trim($right);
-        } elseif (strpos($condition, '!=') !== false) {
+        } elseif (str_contains($condition, '!=')) {
             [$left, $right] = explode('!=', $condition);
             return trim($data[$left]) != trim($data[$right]);
         }
