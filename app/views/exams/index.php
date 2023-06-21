@@ -73,7 +73,11 @@
             <div class="card-body">
                 <ul class="list-group">
                     {% for exam in exams %}
-                        <li class="list-group-item"> {{ exam.name }} <button class="btn btn-dark float-right sml-btn">Uitschrijven</button></li>
+                        <li class="list-group-item"> {{ exam.name }}
+                            <a href="/tentamens/{{ exam.id }}">
+                                <button class="btn btn-dark float-right sml-btn">Verwijderen</button>
+                            </a>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>

@@ -50,6 +50,7 @@ class Container implements ContainerInterface
      */
     private function resolveDependencies($parameters): array
     {
+
         $dependencies = [];
 
         foreach ($parameters as $parameter) {

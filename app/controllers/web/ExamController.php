@@ -6,6 +6,7 @@ use Isoros\controllers\api\ExamRepository;
 use Isoros\controllers\api\ExamUserRepository;
 use Isoros\controllers\api\UserRepository;
 use Isoros\core\View;
+use Isoros\models\User;
 use Isoros\routing\Request;
 use Isoros\routing\Session;
 
@@ -18,6 +19,10 @@ class ExamController
     public View $view;
     public Session $session;
     public Request $request;
+
+    public ?User $user = null;
+    public ?array $exams = null;
+
 
     public function __construct(
         ExamRepository $examRepository,
@@ -35,30 +40,31 @@ class ExamController
         $this->session = $session;
 
         $this->view->setController($this);
+        $email = $this->session->get('user');
+        $this->user = $this->userRepository->findUserByEmail($email);
+        $this->exams = $this->examUserRepository->findByUser($this->user->getId());
+
     }
 
     public function index()
     {
+
         $loggedIn = $this->session->get('loggedIn');
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
         $exams = $this->examUserRepository->findByUser($user->getId());
-        var_dump($exams);
 
         $result = $this->view->render('exams/index.php', [
             'loggedIn' => $loggedIn,
             'page' => 'exams',
-            'role' => $user->role,
-            'exams' => $exams
+            'role' => $this->user->role,
+            'exams' => $this->exams
         ]);
         echo $result;
     }
 
     public function storeExam()
     {
-        $email = $this->session->get('user');
-        $user = $this->userRepository->findUserByEmail($email);
-
         $data = $this->request->getParams();
         $this->examRepository->create($data);
 
@@ -80,6 +86,23 @@ class ExamController
         }
     }
 
+    public function removeExam($id)
+    {
+        var_dump($id);
+
+        $data = $this->request->getParams();
+        var_dump($data);
+//        $this->examUserRepository->delete($data['id']);
+//        $this->examRepository->delete($data['id']);
+//
+//        $result = $this->view->render('exams/index.php', [
+//            'loggedIn' => $this->session->get('loggedIn'),
+//            'role' => $this->user->role,
+//            'exams' => $this->exams
+//            ]);
+//        echo $result;
+    }
+
     public function getTime($dateTime)
     {
         $timestamp = strtotime($dateTime);
@@ -90,7 +113,9 @@ class ExamController
     public function getDate($dateTime)
     {
         $timestamp = strtotime($dateTime);
-        $formattedDate = date('Y-m-d', $timestamp);
+        $formattedDate = date('j F Y', $timestamp);
         return $formattedDate;
     }
+
+
 }
