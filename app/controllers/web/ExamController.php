@@ -48,11 +48,7 @@ class ExamController
 
     public function index()
     {
-
         $loggedIn = $this->session->get('loggedIn');
-        $email = $this->session->get('user');
-        $user = $this->userRepository->findUserByEmail($email);
-        $exams = $this->examUserRepository->findByUser($user->getId());
 
         $result = $this->view->render('exams/index.php', [
             'loggedIn' => $loggedIn,
@@ -71,7 +67,7 @@ class ExamController
         $exam = $this->examRepository->findExamByName($data['name']);
         $this->examUserRepository->create([
             'exam_id' => $exam->getId(),
-            'user_id' => $user->id
+            'user_id' => $this->user->id
         ]);
 
         if (!$exam) {
@@ -79,7 +75,7 @@ class ExamController
         } else {
             $result = $this->view->render('exams/index.php', [
                 'loggedIn' => $this->session->get('loggedIn'),
-                'role' => $user->role,
+                'role' => $this->user->role,
                 'exams' => $exam,
                 ]);
             echo $result;
