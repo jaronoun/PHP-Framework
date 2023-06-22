@@ -37,11 +37,6 @@ class Model
         $stmt->execute();
 
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//        $results = [];
-//
-//        foreach($data as $item){
-//            array_push($results, $item);
-//        }
 
         return $data;
     }

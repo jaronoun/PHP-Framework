@@ -18,6 +18,7 @@ class Exam extends Model
     public ?string $updated_at = null;
 
     public function __construct(
+        ?int $id,
         string $name,
         ?string $desc,
         ?string $start_time,
@@ -33,6 +34,12 @@ class Exam extends Model
         $this->created_at = $currentDateTime;
         $this->updated_at = $currentDateTime;
         parent::__construct();
+    }
+
+    public static function deleteById($id)
+    {
+        $stmt = self::query("DELETE FROM exam WHERE id = ?", [$id]);
+        return true;
     }
 
     public function setId(int $id): void
@@ -103,37 +110,20 @@ class Exam extends Model
         return $results;
     }
 
-    public static function findById(int $id): ?Exam
+    public static function findById(int $id)
     {
-        $results = self::query("SELECT * FROM exam WHERE id = ?", [$id]);
-
-
-        if($results){
-            foreach($results as $result){
-                $exam = new Exam(
-                    $result['name'],
-                    $result['desc'],
-                    $result['start_time'],
-                    $result['end_time'],
-                );
-                $exam->setId($result['id']);
-                $exam->setCreatedAt($result['created_at']);
-                $exam->setUpdatedAt($result['updated_at']);
-            }
-
-            $exam->setId($result['id']);
-            $exam->setCreatedAt($result['created_at']);
-            $exam->setUpdatedAt($result['updated_at']);
-        }
-        return $result ? $exam : null;
+        $data = self::query("SELECT * FROM exam WHERE id = ?", [$id]);
+        return $data;
     }
 
     public static function findByName(string $name): ?Exam
     {
         $result = self::query("SELECT * FROM exam WHERE name = ?", [$name]);
-
+        $result = $result[0] ?? null;
         if($result){
-            $exam = new Exam($result['name'],
+            $exam = new Exam(
+                $result['id'],
+                $result['name'],
                 $result['desc'],
                 $result['start_time'],
                 $result['end_time'],
@@ -178,12 +168,6 @@ class Exam extends Model
             $this->getId()
         ]);
 
-        return true;
-    }
-
-    public function delete(): bool
-    {
-        $stmt = self::query("DELETE FROM exam WHERE id = ?", [$this->id]);
         return true;
     }
 

@@ -31,23 +31,20 @@ class ExamUser extends Model
 
     public static function all()
     {
-        $stmt = self::query("SELECT * FROM exam_user");
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
+        $data = self::query("SELECT * FROM exam_user");
+        return $data;
     }
 
     public static function findByUser($userId)
     {
         $data = self::query("SELECT * FROM exam_user WHERE user_id = ?", [$userId]);
-
         return $data;
     }
 
     public static function findByExam($examId)
     {
-        $stmt = self::query("SELECT * FROM exam_user WHERE exam_id = ?", [$examId]);
-
-        return $stmt;
+        $data = self::query("SELECT * FROM exam_user WHERE exam_id = ?", [$examId]);
+        return $data;
     }
 
     public function save()
@@ -81,7 +78,6 @@ class ExamUser extends Model
     public function remove() : bool
     {
         $stmt = self::query("DELETE FROM exam_user WHERE exam_id = ? AND user_id = ?", [$this->exam_id, $this->user_id]);
-        var_dump($stmt);
         return true;
     }
 

@@ -15,7 +15,7 @@ class ExamRepository implements Repository
         return Exam::all();
     }
 
-    public function findById($id): ?Exam
+    public function findById($id)
     {
         return Exam::findById($id);
     }
@@ -32,7 +32,7 @@ class ExamRepository implements Repository
         $start = $data["start-time"];
         $end = $data["end-time"];
 
-        $exam = new Exam($name, $desc, $start, $end);
+        $exam = new Exam(null, $name, $desc, $start, $end);
 
         if ($exam->save()) {
             return $exam;
@@ -69,8 +69,7 @@ class ExamRepository implements Repository
     public function delete($id): false|string
     {
         try {
-            $exam = Exam::findById($id);
-            $exam->delete();
+            Exam::deleteById($id);
             return json_encode(['success' => true]);
         } catch (PDOException $e) {
             return json_encode(['error' => $e->getMessage()]);

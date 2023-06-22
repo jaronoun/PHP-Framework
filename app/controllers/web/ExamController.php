@@ -44,8 +44,18 @@ class ExamController
         $this->view->setController($this);
         $email = $this->session->get('user');
         $this->user = $this->userRepository->findUserByEmail($email);
-        $this->exams = $this->examUserRepository->findByUser($this->user->getId());
+
     }
+
+    public function getUserExams()
+    {
+        $examUser = $this->examUserRepository->findByUser($this->user->getId());
+        foreach ($examUser as $exam) {
+            $exam = $this->examRepository->findById($exam['exam_id']);
+            $this->exams[] = $exam[0];
+        }
+    }
+
 
     /**
      * @throws Exception
@@ -53,6 +63,7 @@ class ExamController
     public function index(): void
     {
         $loggedIn = $this->session->get('loggedIn');
+        $this->getUserExams();
 
         $this->view->render('exams/index.php', [
             'loggedIn' => $loggedIn,
@@ -77,7 +88,7 @@ class ExamController
             'user_id' => $this->user->id
         ]);
 
-        $this->exams = $this->examUserRepository->findByUser($this->user->getId());
+        $this->getUserExams();
 
         if (!$exam) {
             return new Response(502,[],"Er is iets fout gegaan");
@@ -98,7 +109,7 @@ class ExamController
     {
         $this->examUserRepository->delete($id);
         $this->examRepository->delete($id);
-        $this->exams = $this->examUserRepository->findByUser($this->user->getId());
+        $this->getUserExams();
 
         $this->view->render('exams/index.php', [
             'loggedIn' => $this->session->get('loggedIn'),
