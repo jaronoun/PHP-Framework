@@ -16,9 +16,9 @@ class View
         $this->templateDir = $templateDir;
     }
 
-    public function setController($cotroller): void
+    public function setController($controller): void
     {
-        $this->controller = $cotroller;
+        $this->controller = $controller;
     }
 
     public function render($templateName, $data): void

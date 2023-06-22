@@ -501,4 +501,10 @@ class Request implements ServerRequestInterface
     {
         // TODO: Implement withoutAttribute() method.
     }
+
+    public function Redirect($url)
+    {
+        header("Location: $url");
+        exit();
+    }
 }

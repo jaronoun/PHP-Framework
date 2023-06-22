@@ -65,8 +65,9 @@ class LoginController
         $this->session->set('user', $username);
         $this->session->set('loggedIn', true);
 
+        $this->request->Redirect('/cijfers');
         $result = $this->view->render('grades\index.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn'), 'role' => $user->role]);
-        echo $result;
+
     }
 
     public function handleLogout()
