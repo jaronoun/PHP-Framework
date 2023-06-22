@@ -38,23 +38,16 @@ class ExamUser extends Model
 
     public static function findByUser($userId)
     {
-        $stmt = self::query("SELECT * FROM exam_user WHERE user_id = ?", [$userId]);
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $exams = [];
-        foreach ($data as $exam) {
-            $examId = $exam['exam_id'];
-            $stmt = self::query("SELECT * FROM exam WHERE id = ?", [$examId]);
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            array_push($exams, $result);
-        }
-        return $exams;
+        $data = self::query("SELECT * FROM exam_user WHERE user_id = ?", [$userId]);
+
+        return $data;
     }
 
     public static function findByExam($examId)
     {
         $stmt = self::query("SELECT * FROM exam_user WHERE exam_id = ?", [$examId]);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
+
+        return $stmt;
     }
 
     public function save()
