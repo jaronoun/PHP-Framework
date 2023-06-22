@@ -52,7 +52,7 @@
                 <th scope="col">Cijfer</th>
                 <th scope="col">Aangemaakt op:</th>
                 <th scope="col">Gewijzigd op:</th>
-
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -65,6 +65,7 @@
                     <td>{{ grade.grade }}</td>
                     <td>{{ grade.created_at }}</td>
                     <td>{{ grade.updated_at }}</td>
+                    <td><button type="button" class="btn btn-danger"> Wijzig </button></td>
                 </tr>
             {% endfor %}
             </tbody>
