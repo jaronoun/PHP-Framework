@@ -53,6 +53,18 @@ class ExamUser extends Model
         return $data;
     }
 
+    public function findTeacherByExam($examId)
+    {
+        $data = self::query("SELECT users.*
+                                    FROM users
+                                    JOIN exam_user ON users.user_id = exam_user.user_id
+                                    JOIN exam ON exam_user.exam_id = exam.exam_id
+                                    WHERE exam.exam_naam = ?
+                                      AND users.role = 'teacher';
+                                    ", [$examId]);
+        return $data;
+    }
+
     public function save()
     {
         if (! self::findByExamAndUser($this->exam_id, $this->user_id)) {
