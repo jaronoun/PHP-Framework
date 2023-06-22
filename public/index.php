@@ -50,6 +50,8 @@ $container->bind(Router::class, function ($container) {
     $router->addRoute('GET', '/tentamens', 'ExamController@index');
     $router->addRoute('POST', '/tentamens', 'ExamController@storeExam');
     $router->addRoute('GET', '/tentamens/{id}', 'ExamController@removeExam');
+    $router->addRoute('GET', '/tentamens/enroll/{id}', 'ExamController@enrollExam');
+    $router->addRoute('GET', '/tentamens/unEnroll/{id}', 'ExamController@unEnrollExam');
 
     $router->addRoute('GET', '/profiel', 'UserController@index');
 

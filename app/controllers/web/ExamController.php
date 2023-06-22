@@ -23,6 +23,7 @@ class ExamController
     public Request $request;
 
     public ?User $user = null;
+    public ?array $examUser = null;
     public ?array $exams = null;
 
 
@@ -49,10 +50,14 @@ class ExamController
 
     public function getUserExams()
     {
+        $exams = $this->examRepository->getAll();
+        foreach ($exams as $exam) {
+            $this->exams[] = $exam;
+        }
         $examUser = $this->examUserRepository->findByUser($this->user->getId());
         foreach ($examUser as $exam) {
             $exam = $this->examRepository->findById($exam['exam_id']);
-            $this->exams[] = $exam[0];
+            $this->examUser[] = $exam[0];
         }
     }
 
@@ -69,6 +74,7 @@ class ExamController
             'loggedIn' => $loggedIn,
             'page' => 'exams',
             'role' => $this->user->role,
+            'examUser' => $this->examUser,
             'exams' => $this->exams
         ]);
 
@@ -96,9 +102,9 @@ class ExamController
             $this->view->render('exams/index.php', [
                 'loggedIn' => $this->session->get('loggedIn'),
                 'role' => $this->user->role,
-                'exams' => $this->exams,
-                ]);
-
+                'examUser' => $this->examUser,
+                'exams' => $this->exams
+            ]);
         }
     }
 
@@ -114,9 +120,51 @@ class ExamController
         $this->view->render('exams/index.php', [
             'loggedIn' => $this->session->get('loggedIn'),
             'role' => $this->user->role,
+            'examUser' => $this->examUser,
             'exams' => $this->exams
-            ]);
+        ]);
 
+    }
+
+    public function enrollExam($id): void
+    {
+        $this->examUserRepository->create([
+            'exam_id' => intval($id),
+            'user_id' => $this->user->id
+        ]);
+
+        $this->getUserExams();
+
+        $this->view->render('exams/index.php', [
+            'loggedIn' => $this->session->get('loggedIn'),
+            'role' => $this->user->role,
+            'examUser' => $this->examUser,
+            'exams' => $this->exams
+        ]);
+    }
+
+    public function unEnrollExam($id): void
+    {
+        $this->examUserRepository->delete($id);
+        $this->getUserExams();
+
+        $this->view->render('exams/index.php', [
+            'loggedIn' => $this->session->get('loggedIn'),
+            'role' => $this->user->role,
+            'examUser' => $this->examUser,
+            'exams' => $this->exams
+        ]);
+    }
+
+    public function isNotEnrolled($id)
+    {
+        $examUser = $this->examUserRepository->findByUser($this->user->getId());
+        foreach ($examUser as $exam) {
+            if ($exam['exam_id'] == $id) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function getTime($dateTime)

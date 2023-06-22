@@ -13,10 +13,30 @@
                             <input type="text" class="form-control" id="exam-name" name="exam-name" placeholder="Zoek op tentamen naam" required>
                         </div>
                     </div>
-                    <div class="container">
-                        <button type="submit" class="btn btn-dark sml-btn">Inschrijven</button>
-                    </div>
                 </form>
+                <br>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th class="text-white bg-dark">ID</th>
+                        <th class="text-white bg-dark">Naam</th>
+                        <th class="text-white bg-dark">Start</th>
+                        <th class="text-white bg-dark">Actie</th>
+                    </tr>
+                    </thead>
+                    <tbody id="exams">
+                    {% for exam in exams %}
+                    {% if isNotEnrolled(exam.id) %}
+                    <tr>
+                        <td>{{ exam.id }}</td>
+                        <td>{{ exam.name }}</td>
+                        <td>{{ getDate(exam.start_time) }}</td>
+                        <td><a href="/tentamens/enroll/{{ exam.id }}" class="btn btn-dark sml-btn">Inschrijven</a></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -26,9 +46,14 @@
             <div class="card-header text-white bg-dark">Ingeschreven Tentamens</div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item">Exam 1 <button class="btn btn-dark float-right sml-btn">Uitschrijven</button></li>
-                    <li class="list-group-item">Exam 2 <button class="btn btn-dark sml-btn float-right">Uitschrijven</button></li>
-                    <li class="list-group-item">Exam 3 <button class="btn btn-dark sml-btn float-right">Uitschrijven</button></li>
+                    {% for exam in examUser %}
+                    <li class="list-group-item"> {{ exam.name }}
+                        <a href="/tentamens/unEnroll/{{ exam.id }}">
+                            <button class="btn btn-dark float-right sml-btn">Uitschrijven</button>
+                        </a>
+                    </li>
+                    {% endfor %}
+
                 </ul>
             </div>
         </div>
@@ -69,10 +94,10 @@
     </div>
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
-            <div class="card-header text-white bg-dark">Tentamens</div>
+            <div class="card-header text-white bg-dark">Ingescreven Tentamens</div>
             <div class="card-body">
                 <ul class="list-group">
-                    {% for exam in exams %}
+                    {% for exam in examUser %}
                         <li class="list-group-item"> {{ exam.name }}
                             <a href="/tentamens/{{ exam.id }}">
                                 <button class="btn btn-dark float-right sml-btn">Verwijderen</button>
@@ -90,7 +115,7 @@
             <div class="card-header text-white bg-dark">Opkomende Tentamens</div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    {% for exam in exams %}
+                    {% for exam in examUser %}
                         <li class="list-group-item">
                             <h5>{{ exam.name }}</h5>
                             <p>{{ getDate(exam.start_time) }}</p>
@@ -105,4 +130,14 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $("#exam-name").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#exams tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 {% extends layout/footer.php %}

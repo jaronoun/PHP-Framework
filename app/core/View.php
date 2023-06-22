@@ -54,6 +54,23 @@ class View
             return $this->compileTemplate($childContent, $data);
         }, $templateContent);
 
+        // Loop blocks
+        $templateContent = preg_replace_callback('/{%\s*for\s+(\w+)\s+in\s+([\w\.]+)\s*%}(.*?)\s*{%\s*endfor\s*%}/s', function ($matches) use ($data) {
+            $loopVariable = $matches[1];
+            $arrayVariable = $matches[2];
+            $loopContent = $matches[3];
+
+            $output = '';
+            $array = $data[$arrayVariable] ?? [];
+
+            foreach ($array as $item) {
+                $data[$loopVariable] = $item;
+                $output .= $this->compileTemplate($loopContent, $data);
+            }
+
+            return $output;
+        }, $templateContent);
+
         // Conditional blocks
         $templateContent = preg_replace_callback('/{%\s*if\s+(.*?)\s*%}(.*?)(?:{%\s*else\s*%}(.*?))?{%\s*endif\s*%}/s', function ($matches) use ($data) {
             if (!isset($data[$matches[1]])) {
@@ -74,35 +91,6 @@ class View
             return $output;
         }, $templateContent);
 
-        // Loop blocks
-        $templateContent = preg_replace_callback('/{%\s*for\s+(\w+)\s+in\s+([\w\.]+)\s*%}(.*?)\s*{%\s*endfor\s*%}/s', function ($matches) use ($data) {
-            $loopVariable = $matches[1];
-            $arrayVariable = $matches[2];
-            $loopContent = $matches[3];
-
-            $output = '';
-            $array = $data[$arrayVariable] ?? [];
-
-            foreach ($array as $item) {
-                $data[$loopVariable] = $item;
-                $output .= $this->compileTemplate($loopContent, $data);
-            }
-
-            return $output;
-        }, $templateContent);
-        // Variable placeholders
-        $templateContent = preg_replace_callback('/{{\s*([\w\.]+)\s*}}/', function ($matches) use ($data) {
-            $variablePath = explode('.', $matches[1]);
-            $value = $data;
-
-            foreach ($variablePath as $key) {
-                $value = $value[$key] ?? '';
-            }
-
-            return htmlspecialchars($value);
-        }, $templateContent);
-
-
         // Functions in variables
         $templateContent = preg_replace_callback('/{{\s*([\w\.]+)\((.*)\)\s*}}/', function ($matches) use ($data) {
             $functionName = $matches[1];
@@ -122,6 +110,17 @@ class View
             return $value;
         }, $templateContent);
 
+        // Variable placeholders
+        $templateContent = preg_replace_callback('/{{\s*([\w\.]+)\s*}}/', function ($matches) use ($data) {
+            $variablePath = explode('.', $matches[1]);
+            $value = $data;
+
+            foreach ($variablePath as $key) {
+                $value = $value[$key] ?? '';
+            }
+
+            return htmlspecialchars($value);
+        }, $templateContent);
 
         return $templateContent;
     }
@@ -130,6 +129,26 @@ class View
 
         // Remove leading/trailing whitespaces from the condition
         $condition = trim($condition);
+
+        $pattern = '/(\w+)\((.*)\)/';
+        $matches = [];
+
+        if (preg_match($pattern, $condition, $matches)) {
+            $methodName = $matches[1];
+            $arguments = $matches[2];
+            $variablePath = explode('.', $arguments);
+            $value = $data;
+
+            foreach ($variablePath as $key) {
+                $value = isset($value[$key]) ? $value[$key] : '';
+            }
+
+            if (method_exists($this->controller, $methodName)) {
+                // Call the function dynamically on the controller instance
+                $value = call_user_func([$this->controller, $methodName], $value);
+            }
+            return $value;
+        }
 
         // Check for specific comparison operators
         if (str_contains($condition, '==')) {

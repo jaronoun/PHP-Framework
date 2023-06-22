@@ -47,9 +47,15 @@ class ExamUser extends Model
         return $data;
     }
 
+    public static function findByExamAndUser($examId, $userId)
+    {
+        $data = self::query("SELECT * FROM exam_user WHERE exam_id = ? AND user_id = ?", [$examId, $userId]);
+        return $data;
+    }
+
     public function save()
     {
-        if (! self::findByExam($this->exam_id)) {
+        if (! self::findByExamAndUser($this->exam_id, $this->user_id)) {
             return $this->create();
         }
         return false;

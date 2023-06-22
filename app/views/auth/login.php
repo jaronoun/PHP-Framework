@@ -3,11 +3,10 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-6">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header text-white bg-dark">
                 <h3>Login</h3>
             </div>
             <div class="card-body">
-
                 <form action="/login" method="POST" enctype="application/x-www-form-urlencoded">
                     <div class="mb-3">
                         <label for="username" class="form-label">Email address</label>
