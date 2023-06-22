@@ -17,14 +17,11 @@ class UserRepository implements Repository
         }
     }
 
-    public function findById($id): bool|string
+    public function findById($id): User
     {
-        try {
-            $user = User::findById($id);
-            return json_encode($user);
-        } catch (PDOException $e) {
-            return json_encode(['error' => $e->getMessage()]);
-        }
+
+            return User::findById($id);
+
     }
 
     public function findUserByEmail($email): ?User

@@ -89,7 +89,8 @@ class Grade extends Model{
         $result = self::query("SELECT * FROM grade WHERE id = ?", [$id]);
 
         if($result){
-            $grade = new Grade($result['exam_id'],
+            $grade = new Grade(
+                $result['exam_id'],
                 $result['user_id'],
                 $result['grade'],
 

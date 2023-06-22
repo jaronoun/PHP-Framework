@@ -42,14 +42,33 @@
 
 
     <div>
-    {% for grade in data %}
-        <p>{{ grade.id }}</p>
-        <p>Exam ID: {{ grade.exam_id }}</p>
-        <p>User ID: {{ grade.user_id }}</p>
-        <p>Grade: {{ grade.grade }}</p>
-        <p>Created At: {{ grade.created_at }}</p>
-        <p>Updated At: {{ grade.updated_at }}</p>
-    {% endfor %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Tentamen</th>
+                <th scope="col">Student</th>
+                <th scope="col">Docent(nog maken, ook in db)</th>
+                <th scope="col">Cijfer</th>
+                <th scope="col">Aangemaakt op:</th>
+                <th scope="col">Gewijzigd op:</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for grade in data %}
+                <tr>
+                    <th scope="row">{{ grade.id }}</th>
+                    <td>{{ grade.exam_name }}</td>
+                    <td>{{ grade.user_name }}</td>
+                    <td> - </td>
+                    <td>{{ grade.grade }}</td>
+                    <td>{{ grade.created_at }}</td>
+                    <td>{{ grade.updated_at }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 </div>

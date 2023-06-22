@@ -3,16 +3,22 @@
 namespace Isoros\core;
 
 use InvalidArgumentException;
+use Isoros\controllers\api\ExamRepository;
+use Isoros\controllers\api\Repository;
+use Isoros\controllers\api\UserRepository;
 use PDO;
 use PDOStatement;
+use Psr\Container\ContainerInterface;
 
 class Model
 {
     private PDO $connection;
 
+
     public function __construct()
     {
         $this->connection = Database::connect();
+
     }
 
     protected static function query(string $sql, array $params = []): array

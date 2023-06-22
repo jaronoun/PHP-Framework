@@ -148,17 +148,21 @@ class User extends Model
 
     public static function findById(int $id): ?User
     {
-        $result = self::query("SELECT * FROM users WHERE id = ?", [$id]);
-        return $result ? new User(
-            $result['id'],
-            $result['name'],
-            $result['email'],
-            $result['password'],
-            $result['role'],
-            $result['remember_token'],
-            $result['created_at'],
-            $result['updated_at']
-        ) : null;
+        $results = self::query("SELECT * FROM users WHERE id = ?", [$id]);
+
+        foreach ($results as $result) {
+            $user = new User(
+                $result['name'],
+                $result['email'],
+                $result['password'],
+                $result['role'],
+                $result['remember_token']
+            );
+            $user->setId($result['id']);
+            $user->setCreatedAt($result['created_at']);
+            $user->setUpdatedAt($result['updated_at']);
+        }
+        return $results ? $user : null;
     }
 
     public static function findByEmail(string $email): ?User

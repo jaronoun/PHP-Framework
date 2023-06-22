@@ -31,7 +31,7 @@ class GradeController
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
         $grades = $this->gradeRepository->getAll();
-        var_dump($grades);
+
 
         $this->view->render('grades/index.php', ['loggedIn' => $loggedIn, 'role' => $user->role,'data' => $grades]);
 

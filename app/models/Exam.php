@@ -105,16 +105,22 @@ class Exam extends Model
 
     public static function findById(int $id): ?Exam
     {
-        $result = self::query("SELECT * FROM exam WHERE id = ?", [$id]);
+        $results = self::query("SELECT * FROM exam WHERE id = ?", [$id]);
 
 
-        if($result){
-            $exam = new Exam(
-                $result['name'],
-                $result['desc'],
-                $result['start_time'],
-                $result['end_time'],
-            );
+        if($results){
+            foreach($results as $result){
+                $exam = new Exam(
+                    $result['name'],
+                    $result['desc'],
+                    $result['start_time'],
+                    $result['end_time'],
+                );
+                $exam->setId($result['id']);
+                $exam->setCreatedAt($result['created_at']);
+                $exam->setUpdatedAt($result['updated_at']);
+            }
+
             $exam->setId($result['id']);
             $exam->setCreatedAt($result['created_at']);
             $exam->setUpdatedAt($result['updated_at']);

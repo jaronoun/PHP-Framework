@@ -8,6 +8,7 @@ use Isoros\controllers\api\GradeRepository;
 use Isoros\controllers\api\UserRepository;
 use Isoros\core\App;
 use Isoros\core\Container;
+use Isoros\core\Model;
 use Isoros\core\View;
 use Isoros\routing\Request;
 use Isoros\routing\Response;
@@ -28,6 +29,7 @@ $container->bind(UserRepository::class, UserRepository::class);
 $container->bind(GradeRepository::class, GradeRepository::class);
 $container->bind(examRepository::class, ExamRepository::class);
 $container->bind(ExamUserRepository::class, ExamUserRepository::class);
+$container->bind(Model::class, Model::class);
 $container->bind(Router::class, function ($container) {
     $router = new Router($container);
 
