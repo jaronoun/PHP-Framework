@@ -87,5 +87,11 @@ class ExamUser extends Model
         return true;
     }
 
+    public static function  deleteById($examId, $userId)
+    {
+        $stmt = self::query("DELETE FROM exam_user WHERE exam_id = ? AND user_id = ?", [$examId, $userId]);
+        return true;
+    }
+
 
 }

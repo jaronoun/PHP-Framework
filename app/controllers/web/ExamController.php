@@ -143,9 +143,9 @@ class ExamController
         ]);
     }
 
-    public function unEnrollExam($id): void
+    public function unEnrollExam($examId): void
     {
-        $this->examUserRepository->delete($id);
+        $var = $this->examUserRepository->deleteById($examId, $this->user->id);
         $this->getUserExams();
 
         $this->view->render('exams/index.php', [

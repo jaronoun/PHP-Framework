@@ -57,6 +57,11 @@ class ExamUserRepository extends Model implements Repository
         return $deleted;
     }
 
+    public function deleteById($examId, $userId)
+    {
+        return ExamUser::deleteById($examId, $userId);
+    }
+
     public function update($id, $data)
     {
         // TODO: Implement update() method.
