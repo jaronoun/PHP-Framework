@@ -42,7 +42,7 @@
 
 
     <div>
-        <table class="table table-striped">
+        <table class="table table-striped" contenteditable="true">
             <thead>
             <tr>
                 <th scope="col">id</th>
@@ -68,6 +68,16 @@
                     <td><button type="button" class="btn btn-danger"> Wijzig </button></td>
                 </tr>
             {% endfor %}
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="datetime-local"></td>
+                <td><input type="datetime-local"></td>
+                <td><button type="button" class="btn btn-danger"> Aanmaken </button></td>
+            </tr>
             </tbody>
         </table>
     </div>
