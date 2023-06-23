@@ -7,14 +7,11 @@ use PDOException;
 
 class UserRepository implements Repository
 {
-    public function getAll(): bool|string
+    public function getAll()
     {
-        try {
-            $users = User::all();
-            return json_encode($users);
-        } catch (PDOException $e) {
-            return json_encode(['error' => $e->getMessage()]);
-        }
+
+            return User::all();
+
     }
 
     public function findById($id): User
