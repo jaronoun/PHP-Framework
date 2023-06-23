@@ -55,7 +55,7 @@ $container->bind(Router::class, function ($container) {
 
     $router->addRoute('GET', '/profiel', 'UserController@index');
 
-    $router->addRoute('GET', '/users', 'UserRepository@index');
+    $router->addRoute('GET', '/users', 'UserController@index');
     $router->addRoute('GET', '/users/{id}', 'UserRepository@show');
     $router->addRoute('POST', '/users', 'UserRepository@store');
     $router->addRoute('PUT', '/users/{id}', 'UserRepository@update');

@@ -152,6 +152,8 @@
     </div>
     {% endif %}
     {% if role == admin %}
+    <div class="table-responsive">
+        <h3><u>Tentamens</u></h3>
     <table class="table table-striped" contenteditable="true">
         <thead>
         <tr>
@@ -193,6 +195,7 @@
         </tr>
         </tbody>
     </table>
+    </div>
     {% endif %}
 </div>
 <script>

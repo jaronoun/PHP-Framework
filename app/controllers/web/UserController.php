@@ -29,8 +29,14 @@ class UserController
         $title = "Login";
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
-        $result = $this->view->render('users/index.php', ['loggedIn' => $loggedIn, 'title' => $title, 'name' => $user->name, 'email' => $user->email, 'role' => $user->role]);
-        echo $result;
+        if($user->getRole() == 'admin'){
+            $data = $this->userRepository->getAll();
+        } else {
+            $data = null;
+        }
+
+        $this->view->render('users/index.php', ['loggedIn' => $loggedIn, 'title' => $title, 'name' => $user->name, 'email' => $user->email, 'role' => $user->role, 'data' => $data]);
+
     }
 
 }

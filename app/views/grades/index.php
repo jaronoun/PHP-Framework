@@ -40,15 +40,14 @@
     </div>
     {% endif %}
 
-
-    <div>
+    <div class="table-responsive">
+        <h3><u>Cijfers</u></h3>
         <table class="table table-striped" contenteditable="true">
             <thead>
             <tr>
                 <th scope="col">id</th>
                 <th scope="col">Tentamen</th>
                 <th scope="col">Student</th>
-                <th scope="col">Docent(nog maken, ook in db)</th>
                 <th scope="col">Cijfer</th>
                 <th scope="col">Aangemaakt op:</th>
                 <th scope="col">Gewijzigd op:</th>
@@ -61,7 +60,6 @@
                     <th scope="row">{{ grade.id }}</th>
                     <td>{{ grade.exam_name }}</td>
                     <td>{{ grade.user_name }}</td>
-                    <td> - </td>
                     <td>{{ grade.grade }}</td>
                     <td>{{ grade.created_at }}</td>
                     <td>{{ grade.updated_at }}</td>
@@ -70,7 +68,6 @@
             {% endfor %}
             <tr>
                 <th scope="row"></th>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
