@@ -87,29 +87,29 @@
                     </div>
                     <button type="submit" class="btn btn-dark sml-btn">Tentamen Aanmaken</button>
                 </form>
-<!--                <br>-->
-<!--                <table class="table table-bordered table-striped">-->
-<!--                    <thead>-->
-<!--                    <tr>-->
-<!--                        <th class="text-white bg-dark">ID</th>-->
-<!--                        <th class="text-white bg-dark">Naam</th>-->
-<!--                        <th class="text-white bg-dark">Start</th>-->
-<!--                        <th class="text-white bg-dark">Actie</th>-->
-<!--                    </tr>-->
-<!--                    </thead>-->
-<!--                    <tbody id="exams">-->
-<!--                    {% for exam in exams %}-->
-<!--                    exams{% if isNotEnrolled(exam.id) %}-->
-<!--                    <tr>-->
-<!--                        <td>{{ exam.id }}</td>-->
-<!--                        <td>{{ exam.name }}</td>-->
-<!--                        <td>{{ getDate(exam.start_time) }}</td>-->
-<!--                        <td><a href="/tentamens/enroll/{{ exam.id }}" class="btn btn-dark sml-btn">Inschrijven</a></td>-->
-<!--                    </tr>-->
-<!--                    {% endif %}-->
-<!--                    {% endfor %}-->
-<!--                    </tbody>-->
-<!--                </table>-->
+                <br>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th class="text-white bg-dark">ID</th>
+                        <th class="text-white bg-dark">Naam</th>
+                        <th class="text-white bg-dark">Start</th>
+                        <th class="text-white bg-dark">Actie</th>
+                    </tr>
+                    </thead>
+                    <tbody id="exams">
+                    {% for exam in exams %}
+                    {% if isNotEnrolled(exam.id) %}
+                    <tr>
+                        <td>{{ exam.id }}</td>
+                        <td>{{ exam.name }}</td>
+                        <td>{{ getDate(exam.start_time) }}</td>
+                        <td><a href="/tentamens/enroll/{{ exam.id }}" class="btn btn-dark sml-btn">Inschrijven</a></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
