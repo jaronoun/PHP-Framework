@@ -11,14 +11,16 @@ class Grade extends Model{
     public $id;
     public $exam_id;
     public $user_id;
+    public $teacher_id;
     public $grade;
     public $created_at;
     public $updated_at;
 
-    public function __construct($exam_id, $user_id, $grade) {
+    public function __construct($exam_id, $user_id, $grade, $teacher_id) {
 
         $this->exam_id = $exam_id;
         $this->user_id = $user_id;
+        $this->teacher_id = $teacher_id;
         $this->grade = $grade;
         $this->created_at = Date('Y-m-d H:i:s');
         $this->updated_at = Date('Y-m-d H:i:s');

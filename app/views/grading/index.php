@@ -1,32 +1,68 @@
 {% extends layout/header.php %}
+<form>
+    <div class="row">
+        <div class="col-12 col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header text-white bg-dark">Selecteer Tentamen</div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th class="text-white bg-dark">ID</th>
+                            <th class="text-white bg-dark">Naam</th>
+                            <th class="text-white bg-dark">Acties</th>
+                        </tr>
+                        </thead>
+                        <tbody id="exams">
+                        {% for exam in exams %}
+                        <tr>
+                            <td>{{ exam.id }}</td>
+                            <td>{{ exam.name }}</td>
+                            <td>
+                                <a href="/beoordeling/{{ exam.id }}" class="btn btn-dark sml-btn">Selecteer</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-<div class="card">
-    <div class="card-header text-white bg-dark">Beoordeel Tentamen</div>
-    <div class="card-body">
-        <form>
-            <div class="form-group mb-3">
-                <label for="examSelect">Selecteer Tentamen:</label>
-                <select class="form-control" id="examSelect">
-                    <option>Exam 1</option>
-                    <option>Exam 2</option>
-                    <option>Exam 3</option>
-                </select>
+        <div class="col-12 col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header text-white bg-dark">Selecteer Student(en)</div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th class="text-white bg-dark">ID</th>
+                            <th class="text-white bg-dark">Naam</th>
+                            <th class="text-white bg-dark">Select</th>
+                        </tr>
+                        </thead>
+                        <tbody id="exams">
+                        {% for exam in exams %}
+                        <tr>
+                            <td>{{ exam.id }}</td>
+                            <td>{{ exam.name }}</td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="form-group mb-3">
-                <label for="studentSelect">Selecteer Student:</label>
-                <select class="form-control" id="studentSelect">
-                    <option>Student 1</option>
-                    <option>Student 2</option>
-                    <option>Student 3</option>
-                </select>
+        </div>
+
+        <div class="col-12 col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header text-white bg-dark">Geef Cijfer</div>
+                <div class="card-body">
             </div>
-            <div class="form-group mb-3">
-                <label for="gradeInput">Cijfer:</label>
-                <input type="text" class="form-control" id="gradeInput" placeholder="Enter grade">
-            </div>
-            <button type="submit" class="btn btn-dark sml-btn">Submit</button>
-        </form>
+        </div>
+
     </div>
-</div>
+</form>
 
 {% extends layout/footer.php %}
