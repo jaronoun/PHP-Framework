@@ -47,8 +47,8 @@ $container->bind(Router::class, function ($container) {
     $router->addRoute('GET', '/cijfers', 'GradeController@show');
 
     $router->addRoute('GET', '/beoordeling', 'GradeController@showExams');
-    $router->addRoute('GET', '/beoordeling/{id}', 'GradeController@getExamUsers');
-    $router->addRoute('POST', '/beoordeling/{id}', 'GradeController@storeGrade');
+    $router->addRoute('GET', '/beoordeling/{id}', 'GradeController@showExamUsers');
+    $router->addRoute('POST', '/beoordeling/{examID}/{userID}', 'GradeController@storeGrade');
 
 
     $router->addRoute('GET', '/tentamens', 'ExamController@index');

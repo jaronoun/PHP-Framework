@@ -57,6 +57,14 @@ class Grade extends Model{
         $this->user_id = $user_id;
     }
 
+    public function getTeacherId() {
+        return $this->teacher_id;
+    }
+
+    public function setTeacherId($teacher_id) {
+        $this->teacher_id = $teacher_id;
+    }
+
     public function getGrade() {
         return $this->grade;
     }
@@ -129,14 +137,14 @@ class Grade extends Model{
 
     private function create(): bool
     {
-        self::query("INSERT INTO grades (exam_id, user_id, grade, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)", [
+        self::query("INSERT INTO grades (exam_id, user_id, grade, teacher_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", [
             $this->getExamId(),
             $this->getUserId(),
             $this->getGrade(),
+            $this->getTeacherId(),
             $this->getCreatedAt(),
             $this->getUpdatedAt()
         ]);
-
         return true;
     }
 

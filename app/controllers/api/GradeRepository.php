@@ -59,12 +59,12 @@ class GradeRepository extends Model implements Repository
 
     public function create($data): ?Grade
     {
-        $name = $data[0];
-        $desc = $data[1];
-        $start_time = $data[2];
-        $end_time = $data[3];
+        $examId = $data['exam_id'];
+        $userId = $data['user_id'];
+        $teacherId = $data['teacher_id'];
+        $grade = $data['grade'];
 
-        $grade = new Grade($name, $desc, $start_time, $end_time);
+        $grade = new Grade($examId, $userId, $grade, $teacherId);
 
         if($grade->save()){
             return $grade;

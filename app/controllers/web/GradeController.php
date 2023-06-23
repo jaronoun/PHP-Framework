@@ -1,6 +1,7 @@
 <?php
 namespace Isoros\controllers\web;
 
+use http\Client\Curl\User;
 use Isoros\controllers\api\ExamRepository;
 use Isoros\controllers\api\ExamUserRepository;
 use Isoros\controllers\api\GradeRepository;
@@ -23,6 +24,8 @@ class GradeController
 
     public $user = null;
     public $exams = null;
+    public $grades = null;
+    public $users = null;
     public $selectedExamId;
 
     public function __construct(
@@ -55,26 +58,27 @@ class GradeController
             $exam = $this->examRepository->findById($exam['exam_id']);
             $this->exams[] = $exam;
         }
+        if ($this->selectedExamId) {
+            $examUsers = $this->examUserRepository->findByExam($this->selectedExamId);
+            foreach ($examUsers as $examUser) {
+                $user = $this->userRepository->findById($examUser['user_id']);
+                $this->users[] = $user;
+            }
+        }
     }
 
-    public function getExamUsers($id)
+    public function showExamUsers($id)
     {
         $loggedIn = SESSION::get('loggedIn');
         $this->selectedExamId = $id;
         $exam = $this->examRepository->findById($id);
-        $examUsers = $this->examUserRepository->findByExam($id);
-        $users = [];
-        foreach ($examUsers as $examUser) {
-            $user = $this->userRepository->findById($examUser['user_id']);
-            $users[] = $user;
-        }
 
         $this->getUserExams();
 
         $this->view->render('grading/index.php', [
             'loggedIn' => $loggedIn,
             'user' => $this->user,
-            'users' => $users,
+            'users' => $this->users,
             'exams' => $this->exams,
             'ex' => $exam
         ]);
@@ -95,12 +99,32 @@ class GradeController
         return false;
     }
 
-    public function storeGrade($id)
+    public function getSelectedExamId()
     {
-        var_dump($id);
-//        $data['user_id'] = $this->user->id;
+        return $this->selectedExamId;
+    }
+
+    public function storeGrade()
+    {
+
+        $loggedIn = SESSION::get('loggedIn');
+
 //        $data['exam_id'] = $this->selectedExamId;
-//        $this->gradeRepository->create($data);
+//        $data['user_id'] = intval($id);
+//        $data['teacher_id'] = $this->user->id;
+//        $data['grade'] = intval($this->request->getParam('grade'));
+//        $grade = $this->gradeRepository->create($data);
+//
+//        $exam = $this->examRepository->findById($this->selectedExamId);
+//        $this->getUserExams();
+//
+//        $this->view->render('grading/index.php', [
+//            'loggedIn' => $loggedIn,
+//            'user' => $this->user,
+//            'users' => $this->users,
+//            'exams' => $this->exams,
+//            'ex' => $exam
+//        ]);
     }
 
     public function show()
