@@ -103,7 +103,7 @@ class ExamController
         } else {
             $this->view->render('exams/index.php', [
                 'loggedIn' => $this->session->get('loggedIn'),
-                'role' => $this->user->role,
+                'user' => $this->user,
                 'examUser' => $this->examUser,
                 'exams' => $this->exams
             ]);
@@ -121,7 +121,7 @@ class ExamController
 
         $this->view->render('exams/index.php', [
             'loggedIn' => $this->session->get('loggedIn'),
-            'role' => $this->user->role,
+            'user' => $this->user,
             'examUser' => $this->examUser,
             'exams' => $this->exams
         ]);
@@ -139,7 +139,7 @@ class ExamController
 
         $this->view->render('exams/index.php', [
             'loggedIn' => $this->session->get('loggedIn'),
-            'role' => $this->user->role,
+            'user' => $this->user,
             'examUser' => $this->examUser,
             'exams' => $this->exams
         ]);
@@ -152,7 +152,7 @@ class ExamController
 
         $this->view->render('exams/index.php', [
             'loggedIn' => $this->session->get('loggedIn'),
-            'role' => $this->user->role,
+            'user' => $this->user,
             'examUser' => $this->examUser,
             'exams' => $this->exams
         ]);
