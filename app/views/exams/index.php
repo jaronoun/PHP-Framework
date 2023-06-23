@@ -21,7 +21,7 @@
                         <th class="text-white bg-dark">ID</th>
                         <th class="text-white bg-dark">Naam</th>
                         <th class="text-white bg-dark">Start</th>
-                        <th class="text-white bg-dark">Actie</th>
+                        <th class="text-white bg-dark">Acties</th>
                     </tr>
                     </thead>
                     <tbody id="exams">
