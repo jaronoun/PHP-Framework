@@ -157,13 +157,11 @@
         <tr>
             <th scope="col">id</th>
             <th scope="col">Tentamen</th>
-            <th scope="col">desc</th>
-            <th scope="col">Docent(nog maken, ook in db)</th>
+            <th scope="col">Beschrijving</th>
+            <th scope="col">Docent</th>
             <th scope="col">Studenten ingeschreven</th>
             <th scope="col">Start-tijd</th>
             <th scope="col">Eind-tijd</th>
-            <th scope="col">Aangemaakt op:</th>
-            <th scope="col">Gewijzigd op:</th>
             <th></th>
         </tr>
         </thead>
@@ -175,10 +173,10 @@
             <td>{{ exam.exam_id.desc }}</td>
             <td>{{ exam.user_id.name }}</td>
             <td>-</td>
+            <td>-</td>
             <td>{{ exam.start_time }}</td>
             <td>{{ exam.end_time }}</td>
-            <td>{{ exam.created_at }}</td>
-            <td>{{ exam.updated_at }}</td>
+
             <td><button type="button" class="btn btn-danger"> Wijzig </button></td>
         </tr>
         {% endfor %}
@@ -190,6 +188,7 @@
             <td></td>
             <td><input type="datetime-local"></td>
             <td><input type="datetime-local"></td>
+
             <td><button type="button" class="btn btn-danger"> Aanmaken </button></td>
         </tr>
         </tbody>
