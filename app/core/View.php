@@ -135,45 +135,49 @@ class View
     }
 
     private function evaluateCondition($condition, $data) {
-
-        // Remove leading/trailing whitespaces from the condition
         $condition = trim($condition);
-
         $pattern = '/(\w+)\((.*)\)/';
         $matches = [];
+
+        $value = $data;
 
         if (preg_match($pattern, $condition, $matches)) {
             $methodName = $matches[1];
             $arguments = $matches[2];
             $variablePath = explode('.', $arguments);
-            $value = $data;
 
             foreach ($variablePath as $key) {
-                if(is_object($key)){
-                    $value = isset($value->$key) ? $value->$key : '';
-                } else {
-                    $value = isset($value[$key]) ? $value[$key] : '';
-                }
+                $value = is_object($key) ? ($value->$key ?? '') : ($value[$key] ?? '');
             }
 
             if (method_exists($this->controller, $methodName)) {
-                // Call the function dynamically on the controller instance
                 $value = call_user_func([$this->controller, $methodName], $value);
             }
+
             return $value;
         }
 
-        // Check for specific comparison operators
         if (str_contains($condition, '==')) {
             [$left, $right] = explode('==', $condition);
-            return $data[trim($left)] == trim($right);
+            $value = $this->getValueFromVariablePath($value, $left);
+            return $value == trim($right);
         } elseif (str_contains($condition, '!=')) {
-            [$left, $right] = explode('!=', $condition);
-            return trim($data[$left]) != trim($data[$right]);
+            [$left, $right] = explode('==', $condition);
+            $value = $this->getValueFromVariablePath($value, $left);
+            return $value != trim($right);
         }
 
-        // Default case: evaluate the condition as a truthy/falsy expression
         return eval("return $condition;");
+    }
+
+    private function getValueFromVariablePath($value, $path) {
+        $variablePath = explode('.', trim($path));
+
+        foreach ($variablePath as $key) {
+            $value = is_object($value) ? ($value->$key ?? '') : ($value[$key] ?? '');
+        }
+
+        return $value;
     }
 
 

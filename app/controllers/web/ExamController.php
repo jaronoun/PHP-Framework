@@ -70,13 +70,10 @@ class ExamController
         $loggedIn = $this->session->get('loggedIn');
         $this->getUserExams();
 
-        var_dump($this->examUser);
-
-
         $this->view->render('exams/index.php', [
             'loggedIn' => $loggedIn,
             'page' => 'exams',
-            'role' => $this->user->role,
+            'user' => $this->user,
             'examUser' => $this->examUser,
             'exams' => $this->exams,
 

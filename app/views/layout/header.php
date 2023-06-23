@@ -32,13 +32,13 @@
                 </li>
         {% endif %}
 
-        {% if role == teacher %}
+        {% if user.role == teacher %}
                     <li class="nav-item">
                         <a class="nav-link" href="/beoordeling">Beoordeling</a>
                     </li>
         {% endif %}
 
-                {% if role == admin %}
+                {% if user.role == admin %}
                     <li class="nav-item">
                         <a class="nav-link" href="/users">Gebruikers</a>
                     </li>
@@ -51,7 +51,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                       {{ name }}
+                       {{ user.name }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="/profiel">Profiel</a>

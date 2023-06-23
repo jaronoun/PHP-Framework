@@ -34,7 +34,6 @@ class GradeController
 
         $email = $this->session->get('user');
         $this->user = $this->userRepository->findUserByEmail($email);
-
     }
 
     public function getUserExams()
@@ -42,49 +41,42 @@ class GradeController
         $examUser = $this->examUserRepository->findByUser($this->user->id);
         foreach ($examUser as $exam) {
             $exam = $this->examRepository->findById($exam['exam_id']);
-            $this->exams[] = $exam[0];
+            $this->exams[] = $exam;
         }
-    }
-
-    public function getExamUsers($id)
-    {
-        $examUser = $this->examUserRepository->findByExam($id);
-        var_dump($examUser);
     }
 
 
     public function show()
     {
         $loggedIn = SESSION::get('loggedIn');
-<<<<<<< Updated upstream
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
 
         $grades = $this->gradeRepository->getAll();
 
 
-        $this->view->render('grades/index.php', ['loggedIn' => $loggedIn, 'role' => $user->role, 'name' => $user->getName(), 'data' => $grades]);
-=======
->>>>>>> Stashed changes
-
-        $this->view->render('grades/index.php', ['loggedIn' => $loggedIn, 'role' => $this->user->role]);
+        $this->view->render('grades/index.php', [
+            'loggedIn' => $loggedIn,
+            'user' => $user,
+            'data' => $grades
+        ]);
     }
 
     public function showGrading()
     {
         $loggedIn = SESSION::get('loggedIn');
-<<<<<<< Updated upstream
+
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
 
         $grades = $this->gradeRepository->getAll();
 
-
-        $this->view->render('grading/index.php', ['loggedIn' => $loggedIn, 'role' => $user->role, 'name' => $user->getName(), 'grades' => $grades]);
-=======
         $this->getUserExams();
->>>>>>> Stashed changes
 
-        $this->view->render('grading/index.php', ['loggedIn' => $loggedIn, 'role' => $this->user->role, 'exams' => $this->exams]);
+        $this->view->render('grading/index.php', [
+            'loggedIn' => $loggedIn,
+            'user' => $user,
+            'grades' => $grades
+        ]);
     }
 }
