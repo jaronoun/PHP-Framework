@@ -1,7 +1,7 @@
 {% extends layout/header.php %}
 <div class="row">
     <!-- Search Exams Card -->
-    {% if user.role == student %}
+    {% if user.role == 'student' %}
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
             <div class="card-header text-white bg-dark">Zoek Tentamen</div>
@@ -59,7 +59,7 @@
     </div>
     {% endif %}
     <!-- Grading Card -->
-    {% if user.role == teacher %}
+    {% if user.role == 'teacher' %}
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
             <div class="card-header text-white bg-dark">Maak Tentamen</div>
@@ -94,7 +94,7 @@
                         <th class="text-white bg-dark">ID</th>
                         <th class="text-white bg-dark">Naam</th>
                         <th class="text-white bg-dark">Start</th>
-                        <th class="text-white bg-dark">Actie</th>
+                        <th class="text-white bg-dark">Acties</th>
                     </tr>
                     </thead>
                     <tbody id="exams">
@@ -151,7 +151,7 @@
         </div>
     </div>
     {% endif %}
-    {% if user.role == admin %}
+    {% if user.role == 'admin' %}
     <table class="table table-striped" contenteditable="true">
         <thead>
         <tr>

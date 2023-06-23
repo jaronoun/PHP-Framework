@@ -159,15 +159,25 @@ class View
 
         if (str_contains($condition, '==')) {
             [$left, $right] = explode('==', $condition);
-            $value = $this->getValueFromVariablePath($value, $left);
-            return $value == trim($right);
+            $valueLeft = $this->getStringValue($left) ?: $this->getValueFromVariablePath($value, $left);
+            $valueRight = $this->getStringValue($right) ?: $this->getValueFromVariablePath($value, $right);
+            return $valueLeft == $valueRight;
         } elseif (str_contains($condition, '!=')) {
-            [$left, $right] = explode('==', $condition);
-            $value = $this->getValueFromVariablePath($value, $left);
-            return $value != trim($right);
+            [$left, $right] = explode('!=', $condition);
+            $valueLeft = $this->getStringValue($left) ?: $this->getValueFromVariablePath($value, $left);
+            $valueRight = $this->getStringValue($right) ?: $this->getValueFromVariablePath($value, $right);
+            return $valueLeft != $valueRight;
         }
 
         return eval("return $condition;");
+    }
+
+    private function getStringValue($string)
+    {
+        if (preg_match("/'([^']+)'/", $string, $matches)) {
+            return $matches[1];
+        }
+        return false;
     }
 
     private function getValueFromVariablePath($value, $path) {

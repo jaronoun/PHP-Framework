@@ -45,38 +45,51 @@ class GradeController
         }
     }
 
-
-    public function show()
+    public function getExamUsers($id)
     {
         $loggedIn = SESSION::get('loggedIn');
-        $email = $this->session->get('user');
-        $user = $this->userRepository->findUserByEmail($email);
-
-        $grades = $this->gradeRepository->getAll();
-
-
-        $this->view->render('grades/index.php', [
-            'loggedIn' => $loggedIn,
-            'user' => $user,
-            'data' => $grades
-        ]);
-    }
-
-    public function showGrading()
-    {
-        $loggedIn = SESSION::get('loggedIn');
-
-        $email = $this->session->get('user');
-        $user = $this->userRepository->findUserByEmail($email);
-
-        $grades = $this->gradeRepository->getAll();
+        $exam = $this->examRepository->findById($id);
+        $examUsers = $this->examUserRepository->findByExam($id);
+        $users = [];
+        foreach ($examUsers as $examUser) {
+            $user = $this->userRepository->findById($examUser['user_id']);
+            $users[] = $user;
+        }
 
         $this->getUserExams();
 
         $this->view->render('grading/index.php', [
             'loggedIn' => $loggedIn,
-            'user' => $user,
-            'grades' => $grades
+            'user' => $this->user,
+            'users' => $users,
+            'exams' => $this->exams,
+            'ex' => $exam
+        ]);
+    }
+
+    public function show()
+    {
+        $loggedIn = SESSION::get('loggedIn');
+
+        $grades = $this->gradeRepository->getAll();
+
+        $this->view->render('grades/index.php', [
+            'loggedIn' => $loggedIn,
+            'user' => $this->user,
+            'data' => $grades
+        ]);
+    }
+
+    public function showExams()
+    {
+        $loggedIn = SESSION::get('loggedIn');
+
+        $this->getUserExams();
+
+        $this->view->render('grading/index.php', [
+            'loggedIn' => $loggedIn,
+            'user' => $this->user,
+            'exams' => $this->exams,
         ]);
     }
 }

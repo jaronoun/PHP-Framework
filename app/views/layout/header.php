@@ -34,13 +34,13 @@
                 </li>
         {% endif %}
 
-        {% if user.role == teacher %}
+        {% if user.role == 'teacher' %}
                     <li class="nav-item">
                         <a class="nav-link" href="/beoordeling">Beoordeling</a>
                     </li>
         {% endif %}
 
-                {% if user.role == admin %}
+                {% if user.role == 'admin' %}
                     <li class="nav-item">
                         <a class="nav-link" href="/users">Gebruikers</a>
                     </li>

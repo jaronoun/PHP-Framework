@@ -19,7 +19,11 @@
                             <td>{{ exam.id }}</td>
                             <td>{{ exam.name }}</td>
                             <td>
+                                {% if ex.name == exam.name %}
+                                <a href="/beoordeling/{{ exam.id }}" class="btn btn-dark sml-btn disabled">Selecteer</a>
+                                {% else %}
                                 <a href="/beoordeling/{{ exam.id }}" class="btn btn-dark sml-btn">Selecteer</a>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
@@ -29,9 +33,9 @@
             </div>
         </div>
 
-        <div class="col-12 col-md-4 mb-3">
+        <div class="col-12 col-md-6 mb-3">
             <div class="card">
-                <div class="card-header text-white bg-dark">Selecteer Student(en)</div>
+                <div class="card-header text-white bg-dark">Geef Cijfer</div>
                 <div class="card-body">
                     <table class="table table-bordered table-striped">
                         <thead>
@@ -42,23 +46,16 @@
                         </tr>
                         </thead>
                         <tbody id="exams">
-                        {% for exam in exams %}
+                        {% for user in users %}
                         <tr>
-                            <td>{{ exam.id }}</td>
-                            <td>{{ exam.name }}</td>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
                             <td></td>
                         </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-4 mb-3">
-            <div class="card">
-                <div class="card-header text-white bg-dark">Geef Cijfer</div>
-                <div class="card-body">
             </div>
         </div>
 
