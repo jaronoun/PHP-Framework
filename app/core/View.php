@@ -99,7 +99,12 @@ class View
             $value = $data;
 
             foreach ($variablePath as $key) {
-                $value = isset($value->$key) ? $value->$key : '';
+                if(is_object($value)){
+                    $value = isset($value->$key) ? $value->$key : '';
+                } else {
+                    $value = isset($value[$key]) ? $value[$key] : '';
+                }
+
             }
 
             if (method_exists($this->controller, $functionName)) {
@@ -116,7 +121,11 @@ class View
             $value = $data;
 
             foreach ($variablePath as $key) {
-                $value = $value->$key ?? '';
+                if(is_object($value)){
+                    $value = isset($value->$key) ? $value->$key : '';
+                } else {
+                    $value = isset($value[$key]) ? $value[$key] : '';
+                }
             }
 
             return htmlspecialchars($value);
@@ -140,7 +149,11 @@ class View
             $value = $data;
 
             foreach ($variablePath as $key) {
-                $value = isset($value[$key]) ? $value[$key] : '';
+                if(is_object($key)){
+                    $value = isset($value->$key) ? $value->$key : '';
+                } else {
+                    $value = isset($value[$key]) ? $value[$key] : '';
+                }
             }
 
             if (method_exists($this->controller, $methodName)) {
