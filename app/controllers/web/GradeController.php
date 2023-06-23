@@ -30,10 +30,11 @@ class GradeController
         $loggedIn = SESSION::get('loggedIn');
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
+
         $grades = $this->gradeRepository->getAll();
 
 
-        $this->view->render('grades/index.php', ['loggedIn' => $loggedIn, 'role' => $user->role,'data' => $grades]);
+        $this->view->render('grades/index.php', ['loggedIn' => $loggedIn, 'role' => $user->role, 'name' => $user->getName(), 'data' => $grades]);
 
     }
 
@@ -42,10 +43,11 @@ class GradeController
         $loggedIn = SESSION::get('loggedIn');
         $email = $this->session->get('user');
         $user = $this->userRepository->findUserByEmail($email);
+
         $grades = $this->gradeRepository->getAll();
 
 
-        $this->view->render('grading/index.php', ['loggedIn' => $loggedIn, 'role' => $user->role, 'grades' => $grades]);
+        $this->view->render('grading/index.php', ['loggedIn' => $loggedIn, 'role' => $user->role, 'name' => $user->getName(), 'grades' => $grades]);
 
     }
 }

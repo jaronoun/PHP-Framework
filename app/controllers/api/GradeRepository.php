@@ -24,7 +24,7 @@ class GradeRepository extends Model implements Repository
             );
 
         }
-        var_dump($data);
+
         return $data;
 
 

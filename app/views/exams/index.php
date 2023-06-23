@@ -87,35 +87,35 @@
                     </div>
                     <button type="submit" class="btn btn-dark sml-btn">Tentamen Aanmaken</button>
                 </form>
-                <br>
-                <table class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th class="text-white bg-dark">ID</th>
-                        <th class="text-white bg-dark">Naam</th>
-                        <th class="text-white bg-dark">Start</th>
-                        <th class="text-white bg-dark">Actie</th>
-                    </tr>
-                    </thead>
-                    <tbody id="exams">
-                    {% for exam in exams %}
-                    {% if isNotEnrolled(exam.id) %}
-                    <tr>
-                        <td>{{ exam.id }}</td>
-                        <td>{{ exam.name }}</td>
-                        <td>{{ getDate(exam.start_time) }}</td>
-                        <td><a href="/tentamens/enroll/{{ exam.id }}" class="btn btn-dark sml-btn">Inschrijven</a></td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                    </tbody>
-                </table>
+<!--                <br>-->
+<!--                <table class="table table-bordered table-striped">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                        <th class="text-white bg-dark">ID</th>-->
+<!--                        <th class="text-white bg-dark">Naam</th>-->
+<!--                        <th class="text-white bg-dark">Start</th>-->
+<!--                        <th class="text-white bg-dark">Actie</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody id="exams">-->
+<!--                    {% for exam in exams %}-->
+<!--                    exams{% if isNotEnrolled(exam.id) %}-->
+<!--                    <tr>-->
+<!--                        <td>{{ exam.id }}</td>-->
+<!--                        <td>{{ exam.name }}</td>-->
+<!--                        <td>{{ getDate(exam.start_time) }}</td>-->
+<!--                        <td><a href="/tentamens/enroll/{{ exam.id }}" class="btn btn-dark sml-btn">Inschrijven</a></td>-->
+<!--                    </tr>-->
+<!--                    {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                    </tbody>-->
+<!--                </table>-->
             </div>
         </div>
     </div>
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
-            <div class="card-header text-white bg-dark">Ingescreven Tentamens</div>
+            <div class="card-header text-white bg-dark"> Tentamens</div>
             <div class="card-body">
                 <ul class="list-group">
                     {% for exam in examUser %}
@@ -129,7 +129,7 @@
             </div>
         </div>
     </div>
-    {% endif %}
+
     <!-- Completed exams card -->
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
@@ -150,6 +150,51 @@
             </div>
         </div>
     </div>
+    {% endif %}
+    {% if role == admin %}
+    <table class="table table-striped" contenteditable="true">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Tentamen</th>
+            <th scope="col">desc</th>
+            <th scope="col">Docent(nog maken, ook in db)</th>
+            <th scope="col">Studenten ingeschreven</th>
+            <th scope="col">Start-tijd</th>
+            <th scope="col">Eind-tijd</th>
+            <th scope="col">Aangemaakt op:</th>
+            <th scope="col">Gewijzigd op:</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for exam in examUser %}
+        <tr>
+            <th scope="row">{{ exam.id }}</th>
+            <td>{{ exam.exam_id.name }}</td>
+            <td>{{ exam.exam_id.desc }}</td>
+            <td>{{ exam.user_id.name }}</td>
+            <td>-</td>
+            <td>{{ exam.start_time }}</td>
+            <td>{{ exam.end_time }}</td>
+            <td>{{ exam.created_at }}</td>
+            <td>{{ exam.updated_at }}</td>
+            <td><button type="button" class="btn btn-danger"> Wijzig </button></td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input type="datetime-local"></td>
+            <td><input type="datetime-local"></td>
+            <td><button type="button" class="btn btn-danger"> Aanmaken </button></td>
+        </tr>
+        </tbody>
+    </table>
+    {% endif %}
 </div>
 <script>
     $(document).ready(function(){

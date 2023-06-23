@@ -70,12 +70,16 @@ class ExamController
         $loggedIn = $this->session->get('loggedIn');
         $this->getUserExams();
 
+        var_dump($this->examUser);
+
+
         $this->view->render('exams/index.php', [
             'loggedIn' => $loggedIn,
             'page' => 'exams',
             'role' => $this->user->role,
             'examUser' => $this->examUser,
-            'exams' => $this->exams
+            'exams' => $this->exams,
+
         ]);
 
     }
@@ -95,6 +99,7 @@ class ExamController
         ]);
 
         $this->getUserExams();
+
 
         if (!$exam) {
             return new Response(502,[],"Er is iets fout gegaan");
