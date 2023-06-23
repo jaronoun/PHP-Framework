@@ -17,12 +17,15 @@ class ExamRepository implements Repository
 
     public function findById($id)
     {
+
         return Exam::findById($id);
     }
 
-    public function findExamByName($name): ?Exam
+    public function findExamByName($name)
     {
+
         return Exam::findByName($name);
+
     }
 
     public function create($data): ?Exam

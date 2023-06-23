@@ -112,8 +112,22 @@ class Exam extends Model
 
     public static function findById(int $id)
     {
-        $data = self::query("SELECT * FROM exam WHERE id = ?", [$id]);
-        return $data;
+        $result = self::query("SELECT * FROM exam WHERE id = ?", [$id]);
+        $result = $result[0] ?? null;
+        if($result){
+            $exam = new Exam(
+                $result['id'],
+                $result['name'],
+                $result['desc'],
+                $result['start_time'],
+                $result['end_time'],
+            );
+            $exam->setId($result['id']);
+            $exam->setCreatedAt($result['created_at']);
+            $exam->setUpdatedAt($result['updated_at']);
+        }
+
+        return $result ? $exam : null;
     }
 
     public static function findByName(string $name): ?Exam

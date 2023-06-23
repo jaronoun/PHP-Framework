@@ -39,14 +39,15 @@ class GradeRepository extends Model implements Repository
     public function findExamName($exam_id): string
     {
 
-        return (new ExamRepository)->findById($exam_id)->getName();
+        $name = (new ExamRepository)->findById($exam_id)->getName();
+        return $name;
 
     }
 
-    public function findUserName($user_id): string
+    public function findUserName($user_id)
     {
-
-        return (new UserRepository)->findById($user_id)->getName();
+        $data = (new UserRepository)->findById($user_id)->getName();
+        return $data;
 
     }
 

@@ -57,7 +57,7 @@ class ExamController
         $examUser = $this->examUserRepository->findByUser($this->user->getId());
         foreach ($examUser as $exam) {
             $exam = $this->examRepository->findById($exam['exam_id']);
-            $this->examUser[] = $exam[0];
+            $this->examUser[] = $exam;
         }
     }
 

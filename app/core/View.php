@@ -99,7 +99,7 @@ class View
             $value = $data;
 
             foreach ($variablePath as $key) {
-                $value = isset($value[$key]) ? $value[$key] : '';
+                $value = isset($value->$key) ? $value->$key : '';
             }
 
             if (method_exists($this->controller, $functionName)) {
@@ -116,7 +116,7 @@ class View
             $value = $data;
 
             foreach ($variablePath as $key) {
-                $value = $value[$key] ?? '';
+                $value = $value->$key ?? '';
             }
 
             return htmlspecialchars($value);
