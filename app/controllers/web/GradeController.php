@@ -19,11 +19,21 @@ class GradeController
     public Repository $userRepository;
     public View $view;
     public Session $session;
+    public Request $request;
 
     public $user = null;
     public $exams = null;
+    public $selectedExamId;
 
-    public function __construct(ExamUserRepository $examUserRepository ,ExamRepository $examRepository ,GradeRepository $gradeRepository, UserRepository $userRepository, View $view, Session $session)
+    public function __construct(
+        ExamUserRepository $examUserRepository ,
+        ExamRepository $examRepository ,
+        GradeRepository $gradeRepository,
+        UserRepository $userRepository,
+        View $view,
+        Session $session,
+        Request $request
+    )
     {
         $this->examUserRepository = $examUserRepository;
         $this->examRepository = $examRepository;
@@ -31,9 +41,11 @@ class GradeController
         $this->userRepository = $userRepository;
         $this->view = $view;
         $this->session = $session;
+        $this->request = $request;
 
         $email = $this->session->get('user');
         $this->user = $this->userRepository->findUserByEmail($email);
+        $view->setController($this);
     }
 
     public function getUserExams()
@@ -48,6 +60,7 @@ class GradeController
     public function getExamUsers($id)
     {
         $loggedIn = SESSION::get('loggedIn');
+        $this->selectedExamId = $id;
         $exam = $this->examRepository->findById($id);
         $examUsers = $this->examUserRepository->findByExam($id);
         $users = [];
@@ -65,6 +78,29 @@ class GradeController
             'exams' => $this->exams,
             'ex' => $exam
         ]);
+    }
+
+    public function getGrade()
+    {
+        $userGrade = $this->gradeRepository->findGradeByExamIdAndUserId($this->selectedExamId, $this->user->id);
+        return $userGrade;
+    }
+
+    public function hasGrade()
+    {
+        $userGrade = $this->getGrade();
+        if ($userGrade) {
+            return true;
+        }
+        return false;
+    }
+
+    public function storeGrade($id)
+    {
+        var_dump($id);
+//        $data['user_id'] = $this->user->id;
+//        $data['exam_id'] = $this->selectedExamId;
+//        $this->gradeRepository->create($data);
     }
 
     public function show()

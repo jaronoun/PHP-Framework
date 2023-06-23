@@ -27,6 +27,12 @@ class Grade extends Model{
         parent::__construct();
     }
 
+    public static function findByExamIdAndUserId($exam_id, $user_id)
+    {
+        $result = self::query("SELECT * FROM grades WHERE exam_id = ? AND user_id = ?", [$exam_id, $user_id]);
+        return $result[0] ?? null;
+    }
+
     public function getId() {
         return $this->id;
     }
@@ -107,43 +113,18 @@ class Grade extends Model{
     public static function findByUserId(int $user_id): ? array
     {
         $result = self::query("SELECT * FROM grades WHERE user_id = ?", [$user_id]);
-
-//        if($result){
-//            $grades = new Grade($result['name'],
-//                $result['desc'],
-//                $result['start_time'],
-//                $result['end_time'],
-//            );
-//            $grades->setId($result['id']);
-//            $grades->setCreatedAt($result['created_at']);
-//            $grades->setUpdatedAt($result['updated_at']);
-//        }
         return $result ?? null;
     }
 
     public static function findByExamId(int $exam_id): ? array
     {
         $result = self::query("SELECT * FROM grades WHERE exam_id = ?", [$exam_id]);
-
-//        if($result){
-//            $grades = new Grade($result['name'],
-//                $result['desc'],
-//                $result['start_time'],
-//                $result['end_time'],
-//            );
-//            $grades->setId($result['id']);
-//            $grades->setCreatedAt($result['created_at']);
-//            $grades->setUpdatedAt($result['updated_at']);
-//        }
         return $result ?? null;
     }
 
     public function save(): bool
     {
-
-
         return $this->create();
-
     }
 
     private function create(): bool

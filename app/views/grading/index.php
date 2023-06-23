@@ -35,22 +35,31 @@
 
         <div class="col-12 col-md-6 mb-3">
             <div class="card">
-                <div class="card-header text-white bg-dark">Geef Cijfer</div>
+                <div class="card-header text-white bg-dark">Cijfers</div>
                 <div class="card-body">
                     <table class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th class="text-white bg-dark">ID</th>
                             <th class="text-white bg-dark">Naam</th>
-                            <th class="text-white bg-dark">Select</th>
+                            <th class="text-white bg-dark">Cijfer</th>
+                            <th class="text-white bg-dark">Acties</th>
                         </tr>
                         </thead>
                         <tbody id="exams">
                         {% for user in users %}
                         <tr>
-                            <td>{{ user.id }}</td>
-                            <td>{{ user.name }}</td>
-                            <td></td>
+                            <form action="/beoordeling/{{ user.id }}" method="POST" enctype="application/x-www-form-urlencoded">
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.name }}</td>
+                                {% if hasGrade() %}
+                                <td><input type="number" class="form-control" id="integerInput" name="integerInput" step="1">{{ GetGrade() }}</td>
+                                <td><button type="submit" class="btn btn-dark sml-btn">Update</button></td>
+                                {% else %}
+                                <td><input type="number" class="form-control" id="integerInput" name="integerInput" step="1" placeholder="zet cijfer" ></td>
+                                <td><button type="submit" class="btn btn-dark sml-btn">Opslaan</button></td>
+                                {% endif %}
+                            </form>
                         </tr>
                         {% endfor %}
                         </tbody>

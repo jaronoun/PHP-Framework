@@ -24,11 +24,7 @@ class GradeRepository extends Model implements Repository
             );
 
         }
-
         return $data;
-
-
-
     }
 
     public function findById($id): ?Grade
@@ -54,6 +50,11 @@ class GradeRepository extends Model implements Repository
     public function findGradeByUserId($user_id): ?array
     {
         return Grade::findByUserId($user_id);
+    }
+
+    public function findGradeByExamIdAndUserId($exam_id, $user_id): ?array
+    {
+        return Grade::findByExamIdAndUserId($exam_id, $user_id);
     }
 
     public function create($data): ?Grade
