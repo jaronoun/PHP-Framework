@@ -52,8 +52,8 @@
                             <form action="/beoordeling/{{ getSelectedExamId() }}/{{ user.id }}" method="POST" enctype="application/x-www-form-urlencoded">
                                 <td>{{ user.id }}</td>
                                 <td>{{ user.name }}</td>
-                                {% if hasGrade() %}
-                                <td><input type="number" class="form-control" id="grade" name="grade" step="1">{{ GetGrade() }}</td>
+                                {% if hasGrade(user.id) %}
+                                <td><input type="number" class="form-control" id="grade" name="grade" step="1">{{ GetGrade(user.id) }}</td>
                                 <td><button type="submit" class="btn btn-dark sml-btn">Update</button></td>
                                 {% else %}
                                 <td><input type="number" class="form-control" id="grade" name="grade" step="1" placeholder="zet cijfer" ></td>

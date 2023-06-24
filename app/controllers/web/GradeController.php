@@ -84,13 +84,13 @@ class GradeController
         ]);
     }
 
-    public function getGrade()
+    public function getGrade($userID)
     {
-        $userGrade = $this->gradeRepository->findGradeByExamIdAndUserId($this->selectedExamId, $this->user->id);
+        $userGrade = $this->gradeRepository->findGradeByExamIdAndUserId($this->selectedExamId, $userID);
         return $userGrade;
-    }
+    } 
 
-    public function hasGrade()
+    public function hasGrade($userID)
     {
         $userGrade = $this->getGrade();
         if ($userGrade) {
@@ -104,27 +104,30 @@ class GradeController
         return $this->selectedExamId;
     }
 
-    public function storeGrade()
+    public function storeGrade($examID, $userID)
     {
+        var_dump($examID);
+        var_dump($userID);
 
         $loggedIn = SESSION::get('loggedIn');
 
-//        $data['exam_id'] = $this->selectedExamId;
-//        $data['user_id'] = intval($id);
-//        $data['teacher_id'] = $this->user->id;
-//        $data['grade'] = intval($this->request->getParam('grade'));
-//        $grade = $this->gradeRepository->create($data);
-//
-//        $exam = $this->examRepository->findById($this->selectedExamId);
-//        $this->getUserExams();
-//
-//        $this->view->render('grading/index.php', [
-//            'loggedIn' => $loggedIn,
-//            'user' => $this->user,
-//            'users' => $this->users,
-//            'exams' => $this->exams,
-//            'ex' => $exam
-//        ]);
+        $data['exam_id'] = intval($examID);
+        $data['user_id'] = intval($userID);
+        $data['teacher_id'] = $this->user->id;
+        $data['grade'] = intval($this->request->getParam('grade'));
+        $this->gradeRepository->create($data);
+
+        $this->selectedExamId = $examID;
+        $exam = $this->examRepository->findById($this->selectedExamId);
+        $this->getUserExams();
+
+        $this->view->render('grading/index.php', [
+            'loggedIn' => $loggedIn,
+            'user' => $this->user,
+            'users' => $this->users,
+            'exams' => $this->exams,
+            'ex' => $exam
+        ]);
     }
 
     public function show()

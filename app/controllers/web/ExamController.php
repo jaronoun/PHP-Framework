@@ -130,6 +130,7 @@ class ExamController
 
     public function enrollExam($id): void
     {
+
         $this->examUserRepository->create([
             'exam_id' => intval($id),
             'user_id' => $this->user->id
@@ -145,9 +146,9 @@ class ExamController
         ]);
     }
 
-    public function unEnrollExam($examId): void
+    public function unEnrollExam($id): void
     {
-        $var = $this->examUserRepository->deleteById($examId, $this->user->id);
+        $var = $this->examUserRepository->deleteById($id, $this->user->id);
         $this->getUserExams();
 
         $this->view->render('exams/index.php', [

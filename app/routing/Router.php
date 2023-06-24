@@ -36,12 +36,17 @@ class Router implements RequestHandlerInterface
         return $pattern;
     }
 
-    protected function extractIdFromUri($uri, $pattern): ?string
+    protected function extractVariablesFromUri($uri, $pattern): array
     {
         preg_match($pattern, $uri, $matches);
-        $id = $matches['id'] ?? null;
 
-        return $id;
+        // Remove the first element, which contains the full match
+        array_shift($matches);
+
+        // Filter out numeric keys to keep only named variables
+        $variables = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+
+        return $variables;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -58,11 +63,11 @@ class Router implements RequestHandlerInterface
         // Haal het reguliere expressiepatroon op dat overeenkomt met de route
         $pattern = array_keys($this->routes[$method], $handler)[0];
 
-        // Extract the ID from the URI using the pattern
-        $id = $this->extractIdFromUri($uri, $pattern);
+        // Extract variables from the URI using the pattern
+        $variables = $this->extractVariablesFromUri($uri, $pattern);
 
         // Instead of calling the handler directly, we call the loadView method
-        return $this->loadView($handler, $id);
+        return $this->loadView($handler, $variables);
     }
 
     protected function matchRoute($method, $uri)
@@ -82,7 +87,7 @@ class Router implements RequestHandlerInterface
     /**
      * @throws ReflectionException
      */
-    protected function loadView($handler, $id): Response
+    protected function loadView($handler, $variables): Response
     {
 
         $parts = explode('@', $handler);
@@ -99,12 +104,9 @@ class Router implements RequestHandlerInterface
         // create the controller instance
         $controller = $this->container->make($controllerName);
 
-        // call the method on the controller instance
-        if(!$id==null) {
-            $controller->$methodName($id);
-        } else {
-            $controller->$methodName();
-        }
+        // Call the method on the controller instance, passing the extracted variables
+        $controller->$methodName(...$variables);
+
         return new Response();
     }
 }
