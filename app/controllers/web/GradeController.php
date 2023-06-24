@@ -108,9 +108,20 @@ class GradeController
         $data['exam_id'] = intval($examID);
         $data['user_id'] = intval($userID);
         $data['teacher_id'] = $this->user->id;
-
         $data['grade'] = intval($this->request->getParam('grade'));
-        $this->gradeRepository->create($data);
+
+        $existingGrade = $this->gradeRepository->findGradeByExamIdAndUserId($examID, $userID);
+        if ($existingGrade)
+        {
+            var_dump('update');
+            $this->gradeRepository->update($existingGrade['id'], $data);
+        }
+        else
+        {
+            var_dump('create');
+            $this->gradeRepository->create($data);
+        }
+
 
         $this->selectedExamId = $examID;
         $exam = $this->examRepository->findById($this->selectedExamId);
@@ -154,8 +165,9 @@ class GradeController
 
     public function hasGrade($userID)
     {
-        $userGrade = $this->getGrade($userID);
-        if ($userGrade) {
+        $userGrade = $this->gradeRepository->findGradeByExamIdAndUserId($this->selectedExamId, $userID);
+        if ($userGrade)
+        {
             return true;
         }
         return false;

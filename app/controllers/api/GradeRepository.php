@@ -98,22 +98,20 @@ class GradeRepository extends Model implements Repository
         }
     }
 
-    public function update($id, $data): bool|string
+    public function update($id, $data): ?Grade
     {
+        $grade = Grade::findById($id);
 
+        $grade->setExamId($data['exam_id']);
+        $grade->setUserId($data['user_id']);
+        $grade->setGrade($data['grade']);
+        $grade->setTeacherId($data['teacher_id']);
+        $grade->setUpdatedAt(Date('Y-m-d H:i:s'));
 
-        try {
-            $grade = Grade::findById($id);
-            $grade->setExamId($examId);
-            $grade->setUserId($user_id);
-            $grade->setDescription($desc);
-            $grade->setStartTime($start_time);
-            $grade->setEndTime($end_time);
-            $grade->save();
-
-            return json_encode($grade);
-        } catch (PDOException $e) {
-            return json_encode(['error' => $e->getMessage()]);
+        if($grade->update()){
+            return $grade;
+        } else {
+            return null;
         }
     }
 

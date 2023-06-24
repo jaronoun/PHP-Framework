@@ -17,7 +17,7 @@ class Grade extends Model{
     public $updated_at;
 
     public function __construct($exam_id, $user_id, $grade, $teacher_id) {
-
+        $this->id = null;
         $this->exam_id = $exam_id;
         $this->user_id = $user_id;
         $this->teacher_id = $teacher_id;
@@ -96,7 +96,8 @@ class Grade extends Model{
 
     public static function findById(int $id): ?Grade
     {
-        $result = self::query("SELECT * FROM grade WHERE id = ?", [$id]);
+        $result = self::query("SELECT * FROM grades WHERE id = ?", [$id]);
+        $result = $result[0] ?? null;
 
         if($result){
             $grade = new Grade(
@@ -155,12 +156,13 @@ class Grade extends Model{
         return true;
     }
 
-    private function update(): bool
+    public function update(): bool
     {
-        self::query("UPDATE grades SET exam_id = ?, user_id = ?, grade = ?, created_at = ?, updated_at = ? WHERE id = ?", [
+        self::query("UPDATE grades SET exam_id = ?, user_id = ?, grade = ?, teacher_id = ?, created_at = ?, updated_at = ? WHERE id = ?", [
             $this->getExamId(),
             $this->getUserId(),
             $this->getGrade(),
+            $this->getTeacherId(),
             $this->getCreatedAt(),
             Date('Y-m-d H:i:s'),
             $this->getId()

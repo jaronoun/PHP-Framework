@@ -5,6 +5,7 @@ namespace Isoros\controllers\web;
 use Exception;
 use Isoros\controllers\api\ExamRepository;
 use Isoros\controllers\api\ExamUserRepository;
+use Isoros\controllers\api\GradeRepository;
 use Isoros\controllers\api\UserRepository;
 use Isoros\core\View;
 use Isoros\models\User;
@@ -18,6 +19,8 @@ class ExamController
     public ExamRepository $examRepository;
     public ExamUserRepository $examUserRepository;
     public UserRepository $userRepository;
+    public GradeRepository $gradeRepository;
+
     public View $view;
     public Session $session;
     public Request $request;
@@ -31,6 +34,7 @@ class ExamController
         ExamRepository $examRepository,
         UserRepository $userRepository,
         ExamUserRepository $examUserRepository,
+        GradeRepository $gradeRepository,
         View $view,
         Session $session,
         Request $request)
@@ -38,6 +42,7 @@ class ExamController
         $this->examUserRepository = $examUserRepository;
         $this->examRepository = $examRepository;
         $this->userRepository = $userRepository;
+        $this->gradeRepository = $gradeRepository;
         $this->view = $view;
         $this->request = $request;
         $this->session = $session;
@@ -151,6 +156,15 @@ class ExamController
             }
         }
         return true;
+    }
+
+    public function getUserGrade($examID): bool
+    {
+        $grade = $this->gradeRepository->findGradeByExamIdAndUserId($examID, $this->user->getId());
+        if ($grade) {
+            return true;
+        }
+        return false;
     }
 
 
