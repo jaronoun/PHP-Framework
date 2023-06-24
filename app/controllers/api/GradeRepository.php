@@ -81,6 +81,7 @@ class GradeRepository extends Model implements Repository
         return Grade::findByExamIdAndUserId($exam_id, $user_id);
     }
 
+
     public function create($data): ?Grade
     {
         $examId = $data['exam_id'];
@@ -99,11 +100,7 @@ class GradeRepository extends Model implements Repository
 
     public function update($id, $data): bool|string
     {
-        $examId = $data[0];
-        $user_id = $data[1];
-        $desc = $data[2];
-        $start_time = $data[3];
-        $end_time = $data[4];
+
 
         try {
             $grade = Grade::findById($id);
