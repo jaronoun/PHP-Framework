@@ -47,21 +47,6 @@ class ExamController
         $this->user = $this->userRepository->findUserByEmail($email);
 
     }
-
-    public function getUserExams()
-    {
-        $exams = $this->examRepository->getAll();
-        foreach ($exams as $exam) {
-            $this->exams[] = $exam;
-        }
-        $examUser = $this->examUserRepository->findByUser($this->user->getId());
-        foreach ($examUser as $exam) {
-            $exam = $this->examRepository->findById($exam['exam_id']);
-            $this->examUser[] = $exam;
-        }
-    }
-
-
     /**
      * @throws Exception
      */
@@ -168,6 +153,20 @@ class ExamController
             }
         }
         return true;
+    }
+
+
+    public function getUserExams()
+    {
+        $exams = $this->examRepository->getAll();
+        foreach ($exams as $exam) {
+            $this->exams[] = $exam;
+        }
+        $examUser = $this->examUserRepository->findByUser($this->user->getId());
+        foreach ($examUser as $exam) {
+            $exam = $this->examRepository->findById($exam['exam_id']);
+            $this->examUser[] = $exam;
+        }
     }
 
     public function getTime($dateTime)

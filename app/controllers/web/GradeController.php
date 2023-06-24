@@ -50,23 +50,6 @@ class GradeController
         $this->user = $this->userRepository->findUserByEmail($email);
         $view->setController($this);
     }
-
-    public function getUserExams()
-    {
-        $examUser = $this->examUserRepository->findByUser($this->user->id);
-        foreach ($examUser as $exam) {
-            $exam = $this->examRepository->findById($exam['exam_id']);
-            $this->exams[] = $exam;
-        }
-        if ($this->selectedExamId) {
-            $examUsers = $this->examUserRepository->findByExam($this->selectedExamId);
-            foreach ($examUsers as $examUser) {
-                $user = $this->userRepository->findById($examUser['user_id']);
-                $this->users[] = $user;
-            }
-        }
-    }
-
     public function showExamUsers($id)
     {
         $loggedIn = SESSION::get('loggedIn');
@@ -84,28 +67,30 @@ class GradeController
         ]);
     }
 
-    public function getGrade($userID)
+    public function show()
     {
-        $userGrade = $this->gradeRepository->findGradeByExamIdAndUserId($this->selectedExamId, $userID);
-        if ($userGrade)
-        {
-            return $userGrade['grade'];
-        }
-        return $userGrade;
-    }
+        $loggedIn = SESSION::get('loggedIn');
 
-    public function hasGrade($userID)
-    {
-        $userGrade = $this->getGrade($userID);
-        if ($userGrade) {
-            return true;
-        }
-        return false;
-    }
+        $grades = $this->gradeRepository->getAll();
+        $this->getUserExams();
 
-    public function getSelectedExamId()
+        $this->view->render('grades/index.php', [
+            'loggedIn' => $loggedIn,
+            'user' => $this->user,
+            'data' => $grades
+        ]);
+    }
+    public function showExams()
     {
-        return $this->selectedExamId;
+        $loggedIn = SESSION::get('loggedIn');
+
+        $this->getUserExams();
+
+        $this->view->render('grading/index.php', [
+            'loggedIn' => $loggedIn,
+            'user' => $this->user,
+            'exams' => $this->exams,
+        ]);
     }
 
     public function storeGrade($examID, $userID)
@@ -132,29 +117,44 @@ class GradeController
         ]);
     }
 
-    public function show()
+
+    public function getUserExams()
     {
-        $loggedIn = SESSION::get('loggedIn');
-
-        $grades = $this->gradeRepository->getAll();
-
-        $this->view->render('grades/index.php', [
-            'loggedIn' => $loggedIn,
-            'user' => $this->user,
-            'data' => $grades
-        ]);
+        $examUser = $this->examUserRepository->findByUser($this->user->id);
+        foreach ($examUser as $exam) {
+            $exam = $this->examRepository->findById($exam['exam_id']);
+            $this->exams[] = $exam;
+        }
+        if ($this->selectedExamId) {
+            $examUsers = $this->examUserRepository->findByExam($this->selectedExamId);
+            foreach ($examUsers as $examUser) {
+                $user = $this->userRepository->findById($examUser['user_id']);
+                $this->users[] = $user;
+            }
+        }
     }
 
-    public function showExams()
+    public function getGrade($userID)
     {
-        $loggedIn = SESSION::get('loggedIn');
+        $userGrade = $this->gradeRepository->findGradeByExamIdAndUserId($this->selectedExamId, $userID);
+        if ($userGrade)
+        {
+            return $userGrade['grade'];
+        }
+        return $userGrade;
+    }
 
-        $this->getUserExams();
+    public function hasGrade($userID)
+    {
+        $userGrade = $this->getGrade($userID);
+        if ($userGrade) {
+            return true;
+        }
+        return false;
+    }
 
-        $this->view->render('grading/index.php', [
-            'loggedIn' => $loggedIn,
-            'user' => $this->user,
-            'exams' => $this->exams,
-        ]);
+    public function getSelectedExamId()
+    {
+        return $this->selectedExamId;
     }
 }

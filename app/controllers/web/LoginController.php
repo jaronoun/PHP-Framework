@@ -23,7 +23,6 @@ class LoginController
 
     public function __construct(UserRepository $repository, View $view, Request $request, Session $session)
     {
-
         $this->userRepository = $repository;
         $this->view = $view;
         $this->request = $request;
@@ -38,10 +37,12 @@ class LoginController
     {
         $title = "Login";
         $loggedIn = false;
-        $result = $this->view->render('auth/login.php', ['loggedIn' => $loggedIn, 'title' => $title, 'role' => '']);
-        echo $result;
+        $this->view->render('auth/login.php', [
+            'loggedIn' => $loggedIn,
+            'title' => $title,
+            'role' => ''
+        ]);
     }
-
 
     /**
      * @throws ContainerExceptionInterface
@@ -57,8 +58,11 @@ class LoginController
 
         if (!$user || !password_verify($password, $user->password)) {
             echo "Ongeldige inloggegevens.";
-            $result = $this->view->render('auth\login.php', ['username' => $username, 'loggedIn' => false, 'role' => $user->role]);
-            echo $result;
+            $this->view->render('auth\login.php', [
+                'username' => $username,
+                'loggedIn' => false,
+                'role' => $user->role
+            ]);
             exit;
         }
 
@@ -66,16 +70,21 @@ class LoginController
         $this->session->set('loggedIn', true);
 
         $this->request->Redirect('/cijfers');
-        $result = $this->view->render('grades\index.php', ['username' => $username, 'loggedIn' => $this->session->get('loggedIn'), 'role' => $user->role]);
-
+        $this->view->render('grades\index.php', [
+            'username' => $username,
+            'loggedIn' => $this->session->get('loggedIn'),
+            'role' => $user->role
+        ]);
     }
 
     public function handleLogout()
     {
         $loggedIn = false;
         $this->session->destroy();
-        $result = $this->view->render('auth\login.php', ['loggedIn' => $loggedIn, 'role' => '']);
-        echo $result;
+        $this->view->render('auth\login.php', [
+            'loggedIn' => $loggedIn,
+            'role' => ''
+        ]);
     }
 
 }

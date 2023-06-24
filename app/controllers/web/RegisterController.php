@@ -38,8 +38,11 @@ class RegisterController
         {
             $title = "Register";
             $role = '';
-            $result = $this->view->render('auth/register.php', ['title' => $title, 'loggedIn' => false, 'role' => $role]);
-            echo $result;
+            $this->view->render('auth/register.php', [
+                'title' => $title,
+                'loggedIn' => false,
+                'role' => $role
+            ]);
         }
 
     /**
@@ -55,15 +58,20 @@ class RegisterController
 
         if(!$user){
             echo "Er is iets fout gegaan";
-            $result = $this->view->render('auth\register.php', ['loggedIn' => $this->session->get('loggedIn'), 'role' => $role]);
-            echo $result;
+            $this->view->render('auth\register.php', [
+                'loggedIn' => $this->session->get('loggedIn'),
+                'role' => $role
+            ]);
+
 
         } else {
             $session = $this->session;
             $session->set('user', $this->request->getParams()["email"]);
             $session->set('loggedIn', true);
-            $result = $this->view->render('grades\index.php', ['loggedIn' => $this->session->get('loggedIn'), 'role' => $role]);
-            echo $result;
+            $this->view->render('grades\index.php', [
+                'loggedIn' => $this->session->get('loggedIn'),
+                'role' => $role
+            ]);
             exit;
         }
 

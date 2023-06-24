@@ -35,7 +35,14 @@ class UserController
             $data = null;
         }
 
-        $this->view->render('users/index.php', ['loggedIn' => $loggedIn, 'title' => $title, 'name' => $user->name, 'email' => $user->email, 'role' => $user->role, 'data' => $data]);
+        $this->view->render('users/index.php', [
+            'loggedIn' => $loggedIn,
+            'title' => $title,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'data' => $data
+        ]);
 
     }
 
