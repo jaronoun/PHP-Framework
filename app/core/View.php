@@ -147,7 +147,7 @@ class View
             $variablePath = explode('.', $arguments);
 
             foreach ($variablePath as $key) {
-                $value = is_object($key) ? ($value->$key ?? '') : ($value[$key] ?? '');
+                $value = is_object($value) ? ($value->$key ?? '') : ($value[$key] ?? '');
             }
 
             if (method_exists($this->controller, $methodName)) {

@@ -87,12 +87,16 @@ class GradeController
     public function getGrade($userID)
     {
         $userGrade = $this->gradeRepository->findGradeByExamIdAndUserId($this->selectedExamId, $userID);
+        if ($userGrade)
+        {
+            return $userGrade['grade'];
+        }
         return $userGrade;
-    } 
+    }
 
     public function hasGrade($userID)
     {
-        $userGrade = $this->getGrade();
+        $userGrade = $this->getGrade($userID);
         if ($userGrade) {
             return true;
         }
@@ -106,8 +110,6 @@ class GradeController
 
     public function storeGrade($examID, $userID)
     {
-        var_dump($examID);
-        var_dump($userID);
 
         $loggedIn = SESSION::get('loggedIn');
 

@@ -53,7 +53,7 @@
                                 <td>{{ user.id }}</td>
                                 <td>{{ user.name }}</td>
                                 {% if hasGrade(user.id) %}
-                                <td><input type="number" class="form-control" id="grade" name="grade" step="1">{{ GetGrade(user.id) }}</td>
+                                <td><input type="number" class="form-control" id="grade" name="grade" step="1" placeholder="{{ GetGrade(user.id) }}"></td>
                                 <td><button type="submit" class="btn btn-dark sml-btn">Update</button></td>
                                 {% else %}
                                 <td><input type="number" class="form-control" id="grade" name="grade" step="1" placeholder="zet cijfer" ></td>
