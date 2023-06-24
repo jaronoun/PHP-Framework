@@ -61,7 +61,6 @@ class ExamController
             'user' => $this->user,
             'examUser' => $this->examUser,
             'exams' => $this->exams,
-
         ]);
 
     }
@@ -81,7 +80,6 @@ class ExamController
         ]);
 
         $this->getUserExams();
-
 
         if (!$exam) {
             return new Response(502,[],"Er is iets fout gegaan");

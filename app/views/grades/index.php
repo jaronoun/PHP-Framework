@@ -7,9 +7,10 @@
         <div class="card">
             <div class="card-header text-white bg-dark">Meest recente resultaat</div>
             <div class="card-body">
-                <h1 class="display-1 text-center">100</h1>
-                <h2 class="text-center mb-4">Wiskunde</h2>
-                <p class="text-center mb-0">Examendatum:</p>
+                <h1 class="display-1 text-center">{{ grade.grade }}</h1>
+                <h2 class="text-center mb-4">{{ grade.exam_id }}</h2>
+                <p class="text-center mb-0">Docent: {{ grade.teacher_id }}</p>
+                <p class="text-center mb-0">Invoer datum: {{ getDate(grade.created_at) }}</p>
             </div>
         </div>
     </div>
@@ -31,6 +32,7 @@
         </div>
     </div>
     {% endif %}
+
     {% if user.role == 'admin' %}
     <div class="col-12 col-md-12 mb-3">
         <div class="card">
@@ -76,7 +78,8 @@
                 </div>
             </div>
         </div>
-        {% endif %}
+    </div>
+    {% endif %}
 </div>
 
 

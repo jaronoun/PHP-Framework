@@ -69,12 +69,23 @@ class LoginController
         $this->session->set('user', $username);
         $this->session->set('loggedIn', true);
 
-        $this->request->Redirect('/cijfers');
-        $this->view->render('grades\index.php', [
-            'username' => $username,
-            'loggedIn' => $this->session->get('loggedIn'),
-            'role' => $user->role
-        ]);
+        if ($user->role == 'student') {
+            $this->request->Redirect('/cijfers');
+            $this->view->render('grades\index.php', [
+                'username' => $username,
+                'loggedIn' => $this->session->get('loggedIn'),
+                'role' => $user->role
+            ]);
+        } else {
+            $this->request->Redirect('/tentamens');
+            $this->view->render('exams\index.php', [
+                'username' => $username,
+                'loggedIn' => $this->session->get('loggedIn'),
+                'role' => $user->role
+            ]);
+        }
+
+
     }
 
     public function handleLogout()

@@ -27,12 +27,6 @@ class Grade extends Model{
         parent::__construct();
     }
 
-    public static function findByExamIdAndUserId($exam_id, $user_id)
-    {
-        $result = self::query("SELECT * FROM grades WHERE exam_id = ? AND user_id = ?", [$exam_id, $user_id]);
-        return $result[0] ?? null;
-    }
-
     public function getId() {
         return $this->id;
     }
@@ -91,7 +85,6 @@ class Grade extends Model{
         $this->updated_at = $updated_at;
     }
 
-
     public static function all()
     {
         $data = self::query("SELECT * FROM grades");
@@ -99,6 +92,7 @@ class Grade extends Model{
         return $data;
 
     }
+
 
     public static function findById(int $id): ?Grade
     {
@@ -117,6 +111,18 @@ class Grade extends Model{
             $grade->setUpdatedAt($result['updated_at']);
         }
         return $result ? $grade : null;
+    }
+
+    public static function findByExamIdAndUserId($exam_id, $user_id)
+    {
+        $result = self::query("SELECT * FROM grades WHERE exam_id = ? AND user_id = ?", [$exam_id, $user_id]);
+        return $result[0] ?? null;
+    }
+
+    public static function findRecentGrade(int $user_id)
+    {
+        $result = self::query("SELECT * FROM grades WHERE user_id = ? ORDER BY id DESC LIMIT 1", [$user_id]);
+        return $result[0] ?? null;
     }
 
     public static function findByUserId(int $user_id): ? array

@@ -6,15 +6,15 @@
         <div class="card">
             <div class="card-header text-white bg-dark">Profiel</div>
             <div class="card-body">
-                <h5 class="card-title">Name: {{ name }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Email: {{ email }} </h6>
-                <p class="card-text">Role: {{ role }}</p>
+                <h5 class="card-title">Name: {{ user.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Email: {{ user.email }} </h6>
+                <p class="card-text">Role: {{ user.role }}</p>
             </div>
         </div>
     </div>
 </div>
 
-{% if role == admin %}
+{% if user.role == 'admin' %}
 <div class="table-responsive">
     <h3><u>Alle gebruikers</u></h3>
     <table class="table table-striped" contenteditable="true">

@@ -73,6 +73,11 @@ class GradeController
 
         $allGrades = $this->gradeRepository->getAll();
         $grades = $this->gradeRepository->findByUserId($this->user->id);
+
+        $grade = $this->gradeRepository->findRecentGrade($this->user->id);
+        $grade['exam_id'] = $this->gradeRepository->findExamName($grade['exam_id']);
+        $grade['teacher_id'] = $this->gradeRepository->findUserName($grade['teacher_id']);
+
         $this->getUserExams();
 
         $this->view->render('grades/index.php', [
@@ -80,6 +85,7 @@ class GradeController
             'user' => $this->user,
             'data' => $allGrades,
             'grades' => $grades,
+            'grade' => $grade,
         ]);
     }
     public function showExams()
@@ -102,6 +108,7 @@ class GradeController
         $data['exam_id'] = intval($examID);
         $data['user_id'] = intval($userID);
         $data['teacher_id'] = $this->user->id;
+
         $data['grade'] = intval($this->request->getParam('grade'));
         $this->gradeRepository->create($data);
 

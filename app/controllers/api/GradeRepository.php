@@ -50,6 +50,12 @@ class GradeRepository extends Model implements Repository
         return $data;
     }
 
+    public function findRecentGrade($user_id)
+    {
+        $results = Grade::findRecentGrade($user_id);
+        return $results;
+    }
+
     public function findExamName($exam_id): string
     {
 

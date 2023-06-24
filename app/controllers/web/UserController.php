@@ -15,21 +15,24 @@ class UserController
     public UserRepository $userRepository;
     public View $view;
     public Session $session;
+    public $user;
     public function __construct(UserRepository $repository, View $view, Session $session)
     {
 
         $this->userRepository = $repository;
         $this->view = $view;
         $this->session = $session;
+
+        $email = $this->session->get('user');
+        $this->user = $this->userRepository->findUserByEmail($email);
     }
 
     public function index()
     {
         $loggedIn = $this->session->get('loggedIn');
         $title = "Login";
-        $email = $this->session->get('user');
-        $user = $this->userRepository->findUserByEmail($email);
-        if($user->getRole() == 'admin'){
+
+        if($this->user->getRole() == 'admin'){
             $data = $this->userRepository->getAll();
         } else {
             $data = null;
@@ -38,10 +41,7 @@ class UserController
         $this->view->render('users/index.php', [
             'loggedIn' => $loggedIn,
             'title' => $title,
-            'name' => $user->name,
-            'email' => $user->email,
-            'role' => $user->role,
-            'data' => $data
+            'user' => $this->user,
         ]);
 
     }
