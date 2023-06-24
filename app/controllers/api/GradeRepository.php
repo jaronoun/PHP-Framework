@@ -32,6 +32,24 @@ class GradeRepository extends Model implements Repository
         return Grade::findById($id);
     }
 
+    public function findByUserId($user_id): ?array
+    {
+        $results = Grade::findByUserId($user_id);
+        $data = [];
+
+        foreach($results as $result) {
+            $data[] = array(
+                'id' => $result['id'],
+                'exam_name' => $this->findExamName($result['exam_id']),
+                'user_name' => $this->findUserName($result['user_id']),
+                'grade' => $result['grade'],
+                'created_at' => $result['created_at'],
+                'updated_at' => $result['updated_at']
+            );
+        }
+        return $data;
+    }
+
     public function findExamName($exam_id): string
     {
 

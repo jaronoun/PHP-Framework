@@ -1,6 +1,6 @@
 {% extends layout/header.php %}
 
-<div class="row mt-3">
+<div class="row">
 
     {% if user.role == 'student' %}
     <div class="col-12 col-md-4 mb-3">
@@ -19,31 +19,23 @@
             <div class="card-header text-white bg-dark">Behaalde cijfers</div>
             <div class="card-body">
                 <ul class="list-group">
+                    {% for grade in grades %}
                     <li class="list-group-item">
-                        <h5 class="mb-1">Wiskunde</h5>
-                        <p class="mb-1">Behaald met een 8.5</p>
-                        <small>2 maart 2023</small>
+                        <h5 class="mb-1">{{ grade.exam_name }}</h5>
+                        <p class="mb-1">Behaald met een {{ grade.grade }}</p>
+                        <small>{{ getDate(grade.created_at) }}</small>
                     </li>
-                    <li class="list-group-item">
-                        <h5 class="mb-1">Nederlands</h5>
-                        <p class="mb-1">Behaald met een 7.8</p>
-                        <small>14 februari 2023</small>
-                    </li>
-                    <li class="list-group-item">
-                        <h5 class="mb-1">Engels</h5>
-                        <p class="mb-1">Behaald met een 9.0</p>
-                        <small>18 januari 2023</small>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
     {% endif %}
     {% if user.role == 'admin' %}
-    <div class="col-12 col-md-4 mb-3">
+    <div class="col-12 col-md-12 mb-3">
         <div class="card">
             <div class="card-header text-white bg-dark">Cijfers</div>
-            <div class="card-body text-white bg-dark">
+            <div class="card-body">
                 <div class="table-responsive">
                     <h3><u></u></h3>
                     <table class="table table-striped" contenteditable="true">

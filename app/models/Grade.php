@@ -108,6 +108,7 @@ class Grade extends Model{
             $grade = new Grade(
                 $result['exam_id'],
                 $result['user_id'],
+                $result['teacher_id'],
                 $result['grade'],
 
             );

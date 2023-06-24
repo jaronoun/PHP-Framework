@@ -71,13 +71,15 @@ class GradeController
     {
         $loggedIn = SESSION::get('loggedIn');
 
-        $grades = $this->gradeRepository->getAll();
+        $allGrades = $this->gradeRepository->getAll();
+        $grades = $this->gradeRepository->findByUserId($this->user->id);
         $this->getUserExams();
 
         $this->view->render('grades/index.php', [
             'loggedIn' => $loggedIn,
             'user' => $this->user,
-            'data' => $grades
+            'data' => $allGrades,
+            'grades' => $grades,
         ]);
     }
     public function showExams()
@@ -95,7 +97,6 @@ class GradeController
 
     public function storeGrade($examID, $userID)
     {
-
         $loggedIn = SESSION::get('loggedIn');
 
         $data['exam_id'] = intval($examID);
@@ -157,4 +158,12 @@ class GradeController
     {
         return $this->selectedExamId;
     }
+
+    public function getDate($dateTime)
+    {
+        $timestamp = strtotime($dateTime);
+        $formattedDate = date('j F Y', $timestamp);
+        return $formattedDate;
+    }
+
 }
