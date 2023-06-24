@@ -120,6 +120,25 @@ class GradeController
             $this->gradeRepository->create($data);
         }
 
+        $this->selectedExamId = $examID;
+        $exam = $this->examRepository->findById($this->selectedExamId);
+        $this->getUserExams();
+
+        $this->view->render('grading/index.php', [
+            'loggedIn' => $loggedIn,
+            'user' => $this->user,
+            'users' => $this->users,
+            'exams' => $this->exams,
+            'ex' => $exam
+        ]);
+    }
+
+    public function deleteGrade($examID, $userID)
+    {
+        $loggedIn = SESSION::get('loggedIn');
+
+        $existingGrade = $this->gradeRepository->findGradeByExamIdAndUserId($examID, $userID);
+        $this->gradeRepository->delete($existingGrade['id']);
 
         $this->selectedExamId = $examID;
         $exam = $this->examRepository->findById($this->selectedExamId);

@@ -54,7 +54,9 @@
                                 <td>{{ user.name }}</td>
                                 {% if hasGrade(user.id) %}
                                 <td><input type="number" class="form-control" id="grade" name="grade" step="1" placeholder="{{ GetGrade(user.id) }}"></td>
-                                <td><button type="submit" class="btn btn-dark sml-btn">Update</button></td>
+                                <td><button type="submit" class="btn btn-dark sml-btn">Update</button>
+                                    <a href="/beoordeling/{{ getSelectedExamId() }}/{{ user.id }}" class="btn btn-dark sml-btn">Verwijderen</a>
+                                </td>
                                 {% else %}
                                 <td><input type="number" class="form-control" id="grade" name="grade" step="1" placeholder="zet cijfer" ></td>
                                 <td><button type="submit" class="btn btn-dark sml-btn">Opslaan</button></td>
