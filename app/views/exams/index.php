@@ -9,8 +9,8 @@
                 <form action="/tentamens" method="post">
                     <div class="container">
                         <div class="form-group">
-                            <label for="exam-name">Tentamen Naam</label>
-                            <input type="text" class="form-control" id="exam-name" name="exam-name" placeholder="Zoek op tentamen naam" required>
+                            <label for="exam-name">Filter</label>
+                            <input type="text" class="form-control" id="exam-name" name="exam-name" placeholder="Zoek op tentamen ID, naam of datum" required>
                         </div>
                     </div>
                 </form>
@@ -46,13 +46,24 @@
             <div class="card-header text-white bg-dark">Ingeschreven Tentamens</div>
             <div class="card-body">
                 <ul class="list-group">
-                    {% for exam in examUser %}
-                    <li class="list-group-item"> {{ exam.name }}
-                        <a href="/tentamens/unEnroll/{{ exam.id }}">
-                            <button class="btn btn-dark float-right sml-btn">Uitschrijven</button>
-                        </a>
-                    </li>
-                    {% endfor %}
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th class="text-white bg-dark">Naam</th>
+                            <th class="text-white bg-dark">Acties</th>
+                        </tr>
+                        </thead>
+                        <tbody id="examUser">
+                        {% for exam in examUser %}
+                        <tr>
+                            <td>{{ exam.name }}</td>
+                            {% if getUserGrade(exam.id) %}
+                            <td><a class="btn btn-dark sml-btn disabled">Behaald</a></td>
+                            {% else %}
+                            <td><a href="/tentamens/unEnroll/{{ exam.id }}" class="btn btn-dark sml-btn">Uitschrijven</a></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
                 </ul>
             </div>
         </div>
