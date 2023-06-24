@@ -136,7 +136,7 @@ class ExamController
 
     public function unEnrollExam($id): void
     {
-        $var = $this->examUserRepository->deleteById($id, $this->user->id);
+        $this->examUserRepository->deleteById($id, $this->user->id);
         $this->getUserExams();
 
         $this->view->render('exams/index.php', [
@@ -145,6 +145,15 @@ class ExamController
             'examUser' => $this->examUser,
             'exams' => $this->exams
         ]);
+    }
+
+    public function hasGrades($examID)
+    {
+        $grades = $this->gradeRepository->findGradeByExamId($examID);
+        if ($grades) {
+            return true;
+        }
+        return false;
     }
 
     public function isNotEnrolled($id)

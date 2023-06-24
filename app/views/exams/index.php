@@ -131,9 +131,7 @@
                 <ul class="list-group">
                     {% for exam in examUser %}
                         <li class="list-group-item"> {{ exam.name }}
-                            <a href="/tentamens/{{ exam.id }}">
-                                <button class="btn btn-dark float-right sml-btn">Verwijderen</button>
-                            </a>
+                            <a href="/tentamens/{{ exam.id }}" class="btn btn-dark float-right sml-btn{% if hasGrades(exam.id) %} disabled {% endif %}">Verwijderen</a>
                         </li>
                     {% endfor %}
                 </ul>

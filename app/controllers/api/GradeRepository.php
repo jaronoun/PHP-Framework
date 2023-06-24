@@ -81,6 +81,11 @@ class GradeRepository extends Model implements Repository
         return Grade::findByExamIdAndUserId($exam_id, $user_id);
     }
 
+    public function findGradeByExamId($exam_id): ?array
+    {
+        return Grade::findByExamId($exam_id);
+    }
+
 
     public function create($data): ?Grade
     {

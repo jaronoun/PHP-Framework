@@ -113,12 +113,10 @@ class GradeController
         $existingGrade = $this->gradeRepository->findGradeByExamIdAndUserId($examID, $userID);
         if ($existingGrade)
         {
-            var_dump('update');
             $this->gradeRepository->update($existingGrade['id'], $data);
         }
         else
         {
-            var_dump('create');
             $this->gradeRepository->create($data);
         }
 
