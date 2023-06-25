@@ -24,7 +24,7 @@
                     <li class="list-group-item">
                         <h5 class="mb-1">{{ grade.exam_name }}</h5>
                         <p class="mb-1">Behaald met een {{ grade.grade }}</p>
-                        <small>{{ getDate(grade.created_at) }}</small>
+                        <small>Gegeven op {{ getDate(grade.created_at) }} door {{ grade.teacher_name }}</small>
                     </li>
                     {% endfor %}
                 </ul>

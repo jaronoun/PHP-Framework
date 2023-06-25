@@ -43,6 +43,7 @@ class GradeRepository extends Model implements Repository
                 'exam_name' => $this->findExamName($result['exam_id']),
                 'user_name' => $this->findUserName($result['user_id']),
                 'grade' => $result['grade'],
+                'teacher_name' => $this->findUserName($result['teacher_id']),
                 'created_at' => $result['created_at'],
                 'updated_at' => $result['updated_at']
             );

@@ -139,7 +139,6 @@
         </div>
     </div>
 
-    <!-- Completed exams card -->
     <div class="col-12 col-md-4 mb-3">
         <div class="card">
             <div class="card-header text-white bg-dark">Opkomende Tentamens</div>
@@ -193,7 +192,6 @@
                         <td>{{ exam.created_at }}</td>
                         <td>{{ exam.updated_at }}</td>
                         <td><a href="/tentamens/{{ exam.id }}" class="btn btn-dark float-right sml-btn{% if hasGrades(exam.id) %} disabled {% endif %}">Verwijderen</a></td>
-                    </tr>
                     {% endfor %}
                     </tbody>
                 </table>
