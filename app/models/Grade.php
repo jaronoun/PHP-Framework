@@ -177,6 +177,12 @@ class Grade extends Model{
         return true;
     }
 
+    public function deleteId($id): bool
+    {
+        self::query("DELETE FROM grades WHERE id = ?", [$id]);
+        return true;
+    }
+
     public function user()
     {
         return $this->belongsToMany(User::class, 'grades_user', 'grades_id', 'user_id');

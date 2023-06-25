@@ -2,6 +2,8 @@
 
 namespace Isoros\controllers\api;
 
+use Isoros\models\ExamUser;
+use Isoros\models\Grade;
 use Isoros\models\User;
 use PDOException;
 
@@ -9,12 +11,12 @@ class UserRepository implements Repository
 {
     public function getAll()
     {
-            return User::all();
+        return User::all();
     }
 
     public function findById($id): User
     {
-            return User::findById($id);
+        return User::findById($id);
     }
 
     public function findUserByEmail($email): ?User
@@ -63,6 +65,14 @@ class UserRepository implements Repository
     {
         try {
             $user = User::findById($id);
+            $examUsers = ExamUser::findByUser($id);
+            foreach ($examUsers as $examUser) {
+                ExamUser::deleteId($examUser['id']);
+            }
+            $grades = Grade::findByUserId($id);
+            foreach ($grades as $grade) {
+                Grade::deleteId($grade['id']);
+            }
             $user->delete();
 
             return json_encode(['success' => true]);

@@ -51,23 +51,29 @@ $container->bind(Router::class, function ($container) {
     $router->addRoute('POST', '/beoordeling/{examID}/{userID}', 'GradeController@storeGrade');
     $router->addRoute('GET', '/beoordeling/{examID}/{userID}', 'GradeController@deleteGrade');
 
+    $router->addRoute('POST', '/tentamens/cijfer', 'ExamController@storeGrade');
+    $router->addRoute('GET', '/tentamens/cijfer/{gradeID}', 'ExamController@removeGrade');
+    $router->addRoute('POST', '/tentamens/cijfer/{gradeID}', 'ExamController@updateGrade');
 
     $router->addRoute('GET', '/tentamens', 'ExamController@index');
     $router->addRoute('POST', '/tentamens', 'ExamController@storeExam');
+    $router->addRoute('POST', '/tentamens/maken', 'ExamController@makeExam');
     $router->addRoute('GET', '/tentamens/{id}', 'ExamController@removeExam');
     $router->addRoute('GET', '/tentamens/enroll/{id}', 'ExamController@enrollExam');
     $router->addRoute('GET', '/tentamens/unEnroll/{id}', 'ExamController@unEnrollExam');
     $router->addRoute('POST', '/tentamens/{examID}', 'ExamController@updateExam');
-    $router->addRoute('GET', '/tentamens/cijfer/{gradeID}', 'ExamController@removeGrade');
-    $router->addRoute('POST', '/tentamens/cijfer/{gradeID}', 'ExamController@updateGrade');
+
+
 
     $router->addRoute('GET', '/profiel', 'UserController@index');
 
     $router->addRoute('GET', '/users', 'UserController@index');
-    $router->addRoute('POST', '/users', 'UserRepository@store');
+    $router->addRoute('POST', '/users/enroll', 'UserController@enrollUser');
+    $router->addRoute('POST', '/users', 'UserController@store');
     $router->addRoute('POST', '/users/{userID}', 'UserController@update');
     $router->addRoute('GET', '/users/{userID}', 'UserController@delete');
     $router->addRoute('GET', '/users/unenroll/{enrollID}', 'UserController@deleteEnrollment');
+
 
     //REGISTER
 

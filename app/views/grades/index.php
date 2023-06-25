@@ -8,8 +8,8 @@
             <div class="card-header text-white bg-dark">Meest recente resultaat</div>
             <div class="card-body">
                 <h1 class="display-1 text-center">{{ grade.grade }}</h1>
-                <h2 class="text-center mb-4">{{ grade.exam_id }}</h2>
-                <p class="text-center mb-0">Docent: {{ grade.teacher_id }}</p>
+                <h2 class="text-center mb-4">{{ getExamName(grade.exam_id) }}</h2>
+                <p class="text-center mb-0">Docent: {{ getTeacherName(grade.teacher_id) }}</p>
                 <p class="text-center mb-0">Invoer datum: {{ getDate(grade.created_at) }}</p>
             </div>
         </div>

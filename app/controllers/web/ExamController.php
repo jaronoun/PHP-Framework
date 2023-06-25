@@ -30,6 +30,8 @@ class ExamController
     public ?array $exams = null;
     public ?array $allGrades = null;
     public ?array $allExams = null;
+    public ?array $allUsers = null;
+
     public $selectedExamId;
 
 
@@ -70,9 +72,9 @@ class ExamController
             'examUser' => $this->examUser,
             'exams' => $this->exams,
             'allGrades' => $this->allGrades,
-            'allExams' => $this->allExams
+            'allExams' => $this->allExams,
+            'allUsers' => $this->allUsers
         ]);
-
     }
 
     /**
@@ -101,6 +103,38 @@ class ExamController
                 'exams' => $this->exams
             ]);
         }
+    }
+
+    public function makeExam()
+    {
+        $data = $this->request->getParams();
+        $this->examRepository->create($data);
+        $this->getUserExams();
+
+        $this->view->render('exams/index.php', [
+            'loggedIn' => $this->session->get('loggedIn'),
+            'user' => $this->user,
+            'examUser' => $this->examUser,
+            'exams' => $this->exams,
+            'allGrades' => $this->allGrades,
+            'allExams' => $this->allExams
+        ]);
+    }
+
+    public function storeGrade()
+    {
+        $data = $this->request->getParams();
+        $this->gradeRepository->create($data);
+        $this->getUserExams();
+
+        $this->view->render('exams/index.php', [
+            'loggedIn' => $this->session->get('loggedIn'),
+            'user' => $this->user,
+            'examUser' => $this->examUser,
+            'exams' => $this->exams,
+            'allGrades' => $this->allGrades,
+            'allExams' => $this->allExams
+        ]);
     }
 
     public function updateGrade($gradeID)
@@ -198,7 +232,7 @@ class ExamController
             'loggedIn' => $this->session->get('loggedIn'),
             'user' => $this->user,
             'examUser' => $this->examUser,
-            'exams' => $this->exams
+            'exams' => $this->exams,
         ]);
     }
 
@@ -236,12 +270,15 @@ class ExamController
     {
         $this->allGrades = $this->gradeRepository->getAll();
         $this->allExams = $this->examRepository->getAll();
-
+        $this->allUsers = $this->userRepository->getAll();
         $exams = $this->examRepository->getAll();
+
         foreach ($exams as $exam) {
             $this->exams[] = $exam;
         }
+
         $examUser = $this->examUserRepository->findByUser($this->user->getId());
+
         foreach ($examUser as $exam) {
             $exam = $this->examRepository->findById($exam['exam_id']);
             $this->examUser[] = $exam;

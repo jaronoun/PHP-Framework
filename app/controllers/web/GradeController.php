@@ -72,10 +72,7 @@ class GradeController
         $loggedIn = SESSION::get('loggedIn');
 
         $grades = $this->gradeRepository->findByUserId($this->user->id);
-
         $grade = $this->gradeRepository->findRecentGrade($this->user->id);
-        $grade['exam_id'] = $this->gradeRepository->findExamName($grade['exam_id']);
-        $grade['teacher_id'] = $this->gradeRepository->findUserName($grade['teacher_id']);
 
         $this->getUserExams();
 
@@ -168,6 +165,26 @@ class GradeController
         }
     }
 
+    public function getExamName($id)
+    {
+        if ($id == '')
+        {
+            return '';
+        }
+        $exam = $this->examRepository->findById($id);
+        return $exam->name;
+    }
+
+    public function getTeacherName($id)
+    {
+        if ($id == '')
+        {
+            return '';
+        }
+        $teacher = $this->userRepository->findById($id);
+        return $teacher->name;
+    }
+
     public function getGrade($userID)
     {
         $userGrade = $this->gradeRepository->findGradeByExamIdAndUserId($this->selectedExamId, $userID);
@@ -195,9 +212,13 @@ class GradeController
 
     public function getDate($dateTime)
     {
-        $timestamp = strtotime($dateTime);
-        $formattedDate = date('j F Y', $timestamp);
-        return $formattedDate;
+        if ($dateTime)
+        {
+            $timestamp = strtotime($dateTime);
+            $formattedDate = date('j F Y', $timestamp);
+            return $formattedDate;
+        }
+        return '';
     }
 
 }

@@ -18,7 +18,9 @@ class ExamRepository implements Repository
 
     public function findById($id)
     {
-
+        if ($id === null) {
+            return null;
+        }
         return Exam::findById($id);
     }
 

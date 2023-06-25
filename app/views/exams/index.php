@@ -209,6 +209,32 @@
     <div class="col-12 col-md-12 mb-3">
         <div class="card">
             <div class="card-header text-white bg-dark">Tentamens</div>
+
+            <div class="card-body">
+                <form action="/tentamens/maken" method="post">
+                    <div class="form-group mb-3">
+                        <label for="name">Tentamen Naam</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Voer de tentamennaam in" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="desc">Beschrijving</label>
+                        <textarea class="form-control" id="desc" name="desc" rows="3" placeholder="Voer een beschrijving in"></textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="start-time">Start Datum/Tijd</label>
+                        <input type="datetime-local" class="form-control" id="start-time" name="start-time" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="end-time">Eind Datum/Tijd</label>
+                        <input type="datetime-local" class="form-control" id="end-time" name="end-time" required>
+                    </div>
+                    <button type="submit" class="btn btn-dark sml-btn">Tentamen Aanmaken</button>
+                </form>
+            </div>
+
             <label for="exam-name">Filter</label>
             <input type="text" class="form-control" id="exam-name" name="exam-name" placeholder="Zoek op ID, naam of datum" required>
             <div class="table-responsive">
@@ -292,6 +318,56 @@
     <div class="col-12 col-md-12 mb-3">
         <div class="card">
             <div class="card-header text-white bg-dark">Cijfers</div>
+
+            <div class="card-body">
+                <form action="/tentamens/cijfer" method="post">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="tentamen">Tentamen</label>
+                        <select class="form-select" id="tentamen" name="exam_id">
+                            <option selected></option>
+                            {% for exam in allExams %}
+                            <option value="{{ exam.id }}">{{ exam.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="students">Student</label>
+                            <select class="form-select" id="students" name="user_id">
+                                <option selected></option>
+                                {% for user in allUsers %}
+                                {% if user.role == 'student' %}
+                                <option value="{{ user.id }}">{{ user.name }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="cijfer">Cijfer</span>
+                        <input type="number" class="form-control" aria-label="" aria-describedby="" name="grade">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="teachers">Docent</label>
+                            <select class="form-select" id="teachers" name="teacher_id">
+                                <option selected></option>
+                                {% for user in allUsers %}
+                                {% if user.role == 'teacher' %}
+                                <option value="{{ user.id }}">{{ user.name }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark sml-btn">Geef cijfer</button>
+                </form>
+            </div>
+
             <label for="grade-name">Filter</label>
             <input type="text" class="form-control" id="grade-name" name="grade-name" placeholder="Zoek op ID, tentamen naam, gebruikers naam, cijfer of datum" required>
             <div class="table-responsive">
