@@ -107,10 +107,10 @@ class GradeRepository extends Model implements Repository
     {
         $grade = Grade::findById($id);
 
-        $grade->setExamId($data['exam_id']);
-        $grade->setUserId($data['user_id']);
-        $grade->setGrade($data['grade']);
-        $grade->setTeacherId($data['teacher_id']);
+        $grade->setExamId($data->exam_id);
+        $grade->setUserId($data->user_id);
+        $grade->setGrade($data->grade);
+        $grade->setTeacherId($data->teacher_id);
         $grade->setUpdatedAt(Date('Y-m-d H:i:s'));
 
         if($grade->update()){

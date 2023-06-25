@@ -13,12 +13,13 @@ use Psr\Container\NotFoundExceptionInterface;
 class UserController
 {
     public UserRepository $userRepository;
+    public GradeRepository $gradeRepository;
     public View $view;
     public Session $session;
     public $user;
-    public function __construct(UserRepository $repository, View $view, Session $session)
+    public function __construct(UserRepository $repository, GradeRepository $gradeRepository, View $view, Session $session)
     {
-
+        $this->gradeRepository = $gradeRepository;
         $this->userRepository = $repository;
         $this->view = $view;
         $this->session = $session;
@@ -33,7 +34,8 @@ class UserController
         $title = "Login";
 
         if($this->user->getRole() == 'admin'){
-            $data = $this->userRepository->getAll();
+            $allUsers = $this->userRepository->getAll();
+            $allEnrollments = $this->gradeRepository->getAll();
         } else {
             $data = null;
         }
@@ -42,6 +44,8 @@ class UserController
             'loggedIn' => $loggedIn,
             'title' => $title,
             'user' => $this->user,
+            'allUsers' => $allUsers,
+            'allEnrollments' => $allEnrollments
         ]);
 
     }

@@ -28,6 +28,9 @@ class ExamController
     public ?User $user = null;
     public ?array $examUser = null;
     public ?array $exams = null;
+    public ?array $allGrades = null;
+    public ?array $allExams = null;
+    public $selectedExamId;
 
 
     public function __construct(
@@ -66,6 +69,8 @@ class ExamController
             'user' => $this->user,
             'examUser' => $this->examUser,
             'exams' => $this->exams,
+            'allGrades' => $this->allGrades,
+            'allExams' => $this->allExams
         ]);
 
     }
@@ -98,6 +103,28 @@ class ExamController
         }
     }
 
+    public function updateGrade($gradeID)
+    {
+        $grade = $this->gradeRepository->findById($gradeID);
+        $grade->grade = $this->request->getParam('grade');
+        $this->gradeRepository->update($gradeID, $grade);
+        $this->getUserExams();
+
+        $this->view->render('exams/index.php', [
+            'loggedIn' => $this->session->get('loggedIn'),
+            'user' => $this->user,
+            'examUser' => $this->examUser,
+            'exams' => $this->exams,
+            'allGrades' => $this->allGrades,
+            'allExams' => $this->allExams
+        ]);
+    }
+
+    public function updateExam($examID)
+    {
+
+    }
+
     /**
      * @throws Exception
      */
@@ -111,9 +138,26 @@ class ExamController
             'loggedIn' => $this->session->get('loggedIn'),
             'user' => $this->user,
             'examUser' => $this->examUser,
-            'exams' => $this->exams
+            'exams' => $this->exams,
+            'allGrades' => $this->allGrades,
+            'allExams' => $this->allExams
         ]);
+    }
 
+    public function removeGrade($gradeID)
+    {
+        $this->gradeRepository->delete($gradeID);
+
+        $this->getUserExams();
+
+        $this->view->render('exams/index.php', [
+            'loggedIn' => $this->session->get('loggedIn'),
+            'user' => $this->user,
+            'examUser' => $this->examUser,
+            'exams' => $this->exams,
+            'allGrades' => $this->allGrades,
+            'allExams' => $this->allExams
+        ]);
     }
 
     public function enrollExam($id): void
@@ -179,6 +223,9 @@ class ExamController
 
     public function getUserExams()
     {
+        $this->allGrades = $this->gradeRepository->getAll();
+        $this->allExams = $this->examRepository->getAll();
+
         $exams = $this->examRepository->getAll();
         foreach ($exams as $exam) {
             $this->exams[] = $exam;

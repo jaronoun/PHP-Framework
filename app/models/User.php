@@ -128,22 +128,6 @@ class User extends Model
     {
         $stmt = self::query("SELECT * FROM users");
         return $stmt;
-
-//        $users = [];
-//        foreach ($results as $result) {
-//            $users[] = new User(
-//                $result['id'],
-//                $result['name'],
-//                $result['email'],
-//                $result['password'],
-//                $result['role'],
-//                $result['remember_token'] ?? null,
-//                $result['created_at']?? null,
-//                $result['updated_at']?? null
-//            );
-//        }
-//
-//        return $users;
     }
 
     public static function findById(int $id): ?User

@@ -32,54 +32,6 @@
         </div>
     </div>
     {% endif %}
-
-    {% if user.role == 'admin' %}
-    <div class="col-12 col-md-12 mb-3">
-        <div class="card">
-            <div class="card-header text-white bg-dark">Cijfers</div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <h3><u></u></h3>
-                    <table class="table table-striped" contenteditable="true">
-                        <thead>
-                        <tr>
-                            <th class="text-white bg-dark" scope="col">id</th>
-                            <th class="text-white bg-dark" scope="col">Tentamen</th>
-                            <th class="text-white bg-dark" scope="col">Student</th>
-                            <th class="text-white bg-dark" scope="col">Cijfer</th>
-                            <th class="text-white bg-dark" scope="col">Aangemaakt op:</th>
-                            <th class="text-white bg-dark" scope="col">Gewijzigd op:</th>
-                            <th class="text-white bg-dark"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for grade in data %}
-                        <tr>
-                            <th scope="row">{{ grade.id }}</th>
-                            <td>{{ grade.exam_name }}</td>
-                            <td>{{ grade.user_name }}</td>
-                            <td>{{ grade.grade }}</td>
-                            <td>{{ grade.created_at }}</td>
-                            <td>{{ grade.updated_at }}</td>
-                            <td><button type="button" class="btn btn-danger"> Wijzig </button></td>
-                        </tr>
-                        {% endfor %}
-                        <tr>
-                            <th scope="row"></th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><input type="datetime-local"></td>
-                            <td><input type="datetime-local"></td>
-                            <td><button type="button" class="btn btn-danger"> Aanmaken </button></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
 </div>
 
 

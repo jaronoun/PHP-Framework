@@ -160,48 +160,87 @@
         </div>
     </div>
     {% endif %}
+
     {% if user.role == 'admin' %}
-    <table class="table table-striped" contenteditable="true">
-        <thead>
-        <tr>
-            <th scope="col">id</th>
-            <th scope="col">Tentamen</th>
-            <th scope="col">Beschrijving</th>
-            <th scope="col">Docent</th>
-            <th scope="col">Studenten ingeschreven</th>
-            <th scope="col">Start-tijd</th>
-            <th scope="col">Eind-tijd</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for exam in examUser %}
-        <tr>
-            <th scope="row">{{ exam.id }}</th>
-            <td>{{ exam.exam_id.name }}</td>
-            <td>{{ exam.exam_id.desc }}</td>
-            <td>{{ exam.user_id.name }}</td>
-            <td>-</td>
-            <td>-</td>
-            <td>{{ exam.start_time }}</td>
-            <td>{{ exam.end_time }}</td>
+    <div class="col-12 col-md-12 mb-3">
+        <div class="card">
+            <div class="card-header text-white bg-dark">Tentamens</div>
+            <label for="exam-name">Filter</label>
+            <input type="text" class="form-control" id="exam-name" name="exam-name" placeholder="Zoek op ID, naam of datum" required>
+            <div class="table-responsive">
+                <h3><u></u></h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th class="text-white bg-dark" scope="col">id</th>
+                        <th class="text-white bg-dark" scope="col">Naam</th>
+                        <th class="text-white bg-dark" scope="col">Beschrijving</th>
+                        <th class="text-white bg-dark" scope="col">Start</th>
+                        <th class="text-white bg-dark" scope="col">Einde</th>
+                        <th class="text-white bg-dark" scope="col">Aangemaakt op:</th>
+                        <th class="text-white bg-dark" scope="col">Gewijzigd op:</th>
+                        <th class="text-white bg-dark">Akties</th>
+                    </tr>
+                    </thead>
+                    <tbody id="exams">
+                    {% for exam in allExams %}
+                    <tr>
+                        <th scope="row">{{ exam.id }}</th>
+                        <td>{{ exam.name }}</td>
+                        <td>{{ exam.desc }}</td>
+                        <td>{{ exam.start_time }}</td>
+                        <td>{{ exam.end_time }}</td>
+                        <td>{{ exam.created_at }}</td>
+                        <td>{{ exam.updated_at }}</td>
+                        <td><a href="/tentamens/{{ exam.id }}" class="btn btn-dark float-right sml-btn{% if hasGrades(exam.id) %} disabled {% endif %}">Verwijderen</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-            <td><button type="button" class="btn btn-danger"> Wijzig </button></td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <th scope="row"></th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><input type="datetime-local"></td>
-            <td><input type="datetime-local"></td>
-
-            <td><button type="button" class="btn btn-danger"> Aanmaken </button></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="col-12 col-md-12 mb-3">
+        <div class="card">
+            <div class="card-header text-white bg-dark">Cijfers</div>
+            <label for="grade-name">Filter</label>
+            <input type="text" class="form-control" id="grade-name" name="grade-name" placeholder="Zoek op ID, tentamen naam, gebruikers naam, cijfer of datum" required>
+            <div class="table-responsive">
+                <h3><u></u></h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th class="text-white bg-dark" scope="col">id</th>
+                        <th class="text-white bg-dark" scope="col">Tentamen</th>
+                        <th class="text-white bg-dark" scope="col">Student</th>
+                        <th class="text-white bg-dark" scope="col">Cijfer</th>
+                        <th class="text-white bg-dark" scope="col">Aangemaakt op:</th>
+                        <th class="text-white bg-dark" scope="col">Gewijzigd op:</th>
+                        <th class="text-white bg-dark">Akties</th>
+                    </tr>
+                    </thead>
+                    <tbody id="grades">
+                    {% for grade in allGrades %}
+                    <tr>
+                        <form action="/tentamens/cijfer/{{ grade.id }}" method="POST" enctype="application/x-www-form-urlencoded">
+                            <th>{{ grade.id }}</th>
+                            <td>{{ grade.exam_name }}</td>
+                            <td>{{ grade.user_name }}</td>
+                            <td><input type="number" name="grade" value="{{ grade.grade }}"></td>
+                            <td>{{ grade.created_at }}</td>
+                            <td>{{ grade.updated_at }}</td>
+                            <td>
+                                <a href="/tentamens/cijfer/{{ grade.id }}" class="btn btn-dark float-right sml-btn">Verwijderen</a>
+                                <button type="submit" class="btn btn-dark float-right sml-btn">Update</button>
+                            </td>
+                        </form>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     {% endif %}
 </div>
@@ -210,6 +249,22 @@
         $("#exam-name").on("keyup", function() {
             var value = $(this).val().toLowerCase();
             $("#exams tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+    $(document).ready(function(){
+        $("#exam-name").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#exams tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+    $(document).ready(function(){
+        $("#grade-name").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#grades tr").filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });

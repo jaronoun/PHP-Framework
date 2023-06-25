@@ -71,7 +71,6 @@ class GradeController
     {
         $loggedIn = SESSION::get('loggedIn');
 
-        $allGrades = $this->gradeRepository->getAll();
         $grades = $this->gradeRepository->findByUserId($this->user->id);
 
         $grade = $this->gradeRepository->findRecentGrade($this->user->id);
@@ -83,7 +82,6 @@ class GradeController
         $this->view->render('grades/index.php', [
             'loggedIn' => $loggedIn,
             'user' => $this->user,
-            'data' => $allGrades,
             'grades' => $grades,
             'grade' => $grade,
         ]);

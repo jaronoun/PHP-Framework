@@ -57,6 +57,9 @@ $container->bind(Router::class, function ($container) {
     $router->addRoute('GET', '/tentamens/{id}', 'ExamController@removeExam');
     $router->addRoute('GET', '/tentamens/enroll/{id}', 'ExamController@enrollExam');
     $router->addRoute('GET', '/tentamens/unEnroll/{id}', 'ExamController@unEnrollExam');
+    $router->addRoute('POST', '/tentamens/{examID}', 'ExamController@updateExam');
+    $router->addRoute('GET', '/tentamens/cijfer/{gradeID}', 'ExamController@removeGrade');
+    $router->addRoute('POST', '/tentamens/cijfer/{gradeID}', 'ExamController@updateGrade');
 
     $router->addRoute('GET', '/profiel', 'UserController@index');
 
