@@ -122,7 +122,18 @@ class ExamController
 
     public function updateExam($examID)
     {
+        $data = $this->request->getParams();
+        $this->examRepository->update($examID, $data);
+        $this->getUserExams();
 
+        $this->view->render('exams/index.php', [
+            'loggedIn' => $this->session->get('loggedIn'),
+            'user' => $this->user,
+            'examUser' => $this->examUser,
+            'exams' => $this->exams,
+            'allGrades' => $this->allGrades,
+            'allExams' => $this->allExams
+        ]);
     }
 
     /**

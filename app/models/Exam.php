@@ -67,20 +67,22 @@ class Exam extends Model
         $this->desc = $desc;
     }
 
-    public function getStartTime(): ?DateTime {
+    public function getStartTime(): ?string {
         return $this->start_time;
     }
 
-    public function setStartTime(?DateTime $start_time): void {
-        $this->start_time = $start_time;
+    public function setStartTime(?string $start_time): void {
+        $currentDateTime = date('Y-m-d H:i:s');
+        $this->start_time = ($start_time !== null) ? date('Y-m-d H:i:s', strtotime($start_time)) : $currentDateTime;
     }
 
-    public function getEndTime(): ?DateTime {
+    public function getEndTime(): ?string {
         return $this->end_time;
     }
 
-    public function setEndTime(?DateTime $end_time): void {
-        $this->end_time = $end_time;
+    public function setEndTime(?string $end_time): void {
+        $currentDateTime = date('Y-m-d H:i:s');
+        $this->end_time = ($end_time !== null) ? date('Y-m-d H:i:s', strtotime($end_time)) : $currentDateTime;
     }
 
     public function getCreatedAt(): string
@@ -98,9 +100,9 @@ class Exam extends Model
         $this->created_at = $created_at;
     }
 
-    public function setUpdatedAt(?string $updated_at): void
+    public function setUpdatedAt(): void
     {
-        $this->updated_at = $updated_at;
+        $this->updated_at = date("Y-m-d H:i:s");
     }
 
     public static function all(): array
@@ -171,10 +173,10 @@ class Exam extends Model
         return true;
     }
 
-    private function update(): bool
+    public function update(): bool
     {
-        $stmt = self::query("UPDATE exam SET name = ?, desc = ?, start_time = ?, end_time = ?, updated_at = ? WHERE id = ?", [
-            $this->getName()  ,
+        $stmt = self::query("UPDATE exam SET name = ?, `desc` = ?, start_time = ?, end_time = ?, updated_at = ? WHERE id = ?", [
+            $this->getName(),
             $this->getDescription(),
             $this->getStartTime(),
             $this->getEndTime(),

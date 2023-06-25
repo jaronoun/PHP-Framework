@@ -3,6 +3,7 @@
 namespace Isoros\controllers\api;
 
 
+use Cassandra\Date;
 use Isoros\models\Exam;
 use PDOException;
 
@@ -46,22 +47,19 @@ class ExamRepository implements Repository
 
     public function update($id, $data): false|string
     {
-        $name = $data[0];
-        $desc = $data[1];
-        $start_time = $data[2];
-        $end_time = $data[3];
-        $updated_at = $data[4];
-
+        $name = $data['name'];
+        $desc = $data['desc'];
+        $start_time = $data['start-time'];
+        $end_time = $data['end-time'];
 
         try {
             $exam = Exam::findById($id);
-            $exam->setExamId($name);
-            $exam->setUserId($desc);
+            $exam->setName($name);
             $exam->setDescription($desc);
             $exam->setStartTime($start_time);
             $exam->setEndTime($end_time);
-            $exam->setUpdatedAt($updated_at);
-            $exam->save();
+            $exam->setUpdatedAt();
+            $exam->update();
 
             return json_encode($exam);
         } catch (PDOException $e) {
