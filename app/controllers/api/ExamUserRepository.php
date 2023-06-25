@@ -11,7 +11,18 @@ class ExamUserRepository extends Model implements Repository
 
     public function getAll()
     {
-        return ExamUser::all();
+        $examUsers = ExamUser::all();
+        $data = [];
+        foreach ($examUsers as $examUser) {
+            $data[] = array(
+                'id' => $examUser['id'],
+                'exam_name' => $this->findExamName($examUser['exam_id']),
+                'user_name' => $this->findUserName($examUser['user_id']),
+                'created_at' => $examUser['created_at'],
+                'updated_at' => $examUser['updated_at']
+            );
+        }
+        return $data;
     }
 
     public function findByUser($userId)
@@ -62,6 +73,11 @@ class ExamUserRepository extends Model implements Repository
         return ExamUser::deleteById($examId, $userId);
     }
 
+    public function deleteId($enrollID)
+    {
+        return ExamUser::deleteId($enrollID);
+    }
+
     public function update($id, $data)
     {
         // TODO: Implement update() method.
@@ -71,4 +87,17 @@ class ExamUserRepository extends Model implements Repository
     {
         // TODO: Implement findById() method.
     }
+
+    private function findExamName(mixed $exam_id)
+    {
+        $name = (new ExamRepository)->findById($exam_id)->getName();
+        return $name;
+    }
+
+    public function findUserName($user_id)
+    {
+        $data = (new UserRepository)->findById($user_id)->getName();
+        return $data;
+    }
+
 }

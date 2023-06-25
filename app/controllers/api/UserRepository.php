@@ -9,16 +9,12 @@ class UserRepository implements Repository
 {
     public function getAll()
     {
-
             return User::all();
-
     }
 
     public function findById($id): User
     {
-
             return User::findById($id);
-
     }
 
     public function findUserByEmail($email): ?User
@@ -45,18 +41,17 @@ class UserRepository implements Repository
 
     public function update($id, $data): bool|string
     {
-        $name = $data[0];
-        $email = $data[1];
-        $password = $data[2];
-        $role = $data[3];
+        $name = $data['name'];
+        $email = $data['email'];
+        $role = $data['role'];
 
         try {
             $user = User::findById($id);
             $user->name = $name;
             $user->email = $email;
-            $user->password = $password;
             $user->role = $role;
-            $user->save();
+            $user->updated_at = date('Y-m-d H:i:s');
+            $user->update();
 
             return json_encode($user);
         } catch (PDOException $e) {

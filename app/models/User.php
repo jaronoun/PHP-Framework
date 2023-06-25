@@ -202,7 +202,7 @@ class User extends Model
         return true;
     }
 
-    private function update(): bool
+    public function update(): bool
     {
         self::query("UPDATE users SET name = ?, email = ?, password = ?, role = ?, remember_token = ?, created_at = ?, updated_at = ? WHERE id = ?", [
             $this->name,

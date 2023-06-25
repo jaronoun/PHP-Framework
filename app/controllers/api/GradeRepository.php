@@ -18,6 +18,7 @@ class GradeRepository extends Model implements Repository
                 'id' => $result['id'],
                 'exam_name' => $this->findExamName($result['exam_id']),
                 'user_name' => $this->findUserName($result['user_id']),
+                'teacher_name' => $this->findUserName($result['teacher_id']),
                 'grade' => $result['grade'],
                 'created_at' => $result['created_at'],
                 'updated_at' => $result['updated_at']
@@ -59,17 +60,14 @@ class GradeRepository extends Model implements Repository
 
     public function findExamName($exam_id): string
     {
-
         $name = (new ExamRepository)->findById($exam_id)->getName();
         return $name;
-
     }
 
     public function findUserName($user_id)
     {
         $data = (new UserRepository)->findById($user_id)->getName();
         return $data;
-
     }
 
     public function findGradeByUserId($user_id): ?array

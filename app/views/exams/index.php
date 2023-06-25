@@ -236,8 +236,53 @@
                         <td>{{ exam.end_time }}</td>
                         <td>{{ exam.created_at }}</td>
                         <td>{{ exam.updated_at }}</td>
-                        <td><a href="/tentamens/{{ exam.id }}" class="btn btn-dark float-right sml-btn{% if hasGrades(exam.id) %} disabled {% endif %}">Verwijderen</a></td>
-                    {% endfor %}
+                        <td>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-dark sml-btn" data-bs-toggle="modal" data-bs-target="#{{ exam.id }}Modal">
+                                Edit
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="{{ exam.id }}Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header text-white bg-dark">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ exam.name }}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="/tentamens/{{ exam.id }}" method="post">
+                                            <div class="modal-body">
+                                                <div class="form-group mb-3">
+                                                    <label for="name">Tentamen Naam</label>
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ exam.name }}" required>
+                                                </div>
+
+                                                <div class="form-group mb-3">
+                                                    <label for="desc">Beschrijving</label>
+                                                    <textarea class="form-control" id="desc" name="desc" rows="3" placeholder="{{ exam.desc }}"></textarea>
+                                                </div>
+
+                                                <div class="form-group mb-3">
+                                                    <label for="start-time">Start Datum/Tijd</label>
+                                                    <input type="datetime-local" class="form-control" id="start-time" name="start-time" value="{{ exam.start_time }}" required>
+                                                </div>
+
+                                                <div class="form-group mb-3">
+                                                    <label for="end-time">Eind Datum/Tijd</label>
+                                                    <input type="datetime-local" class="form-control" id="end-time" name="end-time" value="{{ exam.end_time }}" required>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary sml-btn" data-bs-dismiss="modal">Sluiten</button>
+                                                <button type="submit" class="btn btn-dark sml-btn">Opslaan</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/tentamens/{{ exam.id }}" class="btn btn-dark float-right sml-btn {% if hasGrades(exam.id) %} disabled {% endif %}">Verwijderen</a>
+                        </td>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -258,6 +303,7 @@
                         <th class="text-white bg-dark" scope="col">Tentamen</th>
                         <th class="text-white bg-dark" scope="col">Student</th>
                         <th class="text-white bg-dark" scope="col">Cijfer</th>
+                        <th class="text-white bg-dark" scope="col">Docent</th>
                         <th class="text-white bg-dark" scope="col">Aangemaakt op:</th>
                         <th class="text-white bg-dark" scope="col">Gewijzigd op:</th>
                         <th class="text-white bg-dark">Akties</th>
@@ -271,11 +317,12 @@
                             <td>{{ grade.exam_name }}</td>
                             <td>{{ grade.user_name }}</td>
                             <td><input type="number" name="grade" value="{{ grade.grade }}"></td>
+                            <td>{{ grade.teacher_name }}</td>
                             <td>{{ grade.created_at }}</td>
                             <td>{{ grade.updated_at }}</td>
                             <td>
-                                <a href="/tentamens/cijfer/{{ grade.id }}" class="btn btn-dark float-right sml-btn">Verwijderen</a>
                                 <button type="submit" class="btn btn-dark float-right sml-btn">Update</button>
+                                <a href="/tentamens/cijfer/{{ grade.id }}" class="btn btn-dark float-right sml-btn">Verwijderen</a>
                             </td>
                         </form>
                     </tr>

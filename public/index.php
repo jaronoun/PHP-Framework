@@ -64,10 +64,10 @@ $container->bind(Router::class, function ($container) {
     $router->addRoute('GET', '/profiel', 'UserController@index');
 
     $router->addRoute('GET', '/users', 'UserController@index');
-    $router->addRoute('GET', '/users/{id}', 'UserRepository@show');
     $router->addRoute('POST', '/users', 'UserRepository@store');
-    $router->addRoute('PUT', '/users/{id}', 'UserRepository@update');
-    $router->addRoute('DELETE', '/users/{id}', 'UserRepository@delete');
+    $router->addRoute('POST', '/users/{userID}', 'UserController@update');
+    $router->addRoute('GET', '/users/{userID}', 'UserController@delete');
+    $router->addRoute('GET', '/users/unenroll/{enrollID}', 'UserController@deleteEnrollment');
 
     //REGISTER
 

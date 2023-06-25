@@ -105,5 +105,10 @@ class ExamUser extends Model
         return true;
     }
 
+    public static function  deleteId($enrollID)
+    {
+        $stmt = self::query("DELETE FROM exam_user WHERE id = ?", [$enrollID]);
+        return true;
+    }
 
 }

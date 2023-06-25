@@ -32,10 +32,10 @@
                     <th class="text-white bg-dark" scope="col">Token</th>
                     <th class="text-white bg-dark" scope="col">Aangemaakt op:</th>
                     <th class="text-white bg-dark" scope="col">Gewijzigd op:</th>
-                    <th class="text-white bg-dark"></th>
+                    <th class="text-white bg-dark">Akties</th>
                 </tr>
                 </thead>
-                <tbody id="exams">
+                <tbody id="users">
                 {% for user in allUsers %}
                 <tr>
                     <th scope="row">{{ user.id }}</th>
@@ -45,7 +45,52 @@
                     <td>{{ user.remember_token }}</td>
                     <td>{{ user.created_at }}</td>
                     <td>{{ user.updated_at }}</td>
-                    <td><button type="button" class="btn btn-danger sml-btn"> Wijzig </button></td>
+                    <td>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-dark sml-btn" data-bs-toggle="modal" data-bs-target="#{{ user.id }}Modal">
+                            Edit
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="{{ user.id }}Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header text-white bg-dark">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ user.name }}</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="/users/{{ user.id }}" method="post">
+                                        <div class="modal-body">
+                                            <div class="form-group mb-3">
+                                                <label for="name">Naam</label>
+                                                <input type="text" class="form-control" id="name" name="name" value="{{ user.name }}" required>
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <label for="email">Email</label>
+                                                <input type="text" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <label for="role">Rol</label>
+                                                <input type="text" class="form-control" id="role" name="role" value="{{ user.role }}" required>
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <label for="token">Token</label>
+                                                <input type="text" class="form-control" id="token" name="token" value="{{ user.remember_token }}">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary sml-btn" data-bs-dismiss="modal">Sluiten</button>
+                                            <button type="submit" class="btn btn-dark sml-btn">Opslaan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="/users/{{ user.id }}" class="btn btn-dark float-right sml-btn">Verwijderen</a>
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -68,7 +113,7 @@
                     <th class="text-white bg-dark" scope="col">Student naam</th>
                     <th class="text-white bg-dark" scope="col">Aangemaakt op:</th>
                     <th class="text-white bg-dark" scope="col">Gewijzigd op:</th>
-                    <th class="text-white bg-dark"></th>
+                    <th class="text-white bg-dark">Akties</th>
                 </tr>
                 </thead>
                 <tbody id="enroll">
@@ -78,7 +123,9 @@
                     <td>{{ enrolled.user_name }}</td>
                     <td>{{ enrolled.created_at }}</td>
                     <td>{{ enrolled.updated_at }}</td>
-                    <td><button type="button" class="btn btn-danger sml-btn"> Wijzig </button></td>
+                    <td>
+                        <a href="/users/unenroll/{{ enrolled.id }}" class="btn btn-dark float-right sml-btn">Verwijderen</a>
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>
