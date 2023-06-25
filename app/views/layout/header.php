@@ -62,7 +62,6 @@
             {% else %}
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
-                <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
             </ul>
             {% endif %}
         </div>

@@ -133,7 +133,8 @@ class ExamController
             'examUser' => $this->examUser,
             'exams' => $this->exams,
             'allGrades' => $this->allGrades,
-            'allExams' => $this->allExams
+            'allExams' => $this->allExams,
+            'allUsers' => $this->allUsers
         ]);
     }
 
